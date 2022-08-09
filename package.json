@@ -6,7 +6,7 @@
   "author": "0xPARC <ivan@0xPARC.org>",
   "dependencies": {
     "@dfdao/constants": "^6.7.31",
-    "@dfdao/contracts": "^6.7.31",
+    "@dfdao/contracts": "^6.7.32",
     "@dfdao/events": "^6.7.31",
     "@dfdao/gamelogic": "^6.7.31",
     "@dfdao/hashing": "^6.7.31",

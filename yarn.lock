@@ -1056,10 +1056,18 @@
     "@dfdao/types" "6.7.32"
     big-integer "^1.6.48"
 
-"@dfdao/contracts@6.7.31", "@dfdao/contracts@^6.7.31":
+"@dfdao/contracts@6.7.31":
   version "6.7.31"
   resolved "https://registry.yarnpkg.com/@dfdao/contracts/-/contracts-6.7.31.tgz#247c9ffa20b29ebaca19752f8de819e9bfe9fff5"
   integrity sha512-aRWAVMbpLw3MPUlKEhY2srhud2R7L81gOqsJB7gMf71M9CsI3TrFEIJHbOPgTlm7G7MEGJQwJF+hH5XAorlNOQ==
+  dependencies:
+    "@ethersproject/providers" "^5.5.1"
+    ethers "^5.5.1"
+
+"@dfdao/contracts@^6.7.32":
+  version "6.7.32"
+  resolved "https://registry.yarnpkg.com/@dfdao/contracts/-/contracts-6.7.32.tgz#708f9bcfd227fc6b4bc68d7ff3e836086f72bc1f"
+  integrity sha512-rrBelu3wf8VWxuKTUI23u+HY9MTeb8L4BaC6kEcRxpW/4jh3cx32PlPHDuWivJQ43PmceNbMO+6y6LV9QmI4Mw==
   dependencies:
     "@ethersproject/providers" "^5.5.1"
     ethers "^5.5.1"
