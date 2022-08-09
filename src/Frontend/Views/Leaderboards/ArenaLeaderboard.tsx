@@ -1,25 +1,34 @@
-import { Leaderboard } from '@darkforest_eth/types';
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import { GraphConfigPlayer } from '../../../Backend/Network/GraphApi/EloLeaderboardApi';
-import { getRank, Rank } from '../../../Backend/Utils/Rank';
-import { Gnosis, Star, Twitter } from '../../Components/Icons';
-import { Red, Subber } from '../../Components/Text';
-import { TextPreview } from '../../Components/TextPreview';
-import dfstyles from '../../Styles/dfstyles';
-import { useArenaLeaderboard, useEloLeaderboard, useTwitters } from '../../Utils/AppHooks';
-import { roundEndTimestamp, roundStartTimestamp } from '../../Utils/constants';
-import { formatDuration } from '../../Utils/TimeUtils';
-import { GenericErrorBoundary } from '../GenericErrorBoundary';
-import { SortableTable } from '../SortableTable';
-import { Table } from '../Table';
+import { Leaderboard } from "@dfdao/types";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import { GraphConfigPlayer } from "../../../Backend/Network/GraphApi/EloLeaderboardApi";
+import { getRank, Rank } from "../../../Backend/Utils/Rank";
+import { Gnosis, Star, Twitter } from "../../Components/Icons";
+import { Red, Subber } from "../../Components/Text";
+import { TextPreview } from "../../Components/TextPreview";
+import dfstyles from "../../Styles/dfstyles";
+import {
+  useArenaLeaderboard,
+  useEloLeaderboard,
+  useTwitters,
+} from "../../Utils/AppHooks";
+import { roundEndTimestamp, roundStartTimestamp } from "../../Utils/constants";
+import { formatDuration } from "../../Utils/TimeUtils";
+import { GenericErrorBoundary } from "../GenericErrorBoundary";
+import { SortableTable } from "../SortableTable";
+import { Table } from "../Table";
 
-const errorMessage = 'Error Loading Leaderboard';
+const errorMessage = "Error Loading Leaderboard";
 
 export function ArenaLeaderboardWithData({ config }: { config: string }) {
   const { arenaLeaderboard, arenaError } = useArenaLeaderboard(false, config);
-  return <ArenaLeaderboardDisplay leaderboard={arenaLeaderboard} error={arenaError} />;
+  return (
+    <ArenaLeaderboardDisplay
+      leaderboard={arenaLeaderboard}
+      error={arenaError}
+    />
+  );
 }
 
 export function ArenaLeaderboardDisplay({
@@ -49,7 +58,9 @@ export function ArenaLeaderboardDisplay({
 
 export function EloLeaderboardWithData({ config }: { config: string }) {
   const { eloLeaderboard, eloError } = useEloLeaderboard(false, config);
-  return <EloLeaderboardDisplay leaderboard={eloLeaderboard} error={eloError} />;
+  return (
+    <EloLeaderboardDisplay leaderboard={eloLeaderboard} error={eloError} />
+  );
 }
 
 export function EloLeaderboardDisplay({
@@ -67,7 +78,9 @@ export function EloLeaderboardDisplay({
         <StatsTableContainer>
           <StatsTable>
             {/* <CountDown /> */}
-            {totalPlayers && <TotalPlayers leaderboard={leaderboard} error={error} />}
+            {totalPlayers && (
+              <TotalPlayers leaderboard={leaderboard} error={error} />
+            )}
           </StatsTable>
         </StatsTableContainer>
         {/* <Spacer height={8} /> */}
@@ -79,15 +92,15 @@ export function EloLeaderboardDisplay({
 
 function scoreToTime(score?: number | null) {
   if (score === null || score === undefined) {
-    return 'n/a';
+    return "n/a";
   }
   score = Math.floor(score);
 
-  const seconds = String(score % 60).padStart(2, '0');
-  const minutes = String(Math.floor(score / 60) % 60).padStart(2, '0');
-  const hours = String(Math.min(99, Math.floor(score / 3600))).padStart(2, '0');
+  const seconds = String(score % 60).padStart(2, "0");
+  const minutes = String(Math.floor(score / 60) % 60).padStart(2, "0");
+  const hours = String(Math.min(99, Math.floor(score / 3600))).padStart(2, "0");
 
-  return hours + ':' + minutes + ':' + seconds;
+  return hours + ":" + minutes + ":" + seconds;
 }
 
 // pass in either an address, or a twitter handle. this function will render the appropriate
@@ -100,18 +113,22 @@ export function compPlayerToEntry(
   return (
     <Link
       to={`/portal/account/${playerAddress}`}
-      style={{ color: color, textDecoration: 'underline', fontWeight: 'bolder' }}
-      target='_blank'
+      style={{
+        color: color,
+        textDecoration: "underline",
+        fontWeight: "bolder",
+      }}
+      target="_blank"
     >
       {playerTwitter ? (
         `@${playerTwitter}`
       ) : (
         <TextPreview
-          style={{ textDecoration: 'underline' }}
+          style={{ textDecoration: "underline" }}
           disabled
           text={playerAddress}
-          focusedWidth={'130px'}
-          unFocusedWidth={'130px'}
+          focusedWidth={"130px"}
+          unFocusedWidth={"130px"}
         />
       )}
     </Link>
@@ -135,11 +152,17 @@ function getRankColor([rank, score]: [number, number | undefined]) {
 
 function getRankStar(rank: number) {
   const gold =
-    'invert(73%) sepia(29%) saturate(957%) hue-rotate(354deg) brightness(100%) contrast(95%)';
+    "invert(73%) sepia(29%) saturate(957%) hue-rotate(354deg) brightness(100%) contrast(95%)";
   const purple =
-    'invert(39%) sepia(54%) saturate(6205%) hue-rotate(264deg) brightness(100%) contrast(103%)';
+    "invert(39%) sepia(54%) saturate(6205%) hue-rotate(264deg) brightness(100%) contrast(103%)";
   if (rank < 6) {
-    return <Star width={'20px'} height={'20px'} color={rank == 0 ? gold : purple}></Star>;
+    return (
+      <Star
+        width={"20px"}
+        height={"20px"}
+        color={rank == 0 ? gold : purple}
+      ></Star>
+    );
   }
   return <></>;
 }
@@ -171,13 +194,13 @@ function CountDown() {
     const timeUntilStartms = roundStartTime - new Date().getTime();
     const timeUntilEndms = roundEndTime - new Date().getTime();
     if (timeUntilStartms > 0) {
-      setStr('Grand Prix starts in');
+      setStr("Grand Prix starts in");
       setTime(`${formatDuration(timeUntilStartms)}`);
     } else if (timeUntilEndms <= 0) {
-      setStr('');
-      setTime('Grand Prix complete');
+      setStr("");
+      setTime("Grand Prix complete");
     } else {
-      setStr('Grand Prix time left');
+      setStr("Grand Prix time left");
       setTime(formatDuration(timeUntilEndms));
     }
   };
@@ -193,7 +216,7 @@ function CountDown() {
   }, []);
 
   return (
-    <tbody style={{ fontSize: '1.25em' }}>
+    <tbody style={{ fontSize: "1.25em" }}>
       <tr>
         <td>{str}</td>
         <td>{time}</td>
@@ -218,7 +241,7 @@ function ArenasCreated({
   }
   if (leaderboard) {
     return (
-      <tbody style={{ fontSize: '1.25em' }}>
+      <tbody style={{ fontSize: "1.25em" }}>
         <tr>
           <td>Total Players</td>
           <td>{leaderboard.length}</td>
@@ -246,7 +269,7 @@ function TotalPlayers({
   }
   if (leaderboard) {
     return (
-      <tbody style={{ fontSize: '1.25em' }}>
+      <tbody style={{ fontSize: "1.25em" }}>
         <tr>
           <td>Total matches</td>
           <td>{leaderboard.length}</td>
@@ -282,15 +305,15 @@ function ArenaLeaderboardTable({ rows }: { rows: Row[] }) {
     <TableContainer>
       <SortableTable
         sortFunctions={sortFunctions}
-        alignments={['r', 'r', 'l', 'l', 'r']}
+        alignments={["r", "r", "l", "l", "r"]}
         headers={[
           // <Cell key='star'></Cell>,
-          <Cell key='rank'></Cell>,
-          <Cell key='name'></Cell>,
-          <Cell key='twitter'></Cell>,
-          <Cell key='gnosis'></Cell>,
-          <Cell key='time'>Time</Cell>,
-          <Cell key='moves'>Moves</Cell>,
+          <Cell key="rank"></Cell>,
+          <Cell key="name"></Cell>,
+          <Cell key="twitter"></Cell>,
+          <Cell key="gnosis"></Cell>,
+          <Cell key="time">Time</Cell>,
+          <Cell key="moves">Moves</Cell>,
         ]}
         rows={rows}
         columns={[
@@ -304,8 +327,8 @@ function ArenaLeaderboardTable({ rows }: { rows: Row[] }) {
               row.moves === undefined ||
               row.time === null ||
               row.moves === null
-                ? 'unranked'
-                : i + 1 + '.'}
+                ? "unranked"
+                : i + 1 + "."}
             </Cell>
           ),
           (row: Row, i) => {
@@ -320,11 +343,11 @@ function ArenaLeaderboardTable({ rows }: { rows: Row[] }) {
               <Cell>
                 {row.twitter && (
                   <a
-                    style={{ display: 'flex', alignItems: 'center' }}
-                    target='_blank'
+                    style={{ display: "flex", alignItems: "center" }}
+                    target="_blank"
                     href={`https://twitter.com/${row.twitter}`}
                   >
-                    <Twitter width='24px' height='24px' />
+                    <Twitter width="24px" height="24px" />
                   </a>
                 )}
               </Cell>
@@ -335,14 +358,14 @@ function ArenaLeaderboardTable({ rows }: { rows: Row[] }) {
             // const color = getRankColor([i, row.score]);
             return (
               <Cell>
-                {' '}
+                {" "}
                 <a
-                  style={{ display: 'flex', alignItems: 'center' }}
-                  target='_blank'
+                  style={{ display: "flex", alignItems: "center" }}
+                  target="_blank"
                   href={`https://blockscout.com/xdai/optimism/address/${row.address}`}
                 >
                   <GnoButton>
-                    <Gnosis width='24px' height='24px' />
+                    <Gnosis width="24px" height="24px" />
                   </GnoButton>
                 </a>
               </Cell>
@@ -381,11 +404,11 @@ function ArenaLeaderboardBody({
   }
 
   leaderboard.entries.sort((a, b) => {
-    if (typeof a.score !== 'number' && typeof b.score !== 'number') {
+    if (typeof a.score !== "number" && typeof b.score !== "number") {
       return 0;
-    } else if (typeof a.score !== 'number') {
+    } else if (typeof a.score !== "number") {
       return 1;
-    } else if (typeof b.score !== 'number') {
+    } else if (typeof b.score !== "number") {
       return -1;
     }
 
@@ -409,21 +432,25 @@ function EloLeaderboardTable({ rows }: { rows: EloRow[] }) {
   return (
     <TableContainer>
       <Table
-        alignments={['r', 'l', 'c', 'c', 'r', 'r']}
+        alignments={["r", "l", "c", "c", "r", "r"]}
         headers={[
           // <Cell key='star'></Cell>,
-          <Cell key='rank'></Cell>,
-          <Cell key='name'></Cell>,
-          <Cell key='twitter'></Cell>,
-          <Cell key='gnosis'></Cell>,
-          <Cell key='score'>Elo</Cell>,
-          <Cell key='W/L'>W/L</Cell>,
+          <Cell key="rank"></Cell>,
+          <Cell key="name"></Cell>,
+          <Cell key="twitter"></Cell>,
+          <Cell key="gnosis"></Cell>,
+          <Cell key="score">Elo</Cell>,
+          <Cell key="W/L">W/L</Cell>,
         ]}
         rows={rows}
         columns={[
           // (row: Row, i) => getRankStar(i), //star
           (row: EloRow, i) => (
-            <Cell>{row.score === undefined || row.score === null ? 'unranked' : i + 1 + '.'}</Cell>
+            <Cell>
+              {row.score === undefined || row.score === null
+                ? "unranked"
+                : i + 1 + "."}
+            </Cell>
           ),
           (row: EloRow, i) => {
             // name
@@ -436,11 +463,11 @@ function EloLeaderboardTable({ rows }: { rows: EloRow[] }) {
               <Cell>
                 {row.twitter && (
                   <a
-                    style={{ display: 'flex', alignItems: 'center' }}
-                    target='_blank'
+                    style={{ display: "flex", alignItems: "center" }}
+                    target="_blank"
                     href={`https://twitter.com/${row.twitter}`}
                   >
-                    <Twitter width='24px' height='24px' />
+                    <Twitter width="24px" height="24px" />
                   </a>
                 )}
               </Cell>
@@ -450,14 +477,14 @@ function EloLeaderboardTable({ rows }: { rows: EloRow[] }) {
             // gnosis
             return (
               <Cell>
-                {' '}
+                {" "}
                 <a
-                  style={{ display: 'flex', alignItems: 'center' }}
-                  target='_blank'
+                  style={{ display: "flex", alignItems: "center" }}
+                  target="_blank"
                   href={`https://blockscout.com/xdai/optimism/address/${row.address}`}
                 >
                   <GnoButton>
-                    <Gnosis width='24px' height='24px' />
+                    <Gnosis width="24px" height="24px" />
                   </GnoButton>
                 </a>
               </Cell>
@@ -503,11 +530,11 @@ function EloLeaderboardBody({
 
   if (leaderboard.length !== 0) {
     leaderboard.sort((a, b) => {
-      if (typeof a.elo !== 'number' && typeof b.elo !== 'number') {
+      if (typeof a.elo !== "number" && typeof b.elo !== "number") {
         return 0;
-      } else if (typeof a.elo !== 'number') {
+      } else if (typeof a.elo !== "number") {
         return -1;
-      } else if (typeof b.elo !== 'number') {
+      } else if (typeof b.elo !== "number") {
         return 1;
       }
 

@@ -1,24 +1,28 @@
-import { Leaderboard, ModalName } from '@darkforest_eth/types';
-import React from 'react';
+import { Leaderboard, ModalName } from "@dfdao/types";
+import React from "react";
 
-import { getRank, Rank } from '../../../Backend/Utils/Rank';
-import { Btn } from '../../Components/Btn';
-import { Link } from '../../Components/CoreUI';
-import { Row } from '../../Components/Row';
-import { Bronze, Gold, Green, Red, Silver, White } from '../../Components/Text';
-import { useArenaLeaderboard, useEloLeaderboard, useUIManager } from '../../Utils/AppHooks';
-import { bronzeTime, goldTime, silverTime } from '../../Utils/constants';
-import { formatDuration } from '../../Utils/TimeUtils';
-import { ModalPane } from '../../Views/Game/ModalPane';
+import { getRank, Rank } from "../../../Backend/Utils/Rank";
+import { Btn } from "../../Components/Btn";
+import { Link } from "../../Components/CoreUI";
+import { Row } from "../../Components/Row";
+import { Bronze, Gold, Green, Red, Silver, White } from "../../Components/Text";
+import {
+  useArenaLeaderboard,
+  useEloLeaderboard,
+  useUIManager,
+} from "../../Utils/AppHooks";
+import { bronzeTime, goldTime, silverTime } from "../../Utils/constants";
+import { formatDuration } from "../../Utils/TimeUtils";
+import { ModalPane } from "../../Views/Game/ModalPane";
 
 function getPlace(leaderboard: Leaderboard, time: number) {
   const entries = leaderboard.entries;
   entries.sort((a, b) => {
-    if (typeof a.score !== 'number' && typeof b.score !== 'number') {
+    if (typeof a.score !== "number" && typeof b.score !== "number") {
       return 0;
-    } else if (typeof a.score !== 'number') {
+    } else if (typeof a.score !== "number") {
       return 1;
-    } else if (typeof b.score !== 'number') {
+    } else if (typeof b.score !== "number") {
       return -1;
     }
 
@@ -73,8 +77,12 @@ function SurveyPaneContent({ numSpawnPlanets }: { numSpawnPlanets: number }) {
           <p>Rank: {getStyledRank(rank)}</p>
         </Row>
         <Row>
-          <a style={{ width: '100%' }} target='_blank' href='https://arena.dfdao.xyz/play/'>
-            <Btn size='stretch'>Race again</Btn>
+          <a
+            style={{ width: "100%" }}
+            target="_blank"
+            href="https://arena.dfdao.xyz/play/"
+          >
+            <Btn size="stretch">Race again</Btn>
           </a>
         </Row>
       </div>
@@ -92,17 +100,21 @@ function SurveyPaneContent({ numSpawnPlanets }: { numSpawnPlanets: number }) {
         </Row>
         {arenaLeaderboard && !arenaError && (
           <Row>
-            Place:{' '}
+            Place:{" "}
             <White>
-              {getPlace(arenaLeaderboard, time)}/{arenaLeaderboard.entries.length}
+              {getPlace(arenaLeaderboard, time)}/
+              {arenaLeaderboard.entries.length}
             </White>
           </Row>
         )}
         {arenaStats}
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: "center" }}>
           <p>Help us improve Grand Prix by </p>
-          <Link to={'https://forms.gle/coFn68RvPrEKaXcKA'}> giving feedback on this survey 😊</Link>
-        </div>{' '}
+          <Link to={"https://forms.gle/coFn68RvPrEKaXcKA"}>
+            {" "}
+            giving feedback on this survey 😊
+          </Link>
+        </div>{" "}
       </div>
     );
   } else {
@@ -117,16 +129,25 @@ function SurveyPaneContent({ numSpawnPlanets }: { numSpawnPlanets: number }) {
       </Row>
    */}
         {/* {arenaStats} */}
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: "center" }}>
           <p>Help us improve Dark Forest Arena by </p>
-          <Link to={'https://forms.gle/coFn68RvPrEKaXcKA'}> giving feedback on this survey 😊</Link>
-        </div>{' '}
+          <Link to={"https://forms.gle/coFn68RvPrEKaXcKA"}>
+            {" "}
+            giving feedback on this survey 😊
+          </Link>
+        </div>{" "}
       </div>
     );
   }
 }
 
-export function SurveyPane({ visible, onClose }: { visible: boolean; onClose: () => void }) {
+export function SurveyPane({
+  visible,
+  onClose,
+}: {
+  visible: boolean;
+  onClose: () => void;
+}) {
   const uiManager = useUIManager();
   const numSpawnPlanets = uiManager.getSpawnPlanets().length;
   if (numSpawnPlanets == 0 || !uiManager.getGameover()) return <></>;

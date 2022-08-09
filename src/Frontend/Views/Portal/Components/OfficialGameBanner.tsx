@@ -1,15 +1,15 @@
-import { getConfigName } from '@darkforest_eth/procedural';
-import { EthAddress, Leaderboard } from '@darkforest_eth/types';
-import dfstyles from '@darkforest_eth/ui/dist/styles';
-import React, { useState, useEffect, useMemo } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import styled from 'styled-components';
+import { getConfigName } from "@dfdao/procedural";
+import { EthAddress, Leaderboard } from "@dfdao/types";
+import dfstyles from "@dfdao/ui/dist/styles";
+import React, { useState, useEffect, useMemo } from "react";
+import { Link, useHistory } from "react-router-dom";
+import styled from "styled-components";
 import {
   GraphConfigPlayer,
   loadEloLeaderboard,
-} from '../../../../Backend/Network/GraphApi/EloLeaderboardApi';
-import { loadRecentMaps } from '../../../../Backend/Network/GraphApi/MapsApi';
-import { MinimalButton } from '../PortalMainView';
+} from "../../../../Backend/Network/GraphApi/EloLeaderboardApi";
+import { loadRecentMaps } from "../../../../Backend/Network/GraphApi/MapsApi";
+import { MinimalButton } from "../PortalMainView";
 
 export const OfficialGameBanner: React.FC<{
   title?: string;
@@ -19,7 +19,15 @@ export const OfficialGameBanner: React.FC<{
   imageUrl: string;
   historyLink?: string;
   style?: React.CSSProperties;
-}> = ({ title, description, disabled = false, link, imageUrl, style, historyLink }) => {
+}> = ({
+  title,
+  description,
+  disabled = false,
+  link,
+  imageUrl,
+  style,
+  historyLink,
+}) => {
   const [hovering, setHovering] = useState<boolean>(false);
   const history = useHistory();
 
@@ -27,9 +35,9 @@ export const OfficialGameBanner: React.FC<{
     if (!hovering) return {};
     return disabled
       ? {
-          cursor: 'not-allowed',
+          cursor: "not-allowed",
         }
-      : { boxShadow: '0 0 0 4px white' };
+      : { boxShadow: "0 0 0 4px white" };
   }, [hovering]);
 
   return (
@@ -47,7 +55,9 @@ export const OfficialGameBanner: React.FC<{
     >
       <PrettyOverlayGradient
         src={imageUrl}
-        style={disabled ? { filter: 'brightness(0.8) blur(2px) grayscale(1)' } : {}}
+        style={
+          disabled ? { filter: "brightness(0.8) blur(2px) grayscale(1)" } : {}
+        }
       />
       {title && (
         <BannerTitleContainer>

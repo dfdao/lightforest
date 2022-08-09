@@ -1,34 +1,40 @@
-import { RECOMMENDED_MODAL_WIDTH } from '@darkforest_eth/constants';
-import { ModalName, PluginId, Setting } from '@darkforest_eth/types';
-import React, { useEffect, useState } from 'react';
-import { ReactSortable } from 'react-sortablejs';
-import styled from 'styled-components';
-import { v4 as uuidv4 } from 'uuid';
-import GameUIManager from '../../../Backend/GameLogic/GameUIManager';
-import { SerializedPlugin } from '../../../Backend/Plugins/SerializedPlugin';
-import { Btn } from '../../Components/Btn';
-import { Link, Spacer, Truncate } from '../../Components/CoreUI';
-import { PluginModal } from '../../Components/PluginModal';
-import { RemoteModal } from '../../Components/RemoteModal';
-import { Sub } from '../../Components/Text';
-import dfstyles from '../../Styles/dfstyles';
-import { useEmitterValue } from '../../Utils/EmitterHooks';
-import { getBooleanSetting, setSetting, useBooleanSetting } from '../../Utils/SettingsHooks';
-import { ModalPane } from '../../Views/Game/ModalPane';
-import { PluginEditorPane } from './PluginEditorPane';
+import { RECOMMENDED_MODAL_WIDTH } from "@dfdao/constants";
+import { ModalName, PluginId, Setting } from "@dfdao/types";
+import React, { useEffect, useState } from "react";
+import { ReactSortable } from "react-sortablejs";
+import styled from "styled-components";
+import { v4 as uuidv4 } from "uuid";
+import GameUIManager from "../../../Backend/GameLogic/GameUIManager";
+import { SerializedPlugin } from "../../../Backend/Plugins/SerializedPlugin";
+import { Btn } from "../../Components/Btn";
+import { Link, Spacer, Truncate } from "../../Components/CoreUI";
+import { PluginModal } from "../../Components/PluginModal";
+import { RemoteModal } from "../../Components/RemoteModal";
+import { Sub } from "../../Components/Text";
+import dfstyles from "../../Styles/dfstyles";
+import { useEmitterValue } from "../../Utils/EmitterHooks";
+import {
+  getBooleanSetting,
+  setSetting,
+  useBooleanSetting,
+} from "../../Utils/SettingsHooks";
+import { ModalPane } from "../../Views/Game/ModalPane";
+import { PluginEditorPane } from "./PluginEditorPane";
 
 function HelpContent() {
   return (
     <div>
       <p>
-        Plugins are bits of code that can be written by anyone, and allows the writer to program the
-        game. Plugins range from cosmetic (try the rage cage plugin) to functional (imagine a plugin
-        that fights your wars for you).
+        Plugins are bits of code that can be written by anyone, and allows the
+        writer to program the game. Plugins range from cosmetic (try the rage
+        cage plugin) to functional (imagine a plugin that fights your wars for
+        you).
       </p>
       <Spacer height={8} />
       <p>
-        Dark Forest maintains a repository to which community members can submit their own plugins.
-        You can find it <Link to='https://plugins.zkga.me/'>here</Link>.
+        Dark Forest maintains a repository to which community members can submit
+        their own plugins. You can find it{" "}
+        <Link to="https://plugins.zkga.me/">here</Link>.
       </p>
       <Spacer height={8} />
       <p>Try editing one of the default plugins to see how it works!</p>
@@ -75,7 +81,10 @@ export function PluginLibraryPane({
 }) {
   const pluginManager = gameUIManager.getPluginManager();
   const modalManager = gameUIManager.getModalManager();
-  const plugins = useEmitterValue(pluginManager.plugins$, pluginManager.getLibrary());
+  const plugins = useEmitterValue(
+    pluginManager.plugins$,
+    pluginManager.getLibrary()
+  );
   const contractAddress = gameUIManager.getContractAddress();
   const account = gameUIManager.getAccount();
   const config = { contractAddress, account };
@@ -91,7 +100,9 @@ export function PluginLibraryPane({
   /**
    * the id of the plugin that the user is currently editing.
    */
-  const [currentlyEditingPluginId, setEditingPluginId] = useState<PluginId | undefined>();
+  const [currentlyEditingPluginId, setEditingPluginId] = useState<
+    PluginId | undefined
+  >();
 
   /**
    * to get a unique editor for every time we open the editor. this means that every
@@ -123,26 +134,34 @@ export function PluginLibraryPane({
   }
 
   function runPluginClicked(pluginId: PluginId) {
-    modalManager.setModalState(pluginId, 'open');
+    modalManager.setModalState(pluginId, "open");
   }
 
   /**
    * Overwrites the plugin with the given plugin id, killing its process
    * if it has a process. If `pluginId` is undefined, saves a new plugin.
    */
-  const saveAndReloadPlugin = (newName: string, newCode: string, pluginId?: PluginId): void => {
+  const saveAndReloadPlugin = (
+    newName: string,
+    newCode: string,
+    pluginId?: PluginId
+  ): void => {
     if (pluginId && newCode) {
-      pluginManager?.overwritePlugin(newName || 'no name', newCode, pluginId);
+      pluginManager?.overwritePlugin(newName || "no name", newCode, pluginId);
     } else {
       // Auto generate a PluginId
       const pluginId = uuidv4() as PluginId;
-      pluginManager?.addPluginToLibrary(pluginId, newName || 'no name', newCode || '');
+      pluginManager?.addPluginToLibrary(
+        pluginId,
+        newName || "no name",
+        newCode || ""
+      );
     }
   };
 
   const onAcceptWarningClick = () => {
     if (clicksUntilHasPlugins === 1) {
-      account && setSetting(config, Setting.HasAcceptedPluginRisk, true + '');
+      account && setSetting(config, Setting.HasAcceptedPluginRisk, true + "");
       setWarningIsOpen(false);
     }
 
@@ -162,7 +181,7 @@ export function PluginLibraryPane({
   }
 
   function deletePluginClicked(pluginId: PluginId) {
-    if (confirm('are you sure you want to delete this plugin?')) {
+    if (confirm("are you sure you want to delete this plugin?")) {
       pluginManager.deletePlugin(pluginId);
       modalManager.clearModalPosition(pluginId);
       setEditorIsOpen(false);
@@ -178,28 +197,37 @@ export function PluginLibraryPane({
    */
   function renderPluginsList() {
     if (plugins.length === 0) {
-      return 'you have no plugins!';
+      return "you have no plugins!";
     }
 
     return (
       <ReactSortable list={plugins} setList={onPluginReorder}>
         {plugins.map((plugin) => (
           <div key={plugin.id}>
-            <Truncate maxWidth={'150px'} style={{ verticalAlign: 'unset' }}>
+            <Truncate maxWidth={"150px"} style={{ verticalAlign: "unset" }}>
               <Sub>{plugin.name}</Sub>
             </Truncate>
 
             <Spacer width={8} />
             <Actions>
-              <Btn className='blue' onClick={() => openEditorForPlugin(plugin.id)}>
+              <Btn
+                className="blue"
+                onClick={() => openEditorForPlugin(plugin.id)}
+              >
                 edit
               </Btn>
               <Spacer width={4} />
-              <Btn className='red' onClick={() => deletePluginClicked(plugin.id)}>
+              <Btn
+                className="red"
+                onClick={() => deletePluginClicked(plugin.id)}
+              >
                 del
               </Btn>
               <Spacer width={4} />
-              <Btn className='green' onClick={() => runPluginClicked(plugin.id)}>
+              <Btn
+                className="green"
+                onClick={() => runPluginClicked(plugin.id)}
+              >
                 run
               </Btn>
             </Actions>
@@ -211,7 +239,7 @@ export function PluginLibraryPane({
 
   function onPluginClosed(pluginId: PluginId) {
     pluginManager.destroy(pluginId);
-    modalManager.setModalState(pluginId, 'closed');
+    modalManager.setModalState(pluginId, "closed");
   }
   function onPluginRendered(pluginId: PluginId, el: HTMLDivElement) {
     // This is `async` but we don't care about the result
@@ -236,36 +264,37 @@ export function PluginLibraryPane({
       <RemoteModal
         id={ModalName.PluginWarning}
         container={modalsContainer}
-        title='WARNING'
+        title="WARNING"
         visible={warningIsOpen}
         onClose={() => setWarningIsOpen(false)}
         width={RECOMMENDED_MODAL_WIDTH}
       >
         <p>
-          Dark Forest supports plugins, which allow you to write JavaScript code that can interact
-          with the game. Plugins are powerful and can enhance your gameplay experience, but they can
-          also be dangerous!
+          Dark Forest supports plugins, which allow you to write JavaScript code
+          that can interact with the game. Plugins are powerful and can enhance
+          your gameplay experience, but they can also be dangerous!
         </p>
         <br />
         <p>
-          Be careful using plugins that were authored by somebody other than yourself! Plugins can
-          impersonate your account, and steal all your money. A malicious plugin could transfer all
-          your planets and artifacts to somebody else!
+          Be careful using plugins that were authored by somebody other than
+          yourself! Plugins can impersonate your account, and steal all your
+          money. A malicious plugin could transfer all your planets and
+          artifacts to somebody else!
         </p>
         <br />
-        <Btn variant='danger' onClick={onAcceptWarningClick}>
+        <Btn variant="danger" onClick={onAcceptWarningClick}>
           Click {clicksUntilHasPlugins} times for Plugins
         </Btn>
       </RemoteModal>
       <RemoteModal
         id={ModalName.PluginEditor}
         container={modalsContainer}
-        title='Plugin Editor'
+        title="Plugin Editor"
         visible={editorIsOpen}
         onClose={() => setEditorIsOpen(false)}
       >
         <PluginEditorPane
-          key={currentlyEditingPluginId + '' + editorNonce}
+          key={currentlyEditingPluginId + "" + editorNonce}
           pluginId={currentlyEditingPluginId}
           setIsOpen={setEditorIsOpen}
           pluginHost={pluginManager}
@@ -279,7 +308,7 @@ export function PluginLibraryPane({
         visible={visible}
         onClose={onClose}
         id={ModalName.Plugins}
-        title={'Plugin Library'}
+        title={"Plugin Library"}
         helpContent={HelpContent}
         width={RECOMMENDED_MODAL_WIDTH}
       >

@@ -1,8 +1,8 @@
-import { MAX_BIOME, MIN_BIOME } from '@darkforest_eth/constants';
-import { SpriteRenderer, WebGLManager } from '@darkforest_eth/renderer';
-import { Artifact, ArtifactRarity, ArtifactType, Biome } from '@darkforest_eth/types';
-import autoBind from 'auto-bind';
-import { ARTIFACT_ROW_H } from '../../Styles/dfstyles';
+import { MAX_BIOME, MIN_BIOME } from "@dfdao/constants";
+import { SpriteRenderer, WebGLManager } from "@dfdao/renderer";
+import { Artifact, ArtifactRarity, ArtifactType, Biome } from "@dfdao/types";
+import autoBind from "auto-bind";
+import { ARTIFACT_ROW_H } from "../../Styles/dfstyles";
 
 const NUM_BIOMES = MAX_BIOME;
 
@@ -60,12 +60,20 @@ export class ArtifactRenderer extends WebGLManager {
   private queueRarityColumn(rarity: ArtifactRarity, startX: number) {
     let col = 0;
     for (let type = 1; type <= 4; type++) {
-      this.queueArtifactColumn(type as ArtifactType, rarity, startX + col * cellDim);
+      this.queueArtifactColumn(
+        type as ArtifactType,
+        rarity,
+        startX + col * cellDim
+      );
       col++;
     }
   }
 
-  private containsArtifact(biome: Biome, rarity: ArtifactRarity, type: ArtifactType) {
+  private containsArtifact(
+    biome: Biome,
+    rarity: ArtifactRarity,
+    type: ArtifactType
+  ) {
     for (const artifact of this.artifacts) {
       if (
         artifact.planetBiome === biome &&
@@ -79,7 +87,11 @@ export class ArtifactRenderer extends WebGLManager {
     return false;
   }
 
-  private queueArtifactColumn(type: ArtifactType, rarity: ArtifactRarity, startX: number) {
+  private queueArtifactColumn(
+    type: ArtifactType,
+    rarity: ArtifactRarity,
+    startX: number
+  ) {
     let row = 0;
     for (let biome = MIN_BIOME; biome <= MAX_BIOME; biome++) {
       const pos = { x: startX, y: mTop + row * ARTIFACT_ROW_H };

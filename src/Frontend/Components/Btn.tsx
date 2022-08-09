@@ -2,12 +2,15 @@ import {
   DarkForestButton,
   DarkForestShortcutButton,
   ShortcutPressedEvent,
-} from '@darkforest_eth/ui';
-import { createComponent } from '@lit-labs/react';
-import React from 'react';
+} from "@dfdao/ui";
+import { createComponent } from "@lit-labs/react";
+import React from "react";
 
 customElements.define(DarkForestButton.tagName, DarkForestButton);
-customElements.define(DarkForestShortcutButton.tagName, DarkForestShortcutButton);
+customElements.define(
+  DarkForestShortcutButton.tagName,
+  DarkForestShortcutButton
+);
 
 export { DarkForestButton, DarkForestShortcutButton, ShortcutPressedEvent };
 
@@ -18,7 +21,7 @@ export const Btn = createComponent<
     onClick: (evt: Event & React.MouseEvent<DarkForestButton>) => void;
   }
 >(React, DarkForestButton.tagName, DarkForestButton, {
-  onClick: 'click',
+  onClick: "click",
 });
 
 export const ShortcutBtn = createComponent<
@@ -28,6 +31,6 @@ export const ShortcutBtn = createComponent<
     onShortcutPressed: (evt: ShortcutPressedEvent) => void;
   }
 >(React, DarkForestShortcutButton.tagName, DarkForestShortcutButton, {
-  onClick: 'click',
-  onShortcutPressed: 'shortcut-pressed',
+  onClick: "click",
+  onShortcutPressed: "shortcut-pressed",
 });

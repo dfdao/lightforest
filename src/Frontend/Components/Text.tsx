@@ -1,6 +1,6 @@
-import { BLOCK_EXPLORER_URL } from '@darkforest_eth/constants';
-import { isLocatable } from '@darkforest_eth/gamelogic';
-import { artifactName, getPlanetName } from '@darkforest_eth/procedural';
+import { BLOCK_EXPLORER_URL } from "@dfdao/constants";
+import { isLocatable } from "@dfdao/gamelogic";
+import { artifactName, getPlanetName } from "@dfdao/procedural";
 import {
   Artifact,
   ArtifactId,
@@ -8,14 +8,14 @@ import {
   Planet,
   Transaction,
   WorldCoords,
-} from '@darkforest_eth/types';
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import Viewport from '../Game/Viewport';
-import dfstyles from '../Styles/dfstyles';
-import { useUIManager } from '../Utils/AppHooks';
-import UIEmitter, { UIEmitterEvent } from '../Utils/UIEmitter';
-import { Link } from './CoreUI';
+} from "@dfdao/types";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import Viewport from "../Game/Viewport";
+import dfstyles from "../Styles/dfstyles";
+import { useUIManager } from "../Utils/AppHooks";
+import UIEmitter, { UIEmitterEvent } from "../Utils/UIEmitter";
+import { Link } from "./CoreUI";
 
 export function BlinkCursor() {
   const [visible, setVisible] = useState<boolean>(false);
@@ -29,7 +29,7 @@ export function BlinkCursor() {
     return () => clearInterval(id);
   }, []);
 
-  return <span>{visible ? '|' : ''} </span>;
+  return <span>{visible ? "|" : ""} </span>;
 }
 
 export const Green = styled.span`
@@ -54,10 +54,10 @@ export const Gold = styled.span`
   color: ${dfstyles.colors.dfgold};
 `;
 export const Silver = styled.span`
-color: ${dfstyles.colors.dfsilver};
+  color: ${dfstyles.colors.dfsilver};
 `;
 export const Bronze = styled.span`
-color: ${dfstyles.colors.dfbronze};
+  color: ${dfstyles.colors.dfbronze};
 `;
 
 export const Colored = styled.span<{ color: string }>`
@@ -122,7 +122,8 @@ export function CenterPlanetLink({
 
 export function ArtifactNameLink({ id }: { id: ArtifactId }) {
   const uiManager = useUIManager();
-  const artifact: Artifact | undefined = uiManager && uiManager.getArtifactWithId(id);
+  const artifact: Artifact | undefined =
+    uiManager && uiManager.getArtifactWithId(id);
 
   const click = () => {
     UIEmitter.getInstance().emit(UIEmitterEvent.ShowArtifact, artifact);
@@ -132,19 +133,31 @@ export function ArtifactNameLink({ id }: { id: ArtifactId }) {
 }
 
 export function PlanetNameLink({ planet }: { planet: Planet }) {
-  return <CenterPlanetLink planet={planet}>{getPlanetName(planet)}</CenterPlanetLink>;
+  return (
+    <CenterPlanetLink planet={planet}>{getPlanetName(planet)}</CenterPlanetLink>
+  );
 }
 
-export function CenterChunkLink({ chunk, children }: { chunk: Chunk; children: React.ReactNode }) {
-  return <Link onClick={() => Viewport.getInstance().centerChunk(chunk)}>{children}</Link>;
+export function CenterChunkLink({
+  chunk,
+  children,
+}: {
+  chunk: Chunk;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link onClick={() => Viewport.getInstance().centerChunk(chunk)}>
+      {children}
+    </Link>
+  );
 }
 
 export function FAQ04Link({ children }: { children: React.ReactNode }) {
-  return <Link to={'https://blog.zkga.me/df-04-faq'}>{children} </Link>;
+  return <Link to={"https://blog.zkga.me/df-04-faq"}>{children} </Link>;
 }
 
 export const LongDash = () => (
-  <span style={{ transform: 'scale(1.5, 1)', display: 'inline-block' }}>-</span>
+  <span style={{ transform: "scale(1.5, 1)", display: "inline-block" }}>-</span>
 );
 
 export const Coords = ({ coords: { x, y } }: { coords: WorldCoords }) => (

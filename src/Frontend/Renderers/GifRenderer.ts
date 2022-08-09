@@ -6,16 +6,20 @@ import {
   MIN_ARTIFACT_RARITY,
   MIN_ARTIFACT_TYPE,
   MIN_BIOME,
-} from '@darkforest_eth/constants';
-import { ArtifactFileColor, artifactFileName, setForceAncient } from '@darkforest_eth/gamelogic';
-import { mockArtifactWithRarity } from '@darkforest_eth/procedural';
-import { SpriteRenderer, WebGLManager } from '@darkforest_eth/renderer';
-import { Artifact, ArtifactRarity, ArtifactType, Biome } from '@darkforest_eth/types';
-import { mat4 } from 'gl-matrix';
-import JSZip from 'jszip';
-import { GIF_ARTIFACT_COLOR } from '../Pages/GifMaker';
+} from "@dfdao/constants";
+import {
+  ArtifactFileColor,
+  artifactFileName,
+  setForceAncient,
+} from "@dfdao/gamelogic";
+import { mockArtifactWithRarity } from "@dfdao/procedural";
+import { SpriteRenderer, WebGLManager } from "@dfdao/renderer";
+import { Artifact, ArtifactRarity, ArtifactType, Biome } from "@dfdao/types";
+import { mat4 } from "gl-matrix";
+import JSZip from "jszip";
+import { GIF_ARTIFACT_COLOR } from "../Pages/GifMaker";
 
-const FileSaver = require('file-saver');
+const FileSaver = require("file-saver");
 
 declare global {
   interface Window {
@@ -24,9 +28,14 @@ declare global {
   }
 }
 
-const COLORS: Record<ArtifactFileColor, readonly [number, number, number, number]> = {
+const COLORS: Record<
+  ArtifactFileColor,
+  readonly [number, number, number, number]
+> = {
   [ArtifactFileColor.BLUE]: [0.0724, 0.051, 0.3111, 1] as const,
-  [ArtifactFileColor.APP_BACKGROUND]: [0.031372549, 0.031372549, 0.031372549, 1] as const,
+  [ArtifactFileColor.APP_BACKGROUND]: [
+    0.031372549, 0.031372549, 0.031372549, 1,
+  ] as const,
 };
 
 export class GifRenderer extends WebGLManager {
@@ -62,7 +71,10 @@ export class GifRenderer extends WebGLManager {
 
   // https://gist.github.com/ahgood/bfc57a7f44d6ab7803f3ee2ec0abb980
 
-  private drawSprite(artifact: Artifact, atFrame: number | undefined = undefined) {
+  private drawSprite(
+    artifact: Artifact,
+    atFrame: number | undefined = undefined
+  ) {
     this.clear();
     this.spriteRenderer.queueArtifact(
       artifact,
@@ -75,7 +87,9 @@ export class GifRenderer extends WebGLManager {
   }
 
   private getBase64(): string {
-    const b64 = this.canvas.toDataURL('image/png').replace(/^data:image\/(png|jpg);base64,/, '');
+    const b64 = this.canvas
+      .toDataURL("image/png")
+      .replace(/^data:image\/(png|jpg);base64,/, "");
 
     return b64;
   }
@@ -120,7 +134,7 @@ export class GifRenderer extends WebGLManager {
     const artifact = mockArtifactWithRarity(rarity, type, biome);
 
     const capturer = new window.CCapture({
-      format: 'webm',
+      format: "webm",
       framerate: 60,
       quality: 0.999,
     });
@@ -134,7 +148,7 @@ export class GifRenderer extends WebGLManager {
     return new Promise<void>((resolve) => {
       capturer.save((blob: Blob) => {
         dir.file(fileName, blob);
-        console.log('saved ' + fileName + '!');
+        console.log("saved " + fileName + "!");
         resolve();
       });
     });
@@ -143,7 +157,11 @@ export class GifRenderer extends WebGLManager {
   private async addBiomes(videoMode: boolean, dir: JSZip) {
     setForceAncient(false);
     for (let type = MIN_ARTIFACT_TYPE; type <= MAX_ARTIFACT_TYPE; type++) {
-      for (let rarity = MIN_ARTIFACT_RARITY; rarity <= MAX_ARTIFACT_RARITY; rarity++) {
+      for (
+        let rarity = MIN_ARTIFACT_RARITY;
+        rarity <= MAX_ARTIFACT_RARITY;
+        rarity++
+      ) {
         for (let biome = MIN_BIOME; biome <= MAX_BIOME; biome++) {
           if (videoMode) await this.addVideo(dir, type, biome, rarity, false);
           else this.addSprite(dir, type, biome, rarity, false);
@@ -155,8 +173,13 @@ export class GifRenderer extends WebGLManager {
   private async addAncient(videoMode: boolean, dir: JSZip) {
     setForceAncient(true);
     for (let type = MIN_ARTIFACT_TYPE; type <= MAX_ARTIFACT_TYPE; type++) {
-      for (let rarity = MIN_ARTIFACT_RARITY; rarity <= MAX_ARTIFACT_RARITY; rarity++) {
-        if (videoMode) await this.addVideo(dir, type, Biome.OCEAN, rarity, true);
+      for (
+        let rarity = MIN_ARTIFACT_RARITY;
+        rarity <= MAX_ARTIFACT_RARITY;
+        rarity++
+      ) {
+        if (videoMode)
+          await this.addVideo(dir, type, Biome.OCEAN, rarity, true);
         else this.addSprite(dir, type, Biome.OCEAN, rarity, true);
       }
     }
@@ -165,18 +188,18 @@ export class GifRenderer extends WebGLManager {
   private async getAll(videoMode = false) {
     const zip = new JSZip();
 
-    zip.folder('img');
-    const dir = zip.folder('img');
+    zip.folder("img");
+    const dir = zip.folder("img");
     if (!dir) {
-      console.error('jszip error');
+      console.error("jszip error");
       return;
     }
 
     await this.addBiomes(videoMode, dir);
     await this.addAncient(videoMode, dir);
 
-    zip.generateAsync({ type: 'blob' }).then((content) => {
-      FileSaver.saveAs(content, 'files.zip');
+    zip.generateAsync({ type: "blob" }).then((content) => {
+      FileSaver.saveAs(content, "files.zip");
     });
   }
 

@@ -1,6 +1,6 @@
-import { DarkForestModal, PositionChangedEvent } from '@darkforest_eth/ui';
-import { createComponent } from '@lit-labs/react';
-import React from 'react';
+import { DarkForestModal, PositionChangedEvent } from "@dfdao/ui";
+import { createComponent } from "@lit-labs/react";
+import React from "react";
 
 customElements.define(DarkForestModal.tagName, DarkForestModal);
 
@@ -14,6 +14,6 @@ export const Modal = createComponent<
     onPositionChanged: (evt: PositionChangedEvent) => void;
   }
 >(React, DarkForestModal.tagName, DarkForestModal, {
-  onMouseDown: 'mousedown',
-  onPositionChanged: 'position-changed',
+  onMouseDown: "mousedown",
+  onPositionChanged: "position-changed",
 });

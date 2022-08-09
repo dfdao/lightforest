@@ -1,7 +1,7 @@
-import { address } from '@darkforest_eth/serde';
-import { EthAddress } from '@darkforest_eth/types';
-import { utils } from 'ethers';
-import stringify from 'json-stable-stringify';
+import { address } from "@dfdao/serde";
+import { EthAddress } from "@dfdao/types";
+import { utils } from "ethers";
+import stringify from "json-stable-stringify";
 
 /**
  * Represents an account with which the user plays the game.
@@ -16,9 +16,9 @@ const ACTIVE_TIME = 1000 * 60 * 60 * 24 * 7;
  * This is the key in local storage in which we keep an array of all the public addresses of the
  * accounts that have been imported/generated into this client.
  */
-const ADDRESS_LOCAL_STORAGE_KEY = 'KNOWN_ADDRESSES';
-const ACTIVE_LOCAL_STORAGE_KEY = 'ACTIVE_ADDRESS';
-const ACTIVE_SET_TIME_STORAGE_KEY = 'ACTIVE_SET';
+const ADDRESS_LOCAL_STORAGE_KEY = "KNOWN_ADDRESSES";
+const ACTIVE_LOCAL_STORAGE_KEY = "ACTIVE_ADDRESS";
+const ACTIVE_SET_TIME_STORAGE_KEY = "ACTIVE_SET";
 /**
  * In-memory representation of all the accounts in this client.
  */
@@ -64,8 +64,8 @@ function loadActive(): Account | undefined {
     timeSetStr == null ||
     timeSet == NaN ||
     activeAccount == null ||
-    timeSetStr == '' ||
-    activeAccount == '' ||
+    timeSetStr == "" ||
+    activeAccount == "" ||
     Date.now() - ACTIVE_TIME > timeSet
   ) {
     resetActive();

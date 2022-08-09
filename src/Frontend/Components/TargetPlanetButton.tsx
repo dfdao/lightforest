@@ -1,15 +1,15 @@
-import { isUnconfirmedClaimVictoryTx } from '@darkforest_eth/serde';
-import { Planet, TooltipName } from '@darkforest_eth/types';
-import React, { useMemo } from 'react';
-import styled from 'styled-components';
-import { Wrapper } from '../../Backend/Utils/Wrapper';
-import { TooltipTrigger } from '../Panes/Tooltip';
-import { useAddress, useUIManager } from '../Utils/AppHooks';
-import { INVADE } from '../Utils/ShortcutConstants';
-import { LoadingSpinner } from './LoadingSpinner';
-import { MaybeShortcutButton } from './MaybeShortcutButton';
-import { Row } from './Row';
-import { Green, Red, White } from './Text';
+import { isUnconfirmedClaimVictoryTx } from "@dfdao/serde";
+import { Planet, TooltipName } from "@dfdao/types";
+import React, { useMemo } from "react";
+import styled from "styled-components";
+import { Wrapper } from "../../Backend/Utils/Wrapper";
+import { TooltipTrigger } from "../Panes/Tooltip";
+import { useAddress, useUIManager } from "../Utils/AppHooks";
+import { INVADE } from "../Utils/ShortcutConstants";
+import { LoadingSpinner } from "./LoadingSpinner";
+import { MaybeShortcutButton } from "./MaybeShortcutButton";
+import { Row } from "./Row";
+import { Green, Red, White } from "./Text";
 
 const StyledRow = styled(Row)`
   .button {
@@ -31,7 +31,9 @@ export function TargetPlanetButton({
   const isTargetPlanet = planet?.isTargetPlanet;
   const gameOver = gameManager.isRoundOver();
   const isBlocked =
-    account && planet ? gameManager.playerMoveBlocked(account, planet.locationId) : false;
+    account && planet
+      ? gameManager.playerMoveBlocked(account, planet.locationId)
+      : false;
 
   const shouldShow = useMemo(() => owned && isTargetPlanet, [owned, planet]);
 
@@ -39,10 +41,15 @@ export function TargetPlanetButton({
     if (!owned || !planet) {
       return undefined;
     }
-    const energyRequired = gameManager.getContractConstants().CLAIM_VICTORY_ENERGY_PERCENT;
-    const planetEnergyPercent = Math.floor((planet.energy * 100) / planet.energyCap);
+    const energyRequired =
+      gameManager.getContractConstants().CLAIM_VICTORY_ENERGY_PERCENT;
+    const planetEnergyPercent = Math.floor(
+      (planet.energy * 100) / planet.energyCap
+    );
     const percentNeeded = energyRequired - planetEnergyPercent;
-    const energyNeeded = Math.ceil(((percentNeeded + 2) / 100) * planet.energyCap);
+    const energyNeeded = Math.ceil(
+      ((percentNeeded + 2) / 100) * planet.energyCap
+    );
     return { percentNeeded: percentNeeded, energyNeeded: energyNeeded };
   }, [planet?.energy]);
 
@@ -70,8 +77,8 @@ export function TargetPlanetButton({
       {shouldShow && (
         <>
           <MaybeShortcutButton
-            className='button'
-            size='stretch'
+            className="button"
+            size="stretch"
             active={claimingVictory}
             disabled={!claimable || claimingVictory}
             onClick={claimVictory}
@@ -80,29 +87,37 @@ export function TargetPlanetButton({
             shortcutText={INVADE}
           >
             <TooltipTrigger
-              style={{ width: '100%', textAlign: 'center' }}
+              style={{ width: "100%", textAlign: "center" }}
               name={TooltipName.Empty}
               extraContent={
                 <>
                   <Green>
                     {gameOver && <>The game is over!</>}
-                    {!gameOver && !isBlocked && <>Capture this planet to win the game!</>}
-                    {!!energyLeftToClaimVictory && energyLeftToClaimVictory.percentNeeded > 0 && (
-                      <>
-                        You need <White>{energyLeftToClaimVictory.energyNeeded}</White> (
-                        {energyLeftToClaimVictory.percentNeeded}%) more energy to claim victory with
-                        this planet.
-                      </>
+                    {!gameOver && !isBlocked && (
+                      <>Capture this planet to win the game!</>
                     )}
+                    {!!energyLeftToClaimVictory &&
+                      energyLeftToClaimVictory.percentNeeded > 0 && (
+                        <>
+                          You need{" "}
+                          <White>{energyLeftToClaimVictory.energyNeeded}</White>{" "}
+                          ({energyLeftToClaimVictory.percentNeeded}%) more
+                          energy to claim victory with this planet.
+                        </>
+                      )}
                   </Green>
-                  <Red>{isBlocked && <>You are blocked from capturing this planet 😭</>}</Red>
+                  <Red>
+                    {isBlocked && (
+                      <>You are blocked from capturing this planet 😭</>
+                    )}
+                  </Red>
                 </>
               }
             >
               {claimingVictory ? (
-                <LoadingSpinner initialText={'Claiming Victory...'} />
+                <LoadingSpinner initialText={"Claiming Victory..."} />
               ) : (
-                'Claim Victory!'
+                "Claim Victory!"
               )}
             </TooltipTrigger>
           </MaybeShortcutButton>

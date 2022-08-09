@@ -1,10 +1,16 @@
-import { Renderer } from '@darkforest_eth/renderer';
-import { CursorState, ModalManagerEvent, Setting } from '@darkforest_eth/types';
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
-import { useUIManager } from '../Utils/AppHooks';
-import UIEmitter, { UIEmitterEvent } from '../Utils/UIEmitter';
-import Viewport from './Viewport';
+import { Renderer } from "@dfdao/renderer";
+import { CursorState, ModalManagerEvent, Setting } from "@dfdao/types";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import styled from "styled-components";
+import { useUIManager } from "../Utils/AppHooks";
+import UIEmitter, { UIEmitterEvent } from "../Utils/UIEmitter";
+import Viewport from "./Viewport";
 
 const CanvasWrapper = styled.div`
   width: 100%;
@@ -56,7 +62,10 @@ export default function ControllableCanvas() {
     };
     modalManager.on(ModalManagerEvent.StateChanged, updateTargeting);
     return () => {
-      modalManager.removeListener(ModalManagerEvent.StateChanged, updateTargeting);
+      modalManager.removeListener(
+        ModalManagerEvent.StateChanged,
+        updateTargeting
+      );
     };
   }, [modalManager]);
 
@@ -99,15 +108,18 @@ export default function ControllableCanvas() {
     };
 
     const canvas = evtRef.current;
-    if (!canvas || !canvasRef.current || !glRef.current || !bufferRef.current) return;
+    if (!canvas || !canvasRef.current || !glRef.current || !bufferRef.current)
+      return;
 
     // This zooms your home world in really close to show the awesome details
     // TODO: Store this as it changes and re-initialize to that if stored
     const homePlanet = gameUIManager.getHomePlanet();
     let defaultWorldUnits = 1000;
-    if(homePlanet) {
-      const radius = gameUIManager.getRadiusOfPlanetLevel(homePlanet.planetLevel)
-      defaultWorldUnits = radius *10;
+    if (homePlanet) {
+      const radius = gameUIManager.getRadiusOfPlanetLevel(
+        homePlanet.planetLevel
+      );
+      defaultWorldUnits = radius * 10;
     }
     Viewport.initialize(gameUIManager, defaultWorldUnits, canvas);
     Renderer.initialize(
@@ -118,26 +130,36 @@ export default function ControllableCanvas() {
       gameUIManager,
       {
         spaceColors: {
-          innerNebulaColor: gameUIManager.getStringSetting(Setting.RendererColorInnerNebula),
-          nebulaColor: gameUIManager.getStringSetting(Setting.RendererColorNebula),
-          spaceColor: gameUIManager.getStringSetting(Setting.RendererColorSpace),
-          deepSpaceColor: gameUIManager.getStringSetting(Setting.RendererColorDeepSpace),
-          deadSpaceColor: gameUIManager.getStringSetting(Setting.RendererColorDeadSpace),
+          innerNebulaColor: gameUIManager.getStringSetting(
+            Setting.RendererColorInnerNebula
+          ),
+          nebulaColor: gameUIManager.getStringSetting(
+            Setting.RendererColorNebula
+          ),
+          spaceColor: gameUIManager.getStringSetting(
+            Setting.RendererColorSpace
+          ),
+          deepSpaceColor: gameUIManager.getStringSetting(
+            Setting.RendererColorDeepSpace
+          ),
+          deadSpaceColor: gameUIManager.getStringSetting(
+            Setting.RendererColorDeadSpace
+          ),
         },
       }
     );
     // We can't attach the wheel event onto the canvas due to:
     // https://www.chromestatus.com/features/6662647093133312
-    canvas.addEventListener('wheel', onWheel);
-    window.addEventListener('resize', onResize);
+    canvas.addEventListener("wheel", onWheel);
+    window.addEventListener("resize", onResize);
 
     uiEmitter.on(UIEmitterEvent.UIChange, doResize);
 
     return () => {
       Viewport.destroyInstance();
       Renderer.destroy();
-      canvas.removeEventListener('wheel', onWheel);
-      window.removeEventListener('resize', onResize);
+      canvas.removeEventListener("wheel", onWheel);
+      window.removeEventListener("resize", onResize);
       uiEmitter.removeListener(UIEmitterEvent.UIChange, doResize);
     };
   }, [gameUIManager, doResize, canvasRef, glRef, bufferRef, evtRef]);
@@ -149,7 +171,10 @@ export default function ControllableCanvas() {
 
     const uiEmitter: UIEmitter = UIEmitter.getInstance();
 
-    function onMouseEvent(emitEventName: UIEmitterEvent, mouseEvent: MouseEvent) {
+    function onMouseEvent(
+      emitEventName: UIEmitterEvent,
+      mouseEvent: MouseEvent
+    ) {
       const rect = canvas.getBoundingClientRect();
       const canvasX = mouseEvent.clientX - rect.left;
       const canvasY = mouseEvent.clientY - rect.top;
@@ -171,23 +196,23 @@ export default function ControllableCanvas() {
       uiEmitter.emit(UIEmitterEvent.CanvasMouseOut);
     };
 
-    canvas.addEventListener('mousedown', onMouseDown);
-    canvas.addEventListener('mousemove', onMouseMove);
-    canvas.addEventListener('mouseup', onMouseUp);
-    canvas.addEventListener('mouseout', onMouseOut);
+    canvas.addEventListener("mousedown", onMouseDown);
+    canvas.addEventListener("mousemove", onMouseMove);
+    canvas.addEventListener("mouseup", onMouseUp);
+    canvas.addEventListener("mouseout", onMouseOut);
     return () => {
-      canvas.removeEventListener('mousedown', onMouseDown);
-      canvas.removeEventListener('mousemove', onMouseMove);
-      canvas.removeEventListener('mouseup', onMouseUp);
-      canvas.removeEventListener('mouseout', onMouseOut);
+      canvas.removeEventListener("mousedown", onMouseDown);
+      canvas.removeEventListener("mousemove", onMouseMove);
+      canvas.removeEventListener("mouseup", onMouseUp);
+      canvas.removeEventListener("mouseout", onMouseOut);
     };
   }, [evtRef]);
 
   return (
-    <CanvasWrapper style={{ cursor: targeting ? 'crosshair' : undefined }}>
+    <CanvasWrapper style={{ cursor: targeting ? "crosshair" : undefined }}>
       <canvas ref={glRef} width={width} height={height} />
       <canvas ref={canvasRef} width={width} height={height} />
-      <canvas ref={bufferRef} id='buffer' />
+      <canvas ref={bufferRef} id="buffer" />
     </CanvasWrapper>
   );
 }

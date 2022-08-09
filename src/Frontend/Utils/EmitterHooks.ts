@@ -1,6 +1,6 @@
-import { Callback, Monomitter } from '@darkforest_eth/events';
-import { useEffect, useState } from 'react';
-import { Wrapper } from '../../Backend/Utils/Wrapper';
+import { Callback, Monomitter } from "@dfdao/events";
+import { useEffect, useState } from "react";
+import { Wrapper } from "../../Backend/Utils/Wrapper";
 
 /**
  * Execute something on emitter callback
@@ -52,7 +52,9 @@ export function useWrappedEmitter<T>(
   emitter: Monomitter<T | undefined>,
   initialVal: T | undefined
 ): Wrapper<T | undefined> {
-  const [val, setVal] = useState<Wrapper<T | undefined>>(new Wrapper(initialVal));
+  const [val, setVal] = useState<Wrapper<T | undefined>>(
+    new Wrapper(initialVal)
+  );
 
   useEffect(() => {
     const sub = emitter.subscribe((v) => {

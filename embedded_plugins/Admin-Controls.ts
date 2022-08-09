@@ -1,5 +1,10 @@
 // organize-imports-ignore
-import type { EthAddress, LocatablePlanet, LocationId, Planet } from '@darkforest_eth/types';
+import type {
+  EthAddress,
+  LocatablePlanet,
+  LocationId,
+  Planet,
+} from "@dfdao/types";
 import {
   MAX_ARTIFACT_RARITY,
   MAX_SPACESHIP_TYPE,
@@ -9,17 +14,17 @@ import {
   MIN_BIOME,
   MAX_BIOME,
   //@ts-ignore
-} from 'https://cdn.skypack.dev/@darkforest_eth/constants';
-  //@ts-ignore
-import { modPBigInt } from 'https://cdn.skypack.dev/@darkforest_eth/hashing';
+} from "https://cdn.skypack.dev/@dfdao/constants";
 //@ts-ignore
-import { getPlanetNameHash } from 'https://cdn.skypack.dev/@darkforest_eth/procedural';
+import { modPBigInt } from "https://cdn.skypack.dev/@dfdao/hashing";
+//@ts-ignore
+import { getPlanetNameHash } from "https://cdn.skypack.dev/@dfdao/procedural";
 import {
   locationIdToDecStr,
   artifactIdFromHexStr,
   locationIdFromDecStr,
   //@ts-ignore
-} from 'https://cdn.skypack.dev/@darkforest_eth/serde';
+} from "https://cdn.skypack.dev/@dfdao/serde";
 import {
   ArtifactRarityNames,
   ArtifactType,
@@ -30,7 +35,7 @@ import {
   PlanetTypeNames,
   WorldCoords,
   //@ts-ignore
-} from 'https://cdn.skypack.dev/@darkforest_eth/types';
+} from "https://cdn.skypack.dev/@dfdao/types";
 import {
   html,
   render,
@@ -38,11 +43,11 @@ import {
   useState,
   useCallback,
   //@ts-ignore
-} from 'https://unpkg.com/htm/preact/standalone.module.js';
+} from "https://unpkg.com/htm/preact/standalone.module.js";
 
 function random256Id() {
-  const alphabet = '0123456789ABCDEF'.split('');
-  let result = '0x';
+  const alphabet = "0123456789ABCDEF".split("");
+  let result = "0x";
   for (let i = 0; i < 256 / 4; i++) {
     result += alphabet[Math.floor(Math.random() * alphabet.length)];
   }
@@ -57,7 +62,7 @@ async function createArtifact(
   biome: string
 ) {
   if (!owner) {
-    alert('no account');
+    alert("no account");
     return;
   }
 
@@ -72,14 +77,14 @@ async function createArtifact(
       biome,
       artifactType: type,
       owner: owner,
-      controller: '0x0000000000000000000000000000000000000000',
+      controller: "0x0000000000000000000000000000000000000000",
     },
   ]);
 
   const tx = await df.submitTransaction({
     args,
     contract: df.getContract(),
-    methodName: 'adminGiveArtifact',
+    methodName: "adminGiveArtifact",
   });
   tx.confirmedPromise.then(() => {
     df.hardRefreshArtifact(artifactIdFromHexStr(tokenId.slice(2)));
@@ -92,12 +97,15 @@ async function createArtifact(
 async function initPlanet(planet: LocatablePlanet) {
   if (planet.isInContract) return;
 
-  const args = Promise.resolve([locationIdToDecStr(planet.locationId), planet.perlin]);
+  const args = Promise.resolve([
+    locationIdToDecStr(planet.locationId),
+    planet.perlin,
+  ]);
 
   const tx = await df.submitTransaction({
     args,
     contract: df.getContract(),
-    methodName: 'adminInitializePlanet',
+    methodName: "adminInitializePlanet",
   });
 
   await tx.confirmedPromise;
@@ -111,23 +119,27 @@ async function spawnSpaceship(
   shipType: ArtifactType
 ) {
   if (!owner) {
-    alert('no account');
+    alert("no account");
     return;
   }
 
   if (!planet) {
-    alert('no selected planet');
+    alert("no selected planet");
     return;
   }
 
   await initPlanet(planet);
 
-  const args = Promise.resolve([locationIdToDecStr(planet.locationId), owner, shipType]);
+  const args = Promise.resolve([
+    locationIdToDecStr(planet.locationId),
+    owner,
+    shipType,
+  ]);
 
   const tx = await df.submitTransaction({
     args,
     contract: df.getContract(),
-    methodName: 'adminGiveSpaceShip',
+    methodName: "adminGiveSpaceShip",
   });
 
   tx.confirmedPromise.then(() => df.hardRefreshPlanet(planet.locationId));
@@ -140,19 +152,21 @@ async function takeOwnership(
   newOwner: EthAddress | undefined
 ) {
   if (!newOwner) {
-    alert('no account');
+    alert("no account");
     return;
   }
 
   if (!planet) {
-    alert('no selected planet');
+    alert("no selected planet");
     return;
   }
 
   const snarkArgs = await df.getSnarkHelper().getInitArgs(
     planet.location.coords.x,
     planet.location.coords.y,
-    Math.floor(Math.sqrt(planet.location.coords.x ** 2 + planet.location.coords.y ** 2)) + 1 // floor(sqrt(x^2 + y^2)) + 1
+    Math.floor(
+      Math.sqrt(planet.location.coords.x ** 2 + planet.location.coords.y ** 2)
+    ) + 1 // floor(sqrt(x^2 + y^2)) + 1
   );
 
   const args = Promise.resolve([newOwner, ...snarkArgs]);
@@ -162,7 +176,7 @@ async function takeOwnership(
     newOwner,
     args,
     contract: df.getContract(),
-    methodName: 'safeSetOwner',
+    methodName: "safeSetOwner",
   });
 
   tx.confirmedPromise.then(() => df.hardRefreshPlanet(planet.locationId));
@@ -174,7 +188,7 @@ async function pauseGame() {
   const tx = await df.submitTransaction({
     args: Promise.resolve([]),
     contract: df.getContract(),
-    methodName: 'pause',
+    methodName: "pause",
   });
 
   return tx;
@@ -184,7 +198,7 @@ async function unpauseGame() {
   const tx = await df.submitTransaction({
     args: Promise.resolve([]),
     contract: df.getContract(),
-    methodName: 'unpause',
+    methodName: "unpause",
   });
 
   return tx;
@@ -196,7 +210,7 @@ async function addAddressToWhitelist(address: EthAddress) {
   const tx = await df.submitTransaction({
     args,
     contract: df.getContract(),
-    methodName: 'addToWhitelist',
+    methodName: "addToWhitelist",
   });
 
   return tx;
@@ -233,7 +247,7 @@ async function createPlanet(
   const tx = await df.submitTransaction({
     args,
     contract: df.getContract(),
-    methodName: 'createAndReveal',
+    methodName: "createAndReveal",
   });
 
   await tx.confirmedPromise;
@@ -244,18 +258,24 @@ async function createPlanet(
 function PlanetLink({ planetId }: { planetId?: LocationId }) {
   if (planetId) {
     return html`<a
-      style=${{ cursor: 'pointer', textDecoration: 'underline', color: '#00ADE1' }}
+      style=${{
+        cursor: "pointer",
+        textDecoration: "underline",
+        color: "#00ADE1",
+      }}
       onClick=${() => ui.centerLocationId(planetId)}
     >
       ${getPlanetNameHash(planetId)}
     </a>`;
   } else {
-    return '(none selected)';
+    return "(none selected)";
   }
 }
 
 function Heading({ title }: { title: string }) {
-  return html`<h2 style=${{ fontSize: '14pt', textDecoration: 'underline' }}>${title}</h2>`;
+  return html`<h2 style=${{ fontSize: "14pt", textDecoration: "underline" }}>
+    ${title}
+  </h2>`;
 }
 
 function shipOptions() {
@@ -294,7 +314,9 @@ function accountOptions(players: Player[]) {
   const options = [] as HTMLOptionElement[];
   for (const player of players) {
     options.push(
-      html`<option value=${player.address}>${player.twitter || player.address}</option>`
+      html`<option value=${player.address}>
+        ${player.twitter || player.address}
+      </option>`
     );
   }
   return options;
@@ -322,14 +344,14 @@ function Select({
     <select
       style=${{
         ...style,
-        outline: 'none',
-        background: '#151515',
-        color: '#838383',
-        borderRadius: '4px',
-        border: '1px solid #777',
-        width: '100%',
-        padding: '2px 6px',
-        cursor: 'pointer',
+        outline: "none",
+        background: "#151515",
+        color: "#838383",
+        borderRadius: "4px",
+        border: "1px solid #777",
+        width: "100%",
+        padding: "2px 6px",
+        cursor: "pointer",
       }}
       value=${value}
       onChange=${onChange}
@@ -340,15 +362,15 @@ function Select({
 }
 
 const wrapperStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '8px',
+  display: "flex",
+  flexDirection: "column",
+  gap: "8px",
 };
 
 const rowStyle = {
-  display: 'flex',
-  gap: '8px',
-  alignItems: 'center',
+  display: "flex",
+  gap: "8px",
+  alignItems: "center",
 };
 
 function PlanetCreator() {
@@ -378,12 +400,12 @@ function PlanetCreator() {
 
   useEffect(() => {
     if (choosingLocation) {
-      uiEmitter.on('WorldMouseClick', placePlanet);
-      uiEmitter.on('WorldMouseMove', updatePlanetCoords);
+      uiEmitter.on("WorldMouseClick", placePlanet);
+      uiEmitter.on("WorldMouseMove", updatePlanetCoords);
 
       return () => {
-        uiEmitter.off('WorldMouseClick', placePlanet);
-        uiEmitter.off('WorldMouseMove', updatePlanetCoords);
+        uiEmitter.off("WorldMouseClick", placePlanet);
+        uiEmitter.off("WorldMouseMove", updatePlanetCoords);
       };
     }
 
@@ -391,13 +413,14 @@ function PlanetCreator() {
   }, [uiEmitter, choosingLocation, placePlanet, updatePlanetCoords]);
 
   return html`
-    <div style=${{ width: '100%' }}>
+    <div style=${{ width: "100%" }}>
       <${Heading} title="Create planet" />
       <div style=${rowStyle}>
         <df-slider
           label="Planet Level"
           value=${level}
-          onChange=${(e: InputEvent) => setLevel((e.target as HTMLInputElement).value)}
+          onChange=${(e: InputEvent) =>
+            setLevel((e.target as HTMLInputElement).value)}
           max=${9}
         ></df-slider>
         <div>
@@ -405,12 +428,13 @@ function PlanetCreator() {
           <${Select}
             id="planet-type-selector"
             value=${planetType}
-            onChange=${(e: InputEvent) => setPlanetType((e.target as HTMLSelectElement).value)}
+            onChange=${(e: InputEvent) =>
+              setPlanetType((e.target as HTMLSelectElement).value)}
             items=${planetTypeOptions()}
           />
         </div>
       </div>
-      <div style=${{ ...rowStyle, justifyContent: 'space-between' }}>
+      <div style=${{ ...rowStyle, justifyContent: "space-between" }}>
         <div style=${rowStyle}>
           <input
             type="checkbox"
@@ -418,7 +442,7 @@ function PlanetCreator() {
             value=${isSpawn}
             onChange=${() => setIsSpawn(!isSpawn)}
           />
-          ${' Spawn Planet'}
+          ${" Spawn Planet"}
         </div>
         <div style=${rowStyle}>
           <input
@@ -427,7 +451,7 @@ function PlanetCreator() {
             value=${isTarget}
             onChange=${() => setIsTarget(!isTarget)}
           />
-          ${' Target Planet'}
+          ${" Target Planet"}
         </div>
         ${!choosingLocation &&
         html`
@@ -445,7 +469,9 @@ function PlanetCreator() {
           (${Math.round(planetCoords?.x)}, ${Math.round(planetCoords?.y)})
         </p>`}
         ${choosingLocation &&
-        html`<df-button onClick=${() => setChoosingLocation(false)}> Cancel Creation</df-button>`}
+        html`<df-button onClick=${() => setChoosingLocation(false)}>
+          Cancel Creation</df-button
+        >`}
       </div>
     </div>
   `;
@@ -455,7 +481,7 @@ function App() {
   const [selectedPlanet, setSelectedPlanet] = useState(null);
   const [selectedShip, setSelectedShip] = useState(MIN_SPACESHIP_TYPE);
   const [selectedArtifact, setSelectedArtifact] = useState(MIN_ARTIFACT_TYPE);
-  const [artifactRarity, setArtifactRarity] = useState('1');
+  const [artifactRarity, setArtifactRarity] = useState("1");
   const [artifactBiome, setArtifactBiome] = useState(MIN_BIOME.toString());
   const [whitelistAddress, setWhitelistAddress] = useState(null);
   const [account, setAccount] = useState(null);
@@ -503,9 +529,10 @@ function App() {
 
       <div style=${rowStyle}>
         <df-text-input
-          style=${{ flex: '1' }}
+          style=${{ flex: "1" }}
           value=${whitelistAddress}
-          onInput=${(e: InputEvent) => setWhitelistAddress((e.target as HTMLInputElement).value)}
+          onInput=${(e: InputEvent) =>
+            setWhitelistAddress((e.target as HTMLInputElement).value)}
           placeholder="Address to whitelist"
         ></df-text-input>
         <df-button onClick=${() => addAddressToWhitelist(whitelistAddress)}>
@@ -516,15 +543,21 @@ function App() {
       <${Heading} title="Give Planets" />
 
       <div style=${rowStyle}>
-        <span> Planet: <${PlanetLink} planetId=${(selectedPlanet as Planet)?.locationId} /> </span>
+        <span>
+          Planet:
+          <${PlanetLink} planetId=${(selectedPlanet as Planet)?.locationId} />
+        </span>
         <span> to </span>
         <${Select}
-          style=${{ flex: '1' }}
+          style=${{ flex: "1" }}
           value=${targetAccount}
-          onChange=${(e: InputEvent) => setTargetAccount((e.target as HTMLSelectElement).value)}
+          onChange=${(e: InputEvent) =>
+            setTargetAccount((e.target as HTMLSelectElement).value)}
           items=${accountOptions(allPlayers)}
         />
-        <df-button onClick=${() => takeOwnership(selectedPlanet, targetAccount)}>
+        <df-button
+          onClick=${() => takeOwnership(selectedPlanet, targetAccount)}
+        >
           Give Planet
         </df-button>
       </div>
@@ -533,29 +566,34 @@ function App() {
 
       <div style=${rowStyle}>
         <${Select}
-          style=${{ flex: '1' }}
+          style=${{ flex: "1" }}
           value=${selectedShip}
-          onChange=${(e: InputEvent) => setSelectedShip((e.target as HTMLSelectElement).value)}
+          onChange=${(e: InputEvent) =>
+            setSelectedShip((e.target as HTMLSelectElement).value)}
           items=${shipOptions()}
         />
 
         <span> to </span>
 
         <${Select}
-          style=${{ flex: '1' }}
+          style=${{ flex: "1" }}
           value=${targetAccount}
-          onChange=${(e: InputEvent) => setTargetAccount((e.target as HTMLSelectElement).value)}
+          onChange=${(e: InputEvent) =>
+            setTargetAccount((e.target as HTMLSelectElement).value)}
           items=${accountOptions(allPlayers)}
         />
       </div>
 
-      <div style=${{ ...rowStyle, justifyContent: 'space-between' }}>
+      <div style=${{ ...rowStyle, justifyContent: "space-between" }}>
         <span>
-          ${'On planet: '}
+          ${"On planet: "}
           <${PlanetLink} planetId=${(selectedPlanet as Planet)?.locationId} />
         </span>
 
-        <df-button onClick=${() => spawnSpaceship(selectedPlanet, targetAccount, selectedShip)}>
+        <df-button
+          onClick=${() =>
+            spawnSpaceship(selectedPlanet, targetAccount, selectedShip)}
+        >
           Spawn Spaceship
         </df-button>
       </div>
@@ -564,39 +602,43 @@ function App() {
 
       <div style=${rowStyle}>
         <${Select}
-          style=${{ flex: '1' }}
+          style=${{ flex: "1" }}
           value=${artifactRarity}
-          onChange=${(e: InputEvent) => setArtifactRarity((e.target as HTMLSelectElement).value)}
+          onChange=${(e: InputEvent) =>
+            setArtifactRarity((e.target as HTMLSelectElement).value)}
           items=${artifactRarityOptions()}
         />
 
         <${Select}
-          style=${{ flex: '1' }}
+          style=${{ flex: "1" }}
           value=${artifactBiome}
-          onChange=${(e: InputEvent) => setArtifactBiome((e.target as HTMLSelectElement).value)}
+          onChange=${(e: InputEvent) =>
+            setArtifactBiome((e.target as HTMLSelectElement).value)}
           items=${artifactBiomeOptions()}
         />
 
         <${Select}
-          style=${{ flex: '1' }}
+          style=${{ flex: "1" }}
           value=${selectedArtifact}
-          onChange=${(e: InputEvent) => setSelectedArtifact((e.target as HTMLSelectElement).value)}
+          onChange=${(e: InputEvent) =>
+            setSelectedArtifact((e.target as HTMLSelectElement).value)}
           items=${artifactOptions()}
         />
 
         <span> to </span>
 
         <${Select}
-          style=${{ flex: '1' }}
+          style=${{ flex: "1" }}
           value=${targetAccount}
-          onChange=${(e: InputEvent) => setTargetAccount((e.target as HTMLSelectElement).value)}
+          onChange=${(e: InputEvent) =>
+            setTargetAccount((e.target as HTMLSelectElement).value)}
           items=${accountOptions(allPlayers)}
         />
       </div>
 
-      <div style=${{ ...rowStyle, justifyContent: 'space-between' }}>
+      <div style=${{ ...rowStyle, justifyContent: "space-between" }}>
         <span>
-          ${'On planet: '}
+          ${"On planet: "}
           <${PlanetLink} planetId=${(selectedPlanet as Planet)?.locationId} />
         </span>
 
@@ -623,7 +665,7 @@ function App() {
 
 class Plugin implements DFPlugin {
   async render(container: HTMLDivElement) {
-    container.style.width = '525px';
+    container.style.width = "525px";
 
     render(html`<${App} />`, container);
   }

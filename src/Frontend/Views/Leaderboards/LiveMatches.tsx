@@ -1,20 +1,20 @@
-import { LiveMatch } from '@darkforest_eth/types';
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { Btn } from '../../Components/Btn';
-import { Link } from '../../Components/CoreUI';
-import { Gnosis } from '../../Components/Icons';
-import { TwitterLink } from '../../Components/Labels/Labels';
-import { Red, Subber } from '../../Components/Text';
-import { TextPreview } from '../../Components/TextPreview';
-import dfstyles from '../../Styles/dfstyles';
-import { useLiveMatches, useTwitters } from '../../Utils/AppHooks';
-import { formatDuration, formatStartTime } from '../../Utils/TimeUtils';
-import { GenericErrorBoundary } from '../GenericErrorBoundary';
-import { MinimalButton } from '../Portal/PortalMainView';
-import { Table } from '../Table';
+import { LiveMatch } from "@dfdao/types";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { Btn } from "../../Components/Btn";
+import { Link } from "../../Components/CoreUI";
+import { Gnosis } from "../../Components/Icons";
+import { TwitterLink } from "../../Components/Labels/Labels";
+import { Red, Subber } from "../../Components/Text";
+import { TextPreview } from "../../Components/TextPreview";
+import dfstyles from "../../Styles/dfstyles";
+import { useLiveMatches, useTwitters } from "../../Utils/AppHooks";
+import { formatDuration, formatStartTime } from "../../Utils/TimeUtils";
+import { GenericErrorBoundary } from "../GenericErrorBoundary";
+import { MinimalButton } from "../Portal/PortalMainView";
+import { Table } from "../Table";
 
-const errorMessage = 'Error Loading Leaderboard';
+const errorMessage = "Error Loading Leaderboard";
 export function LiveMatchesDisplay({ config }: { config: string }) {
   const { liveMatches, spyError } = useLiveMatches(config);
   return <LiveMatches game={liveMatches} error={spyError} />;
@@ -31,7 +31,10 @@ export function LiveMatches({
   return (
     <GenericErrorBoundary errorMessage={errorMessage}>
       <LeaderboardContainer>
-        <LeaderboardBody leaderboard={entries ? { entries: entries } : entries} error={error} />
+        <LeaderboardBody
+          leaderboard={entries ? { entries: entries } : entries}
+          error={error}
+        />
       </LeaderboardContainer>
     </GenericErrorBoundary>
   );
@@ -44,21 +47,30 @@ function playerToEntry(playerAddress: string) {
   const playerTwitter = twitters[playerAddress];
   return (
     <span
-      style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '5px' }}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: "5px",
+      }}
     >
       {playerTwitter ? (
         <TwitterLink twitter={playerTwitter} />
       ) : (
-        <TextPreview text={playerAddress} focusedWidth={'100px'} unFocusedWidth={'100px'} />
+        <TextPreview
+          text={playerAddress}
+          focusedWidth={"100px"}
+          unFocusedWidth={"100px"}
+        />
       )}
 
       <a
-        style={{ display: 'flex', alignItems: 'center' }}
-        target='_blank'
+        style={{ display: "flex", alignItems: "center" }}
+        target="_blank"
         href={`https://blockscout.com/xdai/optimism/address/${playerAddress}`}
       >
         <GnoButton>
-          <Gnosis height='25px' width='25px' />
+          <Gnosis height="25px" width="25px" />
         </GnoButton>
       </a>
     </span>
@@ -90,13 +102,13 @@ function LeaderboardTable({ rows }: { rows: Row[] }) {
   return (
     <TableContainer>
       <Table
-        alignments={['c', 'c', 'c', 'c']}
+        alignments={["c", "c", "c", "c"]}
         headers={[
-          <Cell key='player'>Player</Cell>,
-          <Cell key='lobby'>Arena ID</Cell>,
-          <Cell key='start_time'>Start Time</Cell>,
-          <Cell key='duration'>Duration</Cell>,
-          <Cell key='go'></Cell>,
+          <Cell key="player">Player</Cell>,
+          <Cell key="lobby">Arena ID</Cell>,
+          <Cell key="start_time">Start Time</Cell>,
+          <Cell key="duration">Duration</Cell>,
+          <Cell key="go"></Cell>,
         ]}
         rows={rows}
         columns={[
@@ -106,15 +118,27 @@ function LeaderboardTable({ rows }: { rows: Row[] }) {
           (row: Row, i) => {
             return (
               <Cell>
-                <TextPreview text={row.id} focusedWidth={'75px'} unFocusedWidth={'75px'} />
+                <TextPreview
+                  text={row.id}
+                  focusedWidth={"75px"}
+                  unFocusedWidth={"75px"}
+                />
               </Cell>
             );
           },
           (row: Row, i) => {
-            return <Cell>{startTimes[i] ? formatStartTime(startTimes[i]) : 'loading...'}</Cell>;
+            return (
+              <Cell>
+                {startTimes[i] ? formatStartTime(startTimes[i]) : "loading..."}
+              </Cell>
+            );
           },
           (row: Row, i) => {
-            return <Cell>{durations[i] ? formatDuration(durations[i]) : 'loading...'}</Cell>;
+            return (
+              <Cell>
+                {durations[i] ? formatDuration(durations[i]) : "loading..."}
+              </Cell>
+            );
           },
           (row: Row, i) => {
             return (
@@ -151,11 +175,11 @@ function LeaderboardBody({
   }
 
   leaderboard.entries.sort((a, b) => {
-    if (typeof a.startTime !== 'number' && typeof b.startTime !== 'number') {
+    if (typeof a.startTime !== "number" && typeof b.startTime !== "number") {
       return 0;
-    } else if (typeof a.startTime !== 'number') {
+    } else if (typeof a.startTime !== "number") {
       return 1;
-    } else if (typeof b.startTime !== 'number') {
+    } else if (typeof b.startTime !== "number") {
       return -1;
     }
 

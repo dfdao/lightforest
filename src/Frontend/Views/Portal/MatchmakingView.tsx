@@ -1,8 +1,8 @@
-import { LiveMatch } from '@darkforest_eth/types';
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { loadLiveMatches } from '../../../Backend/Network/GraphApi/SpyApi';
-import { FindMatch } from './FindMatch';
+import { LiveMatch } from "@dfdao/types";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { loadLiveMatches } from "../../../Backend/Network/GraphApi/SpyApi";
+import { FindMatch } from "./FindMatch";
 
 export function MatchmakingView() {
   const [liveMatches, setLiveMatches] = useState<LiveMatch | undefined>();
@@ -23,7 +23,7 @@ export function MatchmakingView() {
   return (
     <Container>
       <MatchmakingContainer>
-        <span style={{ fontSize: '2.5rem' }}>Join a match</span>
+        <span style={{ fontSize: "2.5rem" }}>Join a match</span>
         <FindMatch game={liveMatches} />
       </MatchmakingContainer>
     </Container>

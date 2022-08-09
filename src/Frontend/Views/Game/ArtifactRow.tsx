@@ -1,17 +1,17 @@
-import { isSpaceShip } from '@darkforest_eth/gamelogic';
-import { Artifact } from '@darkforest_eth/types';
-import React, { useCallback, useEffect, useMemo } from 'react';
-import styled, { css } from 'styled-components';
-import { ArtifactImage } from '../../Components/ArtifactImage';
-import { Spacer } from '../../Components/CoreUI';
-import dfstyles from '../../Styles/dfstyles';
-import { useUIManager } from '../../Utils/AppHooks';
+import { isSpaceShip } from "@dfdao/gamelogic";
+import { Artifact } from "@dfdao/types";
+import React, { useCallback, useEffect, useMemo } from "react";
+import styled, { css } from "styled-components";
+import { ArtifactImage } from "../../Components/ArtifactImage";
+import { Spacer } from "../../Components/CoreUI";
+import dfstyles from "../../Styles/dfstyles";
+import { useUIManager } from "../../Utils/AppHooks";
 
 const RowWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: 'space-around';
+  justify-content: "space-around";
   align-items: center;
   overflow-x: scroll;
 `;
@@ -27,7 +27,9 @@ const StyledArtifactThumb = styled.div<{ active: boolean; enemy: boolean }>`
   width: 2.5em;
   height: 2.5em;
 
-  border: 1px solid ${({ enemy }) => (enemy ? dfstyles.colors.dfred : dfstyles.colors.borderDark)};
+  border: 1px solid
+    ${({ enemy }) =>
+      enemy ? dfstyles.colors.dfred : dfstyles.colors.borderDark};
   border-radius: 4px;
 
   &:last-child {

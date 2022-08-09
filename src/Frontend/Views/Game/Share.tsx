@@ -1,13 +1,13 @@
-import { EthConnection } from '@darkforest_eth/network';
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
-import styled, { css } from 'styled-components';
-import { Account, getAccounts } from '../../../Backend/Network/AccountManager';
-import { getEthConnection } from '../../../Backend/Network/Blockchain';
-import ReaderDataStore from '../../../Backend/Storage/ReaderDataStore';
-import LandingPageCanvas from '../../Renderers/LandingPageCanvas';
-import dfstyles from '../../Styles/dfstyles';
-import { useUIManager } from '../../Utils/AppHooks';
-import { TerminalHandle } from '../Terminal';
+import { EthConnection } from "@dfdao/network";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
+import styled, { css } from "styled-components";
+import { Account, getAccounts } from "../../../Backend/Network/AccountManager";
+import { getEthConnection } from "../../../Backend/Network/Blockchain";
+import ReaderDataStore from "../../../Backend/Storage/ReaderDataStore";
+import LandingPageCanvas from "../../Renderers/LandingPageCanvas";
+import dfstyles from "../../Styles/dfstyles";
+import { useUIManager } from "../../Utils/AppHooks";
+import { TerminalHandle } from "../Terminal";
 
 const ShareWrapper = styled.div`
   width: 100%;
@@ -45,7 +45,7 @@ const AddressOption = styled.div`
     cursor: pointer;
     display: block;
     margin: 3px;
-    font-weight: ${selected ? 'bold' : 'unset'};
+    font-weight: ${selected ? "bold" : "unset"};
 
     &:hover {
       text-decoration: underline;
@@ -55,7 +55,11 @@ const AddressOption = styled.div`
 
 export interface ShareProps<T> {
   load: (store: ReaderDataStore) => Promise<T>;
-  children: (state: T | undefined, loading: boolean, error: Error | undefined) => ReactNode;
+  children: (
+    state: T | undefined,
+    loading: boolean,
+    error: Error | undefined
+  ) => ReactNode;
 }
 
 /**
@@ -69,9 +73,13 @@ export interface ShareProps<T> {
  */
 export function Share<T>(props: ShareProps<T>) {
   const terminalHandle = useRef<TerminalHandle | undefined>();
-  const [ethConnection, setEthConnection] = useState<EthConnection | undefined>();
+  const [ethConnection, setEthConnection] = useState<
+    EthConnection | undefined
+  >();
   const knownAccounts = [undefined, ...getAccounts()];
-  const [currentAccount, setCurrentAccount] = useState<Account | undefined>(knownAccounts[0]);
+  const [currentAccount, setCurrentAccount] = useState<Account | undefined>(
+    knownAccounts[0]
+  );
   const [store, setStore] = useState<ReaderDataStore | undefined>();
   const [state, setState] = useState<T>();
   const [error, setError] = useState<Error>();
@@ -129,8 +137,12 @@ export function Share<T>(props: ShareProps<T>) {
         <AddressChooserContainer>
           <p>view as...</p>
           {knownAccounts.map((addr, i) => (
-            <AddressOption onClick={selectAccount(i)} key={i} selected={addr === currentAccount}>
-              {addr || 'anonymous'}
+            <AddressOption
+              onClick={selectAccount(i)}
+              key={i}
+              selected={addr === currentAccount}
+            >
+              {addr || "anonymous"}
             </AddressOption>
           ))}
         </AddressChooserContainer>

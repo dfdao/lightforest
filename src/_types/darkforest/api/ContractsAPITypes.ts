@@ -1,5 +1,10 @@
-import { ArtifactPointValues, EthAddress, LocationId, UpgradeBranches } from '@darkforest_eth/types';
-import { BigNumber as EthersBN } from 'ethers';
+import {
+  ArtifactPointValues,
+  EthAddress,
+  LocationId,
+  UpgradeBranches,
+} from "@dfdao/types";
+import { BigNumber as EthersBN } from "ethers";
 
 export const enum ZKArgIdx {
   PROOF_A,
@@ -41,78 +46,78 @@ export const enum UpgradeArgIdxs {
 }
 
 export const enum ContractEvent {
-  PlayerInitialized = 'PlayerInitialized',
-  ArrivalQueued = 'ArrivalQueued',
-  PlanetUpgraded = 'PlanetUpgraded',
-  PlanetHatBought = 'PlanetHatBought',
-  PlanetTransferred = 'PlanetTransferred',
-  PlanetInvaded = 'PlanetInvaded',
-  PlanetCaptured = 'PlanetCaptured',
-  LocationRevealed = 'LocationRevealed',
-  ArtifactFound = 'ArtifactFound',
-  ArtifactDeposited = 'ArtifactDeposited',
-  ArtifactWithdrawn = 'ArtifactWithdrawn',
-  ArtifactActivated = 'ArtifactActivated',
-  ArtifactDeactivated = 'ArtifactDeactivated',
-  PlanetSilverWithdrawn = 'PlanetSilverWithdrawn',
-  AdminOwnershipChanged = 'AdminOwnershipChanged',
-  AdminGiveSpaceship = 'AdminGiveSpaceship',
-  PauseStateChanged = 'PauseStateChanged',
-  LobbyCreated = 'LobbyCreated',
-  Gameover = 'Gameover',
-  GameStarted = 'GameStarted',
-  PlayerReady = 'PlayerReady',
-  PlayerNotReady = 'PlayerNotReady',
+  PlayerInitialized = "PlayerInitialized",
+  ArrivalQueued = "ArrivalQueued",
+  PlanetUpgraded = "PlanetUpgraded",
+  PlanetHatBought = "PlanetHatBought",
+  PlanetTransferred = "PlanetTransferred",
+  PlanetInvaded = "PlanetInvaded",
+  PlanetCaptured = "PlanetCaptured",
+  LocationRevealed = "LocationRevealed",
+  ArtifactFound = "ArtifactFound",
+  ArtifactDeposited = "ArtifactDeposited",
+  ArtifactWithdrawn = "ArtifactWithdrawn",
+  ArtifactActivated = "ArtifactActivated",
+  ArtifactDeactivated = "ArtifactDeactivated",
+  PlanetSilverWithdrawn = "PlanetSilverWithdrawn",
+  AdminOwnershipChanged = "AdminOwnershipChanged",
+  AdminGiveSpaceship = "AdminGiveSpaceship",
+  PauseStateChanged = "PauseStateChanged",
+  LobbyCreated = "LobbyCreated",
+  Gameover = "Gameover",
+  GameStarted = "GameStarted",
+  PlayerReady = "PlayerReady",
+  PlayerNotReady = "PlayerNotReady",
 }
 
 export const enum ContractsAPIEvent {
-  PlayerUpdate = 'PlayerUpdate',
-  PlanetUpdate = 'PlanetUpdate',
-  PauseStateChanged = 'PauseStateChanged',
-  ArrivalQueued = 'ArrivalQueued',
-  ArtifactUpdate = 'ArtifactUpdate',
-  RadiusUpdated = 'RadiusUpdated',
-  LocationRevealed = 'LocationRevealed',
+  PlayerUpdate = "PlayerUpdate",
+  PlanetUpdate = "PlanetUpdate",
+  PauseStateChanged = "PauseStateChanged",
+  ArrivalQueued = "ArrivalQueued",
+  ArtifactUpdate = "ArtifactUpdate",
+  RadiusUpdated = "RadiusUpdated",
+  LocationRevealed = "LocationRevealed",
   /**
    * The transaction has been queued for future execution.
    */
-  TxQueued = 'TxQueued',
+  TxQueued = "TxQueued",
   /**
    * The transaction has been removed from the queue and is
    * calculating arguments in preparation for submission.
    */
-  TxProcessing = 'TxProcessing',
+  TxProcessing = "TxProcessing",
   /**
    * The transaction is queued, but is prioritized for execution
    * above other queued transactions.
    */
-  TxPrioritized = 'TxPrioritized',
+  TxPrioritized = "TxPrioritized",
   /**
    * The transaction has been submitted and we are awaiting
    * confirmation.
    */
-  TxSubmitted = 'TxSubmitted',
+  TxSubmitted = "TxSubmitted",
   /**
    * The transaction has been confirmed.
    */
-  TxConfirmed = 'TxConfirmed',
+  TxConfirmed = "TxConfirmed",
   /**
    * The transaction has failed for some reason. This
    * could either be a revert or a purely client side
    * error. In the case of a revert, the transaction hash
    * will be included in the transaction object.
    */
-  TxErrored = 'TxErrored',
+  TxErrored = "TxErrored",
   /**
    * The transaction was cancelled before it left the queue.
    */
-  TxCancelled = 'TxCancelled',
-  PlanetTransferred = 'PlanetTransferred',
-  LobbyCreated = 'LobbyCreated',
-  Gameover = 'Gameover',
-  GameStarted = 'GameStarted',
-  PlayerReady = 'PlayerReady',
-  PlayerNotReady = 'PlayerNotReady',
+  TxCancelled = "TxCancelled",
+  PlanetTransferred = "PlanetTransferred",
+  LobbyCreated = "LobbyCreated",
+  Gameover = "Gameover",
+  GameStarted = "GameStarted",
+  PlayerReady = "PlayerReady",
+  PlayerNotReady = "PlayerNotReady",
 }
 
 // planet locationID(BigInt), branch number
@@ -319,23 +324,8 @@ export interface ContractConstants {
   MANUAL_SPAWN: boolean;
   TARGET_PLANETS: boolean;
   CLAIM_VICTORY_ENERGY_PERCENT: number;
-  MODIFIERS : [
-    number,
-    number,
-    number,
-    number,
-    number,
-    number,
-    number,
-    number,
-  ];
-  SPACESHIPS : [
-    boolean,
-    boolean,
-    boolean,
-    boolean,
-    boolean
-  ];
+  MODIFIERS: [number, number, number, number, number, number, number, number];
+  SPACESHIPS: [boolean, boolean, boolean, boolean, boolean];
 
   RANDOM_ARTIFACTS: boolean;
   NO_ADMIN: boolean;

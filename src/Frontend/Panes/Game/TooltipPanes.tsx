@@ -1,17 +1,22 @@
-import { PlanetType, TooltipName } from '@darkforest_eth/types';
-import React from 'react';
-import { getPlanetRank, isFullRank } from '../../../Backend/Utils/Utils';
-import { ScoreLabel, SilverLabel } from '../../Components/Labels/KeywordLabels';
-import { Green, Red, Text, White } from '../../Components/Text';
-import { useAddress, useSelectedPlanet, useUIManager } from '../../Utils/AppHooks';
+import { PlanetType, TooltipName } from "@dfdao/types";
+import React from "react";
+import { getPlanetRank, isFullRank } from "../../../Backend/Utils/Utils";
+import { ScoreLabel, SilverLabel } from "../../Components/Labels/KeywordLabels";
+import { Green, Red, Text, White } from "../../Components/Text";
+import {
+  useAddress,
+  useSelectedPlanet,
+  useUIManager,
+} from "../../Utils/AppHooks";
 
 export function NetworkHealthPane() {
   return (
     <>
-      <White>xDAI Tx Speed: </White>For each auto gas setting (which you can choose in the{' '}
-      <White>Settings</White> Pane), the average amount of time it takes a transaction with that
-      setting to confirm. The Dark Forest client uploads diagnostic info (you can turn this off via
-      settings), which is aggregated into this network health indicator. I hope you find it helpful
+      <White>xDAI Tx Speed: </White>For each auto gas setting (which you can
+      choose in the <White>Settings</White> Pane), the average amount of time it
+      takes a transaction with that setting to confirm. The Dark Forest client
+      uploads diagnostic info (you can turn this off via settings), which is
+      aggregated into this network health indicator. I hope you find it helpful
       in cases the network is being slow.
     </>
   );
@@ -20,8 +25,8 @@ export function NetworkHealthPane() {
 export function WithdrawSilverButton() {
   return (
     <>
-      This is a <Text>Spacetime Rip</Text> where you can withdraw <SilverLabel /> for <ScoreLabel />
-      !
+      This is a <Text>Spacetime Rip</Text> where you can withdraw{" "}
+      <SilverLabel /> for <ScoreLabel />!
     </>
   );
 }
@@ -62,7 +67,9 @@ export function ActivateArtifactPane() {
 }
 
 export function TimeUntilActivationPossiblePane() {
-  return <>You must wait this amount of time before you can activate this artifact</>;
+  return (
+    <>You must wait this amount of time before you can activate this artifact</>
+  );
 }
 
 export function TwitterHandleTooltipPane() {
@@ -86,8 +93,8 @@ export function RankTooltipPane() {
 export function ScoreTooltipPane() {
   return (
     <>
-      You earn <ScoreLabel /> by finding artifacts and withdrawing silver. Check out the{' '}
-      <White>Help Pane</White> for more info on scoring.
+      You earn <ScoreLabel /> by finding artifacts and withdrawing silver. Check
+      out the <White>Help Pane</White> for more info on scoring.
     </>
   );
 }
@@ -95,8 +102,8 @@ export function ScoreTooltipPane() {
 export function MiningPauseTooltipPane() {
   return (
     <>
-      Start / Stop your <White>explorer</White>. Your explorer looks for planets in chunks of{' '}
-      <White>16</White> x <White>16</White>.
+      Start / Stop your <White>explorer</White>. Your explorer looks for planets
+      in chunks of <White>16</White> x <White>16</White>.
     </>
   );
 }
@@ -104,9 +111,9 @@ export function MiningPauseTooltipPane() {
 export function MiningTargetTooltipPane() {
   return (
     <>
-      Change the location of your <White>explorer</White>. Click anywhere on the{' '}
-      <White>Game Screen</White>, and your <White>miner</White> will start hashing around that
-      chunk.
+      Change the location of your <White>explorer</White>. Click anywhere on the{" "}
+      <White>Game Screen</White>, and your <White>miner</White> will start
+      hashing around that chunk.
     </>
   );
 }
@@ -130,7 +137,8 @@ export function BonusTooltipPane() {
 export function SilverTooltipPane() {
   return (
     <>
-      <White>Silver:</White> the universe's monetary resource. It allows you to buy upgrades. Only
+      <White>Silver:</White> the universe's monetary resource. It allows you to
+      buy upgrades. Only
       <White> Asteroid Fields</White> produce silver or so we've been told...
     </>
   );
@@ -139,7 +147,7 @@ export function SilverTooltipPane() {
 export function EnergyTooltipPane() {
   return (
     <>
-      <White>Energy:</White> allows you to make moves. Energy grows following an{' '}
+      <White>Energy:</White> allows you to make moves. Energy grows following an{" "}
       <White>s-curve</White>, and grows fastest at <White>50% capacity</White>.
     </>
   );
@@ -151,7 +159,10 @@ export function PlanetRankTooltipPane() {
   const rank = getPlanetRank(selected.value);
   return (
     <>
-      This planet is <White>{isFullRank(selected.value) ? 'fully upgraded' : 'rank ' + rank}</White>
+      This planet is{" "}
+      <White>
+        {isFullRank(selected.value) ? "fully upgraded" : "rank " + rank}
+      </White>
       !
     </>
   );
@@ -211,9 +222,10 @@ export function SelectedSilverTooltipPane() {
 export function RangeTooltipPane() {
   return (
     <>
-      <White>Range:</White> how far you can send your forces. <White>Forces decay</White> the
-      farther out you send them. <br />
-      Higher range means that you can send forces the same distance with less decay.
+      <White>Range:</White> how far you can send your forces.{" "}
+      <White>Forces decay</White> the farther out you send them. <br />
+      Higher range means that you can send forces the same distance with less
+      decay.
     </>
   );
 }
@@ -238,8 +250,8 @@ export function Time50TooltipPane() {
 export function Time90TooltipPane() {
   return (
     <>
-      Time to <White>90%</White> of full energy. Since energy grows on an s-curve, energy growth
-      slows drastically by this point.
+      Time to <White>90%</White> of full energy. Since energy grows on an
+      s-curve, energy growth slows drastically by this point.
     </>
   );
 }
@@ -247,8 +259,8 @@ export function Time90TooltipPane() {
 export function EnergyGrowthTooltipPane() {
   return (
     <>
-      <White>Energy Growth:</White> the maximum growth rate of this planet's energy representing the
-      rate at the middle of the <White>s-curve</White>.
+      <White>Energy Growth:</White> the maximum growth rate of this planet's
+      energy representing the rate at the middle of the <White>s-curve</White>.
     </>
   );
 }
@@ -256,7 +268,8 @@ export function EnergyGrowthTooltipPane() {
 export function SilverGrowthTooltipPane() {
   return (
     <>
-      <White>Silver Growth</White>: the per-minute linear growth rate of this planet's silver.
+      <White>Silver Growth</White>: the per-minute linear growth rate of this
+      planet's silver.
     </>
   );
 }
@@ -272,7 +285,8 @@ export function SilverCapTooltipPane() {
 export function PiratesTooltipPane() {
   return (
     <>
-      <Red>This planet has space pirates!</Red> Move energy to unoccupied planets to conquer them!
+      <Red>This planet has space pirates!</Red> Move energy to unoccupied
+      planets to conquer them!
     </>
   );
 }
@@ -280,7 +294,8 @@ export function PiratesTooltipPane() {
 export function UpgradesTooltipPane() {
   return (
     <>
-      <White>Planet Rank</White>: the number of times you've upgraded your planet.
+      <White>Planet Rank</White>: the number of times you've upgraded your
+      planet.
     </>
   );
 }
@@ -392,8 +407,9 @@ export function ClowntownTooltipPane() {
 function DefenseTooltipPane() {
   return (
     <>
-      <White>Defense:</White> Planets with higher defense will negate incoming damage. Planets with
-      lower than 100 defense are vulnerable and will take more damage!
+      <White>Defense:</White> Planets with higher defense will negate incoming
+      damage. Planets with lower than 100 defense are vulnerable and will take
+      more damage!
     </>
   );
 }
@@ -401,10 +417,11 @@ function DefenseTooltipPane() {
 function SpaceJunkTooltipPane() {
   return (
     <>
-      <White>Space Junk:</White> Planets are all filled with junk! Sending energy to a planet with
-      junk will remove the junk from that planet and add it to your total junk. Once you reach your
-      junk limit, you will not be able to capture planets that have junk. Abandoning planets will
-      reduce your space junk and place it back on the planet.
+      <White>Space Junk:</White> Planets are all filled with junk! Sending
+      energy to a planet with junk will remove the junk from that planet and add
+      it to your total junk. Once you reach your junk limit, you will not be
+      able to capture planets that have junk. Abandoning planets will reduce
+      your space junk and place it back on the planet.
     </>
   );
 }
@@ -416,12 +433,16 @@ function AbandonTooltipPane() {
 
   return (
     <>
-      <Red>Abandon your planet:</Red> Give up ownership of this planet to dump some of your space
-      junk here. This triggers a special movement that sends full <White>Energy/Silver</White> and
-      gives a <Green>Range boost of {abandonRangeBoost}x</Green> and a{' '}
+      <Red>Abandon your planet:</Red> Give up ownership of this planet to dump
+      some of your space junk here. This triggers a special movement that sends
+      full <White>Energy/Silver</White> and gives a{" "}
+      <Green>Range boost of {abandonRangeBoost}x</Green> and a{" "}
       <Green>Speed boost of {abandonSpeedBoost}x</Green>.
       <br />
-      <Red>You cannot abandon your home planet, or a planet that has incoming voyages.</Red>
+      <Red>
+        You cannot abandon your home planet, or a planet that has incoming
+        voyages.
+      </Red>
     </>
   );
 }
@@ -429,8 +450,8 @@ function AbandonTooltipPane() {
 function SpeedTooltipPane() {
   return (
     <>
-      <White>Speed:</White> The rate at which energy travels across the universe, the faster the
-      better!
+      <White>Speed:</White> The rate at which energy travels across the
+      universe, the faster the better!
     </>
   );
 }
@@ -452,7 +473,9 @@ function ArtifactBuffPane() {
 }
 
 function PluginsTooltipPane() {
-  return <>Manage plugins, which allow you to add functionality to the client.</>;
+  return (
+    <>Manage plugins, which allow you to add functionality to the client.</>
+  );
 }
 
 function SettingsPane() {
@@ -468,20 +491,25 @@ function InvadablePane() {
 }
 
 function CapturablePane() {
-  return <>This planet has been invaded, which means you can capture it for score.</>;
+  return (
+    <>This planet has been invaded, which means you can capture it for score.</>
+  );
 }
 
 function BlockedPane() {
   return <>You are blocked from moving to this planet.</>;
 }
 
-const ModalWithdrawSilverTooltipPane = () => <>Withdraw silver to earn score.</>;
+const ModalWithdrawSilverTooltipPane = () => (
+  <>Withdraw silver to earn score.</>
+);
 
 const Hats = () => <>Buy hats for the selected planet.</>;
 
 const FindArtifact = () => (
   <>
-    <Green>This planet has a powerful artifact hidden somewhere!</Green> Maybe you could find it...
+    <Green>This planet has a powerful artifact hidden somewhere!</Green> Maybe
+    you could find it...
   </>
 );
 
@@ -490,8 +518,8 @@ export function TargetPlanet() {
   const claimPercentage = uiManager.getClaimVictoryPercentage();
   return (
     <>
-      This planet is a <Red>Target Planet!</Red> Capture it and fill it with {claimPercentage}%
-      energy to win!
+      This planet is a <Red>Target Planet!</Red> Capture it and fill it with{" "}
+      {claimPercentage}% energy to win!
     </>
   );
 }
@@ -535,12 +563,17 @@ export function TooltipContent({ name }: { name: TooltipName | undefined }) {
   if (name === TooltipName.BonusSpaceJunk) return <BonusSpaceJunkTooltipPane />;
   if (name === TooltipName.Clowntown) return <ClowntownTooltipPane />;
   if (name === TooltipName.ModalHelp) return <ModalHelpTooltipPane />;
-  if (name === TooltipName.ModalPlanetDetails) return <ModalPlanetDetailsTooltipPane />;
-  if (name === TooltipName.ModalLeaderboard) return <ModalLeaderboardTooltipPane />;
+  if (name === TooltipName.ModalPlanetDetails)
+    return <ModalPlanetDetailsTooltipPane />;
+  if (name === TooltipName.ModalLeaderboard)
+    return <ModalLeaderboardTooltipPane />;
   if (name === TooltipName.ModalPlanetDex) return <ModalPlanetDexTooltipPane />;
-  if (name === TooltipName.ModalUpgradeDetails) return <ModalUpgradeDetailsTooltipPane />;
-  if (name === TooltipName.ModalTwitterVerification) return <ModalTwitterVerificationTooltipPane />;
-  if (name === TooltipName.ModalTwitterBroadcast) return <ModalBroadcastTooltipPane />;
+  if (name === TooltipName.ModalUpgradeDetails)
+    return <ModalUpgradeDetailsTooltipPane />;
+  if (name === TooltipName.ModalTwitterVerification)
+    return <ModalTwitterVerificationTooltipPane />;
+  if (name === TooltipName.ModalTwitterBroadcast)
+    return <ModalBroadcastTooltipPane />;
   if (name === TooltipName.Defense) return <DefenseTooltipPane />;
   if (name === TooltipName.SpaceJunk) return <SpaceJunkTooltipPane />;
   if (name === TooltipName.Abandon) return <AbandonTooltipPane />;
@@ -553,22 +586,29 @@ export function TooltipContent({ name }: { name: TooltipName | undefined }) {
   if (name === TooltipName.FindArtifact) return <FindArtifact />;
   if (name === TooltipName.ArtifactStored) return <ArtifactStored />;
   if (name === TooltipName.HashesPerSec) return <HashesPerSec />;
-  if (name === TooltipName.ModalWithdrawSilver) return <ModalWithdrawSilverTooltipPane />;
-  if (name === TooltipName.TimeUntilActivationPossible) return <TimeUntilActivationPossiblePane />;
+  if (name === TooltipName.ModalWithdrawSilver)
+    return <ModalWithdrawSilverTooltipPane />;
+  if (name === TooltipName.TimeUntilActivationPossible)
+    return <TimeUntilActivationPossiblePane />;
   if (name === TooltipName.DepositArtifact) return <DepositArtifactPane />;
-  if (name === TooltipName.DeactivateArtifact) return <DeactivateArtifactPane />;
+  if (name === TooltipName.DeactivateArtifact)
+    return <DeactivateArtifactPane />;
   if (name === TooltipName.WithdrawArtifact) return <WithdrawArtifactPane />;
   if (name === TooltipName.ActivateArtifact) return <ActivateArtifactPane />;
   if (name === TooltipName.DefenseMultiplier) return <DefenseMultiplierPane />;
-  if (name === TooltipName.EnergyCapMultiplier) return <EnergyCapMultiplierPane />;
-  if (name === TooltipName.EnergyGrowthMultiplier) return <EnergyGrowthMultiplierPane />;
+  if (name === TooltipName.EnergyCapMultiplier)
+    return <EnergyCapMultiplierPane />;
+  if (name === TooltipName.EnergyGrowthMultiplier)
+    return <EnergyGrowthMultiplierPane />;
   if (name === TooltipName.RangeMultiplier) return <RangeMultiplierPane />;
   if (name === TooltipName.SpeedMultiplier) return <SpeedMultiplierPane />;
   if (name === TooltipName.NetworkHealth) return <NetworkHealthPane />;
-  if (name === TooltipName.WithdrawSilverButton) return <WithdrawSilverButton />;
+  if (name === TooltipName.WithdrawSilverButton)
+    return <WithdrawSilverButton />;
   if (name === TooltipName.RetryTransaction) return <RetryTransactionPane />;
   if (name === TooltipName.CancelTransaction) return <CancelTransactionPane />;
-  if (name === TooltipName.PrioritizeTransaction) return <PrioritizeTransactionPane />;
+  if (name === TooltipName.PrioritizeTransaction)
+    return <PrioritizeTransactionPane />;
   if (name === TooltipName.Invadable) return <InvadablePane />;
   if (name === TooltipName.Capturable) return <CapturablePane />;
   if (name === TooltipName.TargetPlanet) return <TargetPlanet />;

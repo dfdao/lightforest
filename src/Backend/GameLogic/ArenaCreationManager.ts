@@ -1,18 +1,18 @@
-import { EMPTY_ADDRESS } from '@darkforest_eth/constants';
-import { INIT_ADDRESS } from '@darkforest_eth/contracts';
-import { DarkForest, DFArenaInitialize } from '@darkforest_eth/contracts/typechain';
-import { fakeHash, mimcHash, modPBigInt, perlin } from '@darkforest_eth/hashing';
-import { EthConnection } from '@darkforest_eth/network';
-import { address } from '@darkforest_eth/serde';
+import { EMPTY_ADDRESS } from "@dfdao/constants";
+import { INIT_ADDRESS } from "@dfdao/contracts";
+import { DarkForest, DFArenaInitialize } from "@dfdao/contracts/typechain";
+import { fakeHash, mimcHash, modPBigInt, perlin } from "@dfdao/hashing";
+import { EthConnection } from "@dfdao/network";
+import { address } from "@dfdao/serde";
 import {
   buildContractCallArgs,
   fakeProof,
   RevealSnarkContractCallArgs,
   RevealSnarkInput,
   SnarkJSProofAndSignals,
-} from '@darkforest_eth/snarks';
-import revealCircuitPath from '@darkforest_eth/snarks/reveal.wasm';
-import revealZkeyPath from '@darkforest_eth/snarks/reveal.zkey';
+} from "@dfdao/snarks";
+import revealCircuitPath from "@dfdao/snarks/reveal.wasm";
+import revealZkeyPath from "@dfdao/snarks/reveal.zkey";
 import {
   ContractMethodName,
   EthAddress,
@@ -22,15 +22,18 @@ import {
   UnconfirmedReveal,
   WorldCoords,
   WorldLocation,
-} from '@darkforest_eth/types';
-import { TransactionReceipt } from '@ethersproject/providers';
-import { keccak256, toUtf8Bytes } from 'ethers/lib/utils';
-import _ from 'lodash';
-import { InitPlanet, LobbyPlanet } from '../../Frontend/Panes/Lobby/LobbiesUtils';
-import { LobbyInitializers } from '../../Frontend/Panes/Lobby/Reducer';
-import { OPTIMISM_GAS_LIMIT } from '../../Frontend/Utils/constants';
-import { loadDiamondContract, loadInitContract } from '../Network/Blockchain';
-import { ContractsAPI, makeContractsAPI } from './ContractsAPI';
+} from "@dfdao/types";
+import { TransactionReceipt } from "@ethersproject/providers";
+import { keccak256, toUtf8Bytes } from "ethers/lib/utils";
+import _ from "lodash";
+import {
+  InitPlanet,
+  LobbyPlanet,
+} from "../../Frontend/Panes/Lobby/LobbiesUtils";
+import { LobbyInitializers } from "../../Frontend/Panes/Lobby/Reducer";
+import { OPTIMISM_GAS_LIMIT } from "../../Frontend/Utils/constants";
+import { loadDiamondContract, loadInitContract } from "../Network/Blockchain";
+import { ContractsAPI, makeContractsAPI } from "./ContractsAPI";
 
 export type CreatePlanetData = {
   location: string;
@@ -54,9 +57,13 @@ export class ArenaCreationManager {
   private arenaAddress: EthAddress | undefined;
   private whitelistedAddresses: EthAddress[];
   private createdPlanets: CreatedPlanet[];
-  private created : boolean = false;
+  private created: boolean = false;
 
-  private constructor(parentAddress: EthAddress, contract: ContractsAPI, connection: EthConnection) {
+  private constructor(
+    parentAddress: EthAddress,
+    contract: ContractsAPI,
+    connection: EthConnection
+  ) {
     this.parentAddress = parentAddress;
     this.contract = contract;
     this.connection = connection;
@@ -66,7 +73,10 @@ export class ArenaCreationManager {
 
   public async createAndInitArena(config: LobbyInitializers) {
     if (config.ADMIN_PLANETS) {
-      config.INIT_PLANETS = this.lobbyPlanetsToInitPlanets(config, config.ADMIN_PLANETS);
+      config.INIT_PLANETS = this.lobbyPlanetsToInitPlanets(
+        config,
+        config.ADMIN_PLANETS
+      );
     }
 
     /* Don't want to submit ADMIN_PLANET as initdata because not used */
@@ -75,15 +85,16 @@ export class ArenaCreationManager {
     delete config.ADMIN_PLANETS;
 
     try {
-      const initContract = await this.connection.loadContract<DFArenaInitialize>(
-        INIT_ADDRESS,
-        loadInitContract
-      );
+      const initContract =
+        await this.connection.loadContract<DFArenaInitialize>(
+          INIT_ADDRESS,
+          loadInitContract
+        );
 
-      const artifactBaseURI = '';
+      const artifactBaseURI = "";
       const initInterface = initContract.interface;
       const initAddress = INIT_ADDRESS;
-      const initFunctionCall = initInterface.encodeFunctionData('init', [
+      const initFunctionCall = initInterface.encodeFunctionData("init", [
         config,
         {
           allowListEnabled: config.WHITELIST_ENABLED,
@@ -91,9 +102,9 @@ export class ArenaCreationManager {
           allowedAddresses: config.WHITELIST,
         },
       ]);
-      console.log('creating lobby at', this.contract.getContractAddress());
+      console.log("creating lobby at", this.contract.getContractAddress());
       const txIntent: UnconfirmedCreateLobby = {
-        methodName: 'createLobby',
+        methodName: "createLobby",
         contract: this.contract.contract,
         args: Promise.resolve([initAddress, initFunctionCall]),
       };
@@ -106,9 +117,15 @@ export class ArenaCreationManager {
       const lobbyReceipt = await tx.confirmedPromise;
       console.log(`created arena with ${lobbyReceipt.gasUsed} gas`);
 
-      const { owner, lobby } = this.getLobbyCreatedEvent(lobbyReceipt, this.contract.contract);
+      const { owner, lobby } = this.getLobbyCreatedEvent(
+        lobbyReceipt,
+        this.contract.contract
+      );
 
-      const diamond = await this.connection.loadContract<DarkForest>(lobby, loadDiamondContract);
+      const diamond = await this.connection.loadContract<DarkForest>(
+        lobby,
+        loadDiamondContract
+      );
 
       const startTx = await diamond.start({ gasLimit: OPTIMISM_GAS_LIMIT });
       const startRct = await startTx.wait();
@@ -118,28 +135,40 @@ export class ArenaCreationManager {
       return { owner, lobby, startTx };
     } catch (e) {
       console.log(e);
-      throw new Error('lobby creation transaction failed.');
+      throw new Error("lobby creation transaction failed.");
     }
   }
 
-  public async createPlanet(planet: LobbyPlanet, initializers: LobbyInitializers) {
-    const args = Promise.resolve([this.lobbyPlanetToInitPlanet(planet, initializers)]);
+  public async createPlanet(
+    planet: LobbyPlanet,
+    initializers: LobbyInitializers
+  ) {
+    const args = Promise.resolve([
+      this.lobbyPlanetToInitPlanet(planet, initializers),
+    ]);
 
     const txIntent: UnconfirmedCreateArenaPlanet = {
-      methodName: 'createArenaPlanet',
+      methodName: "createArenaPlanet",
       contract: this.contract.contract,
       args: args,
     };
 
     const tx = await this.contract.submitTransaction(txIntent, {
-      gasLimit: '15000000',
+      gasLimit: "15000000",
     });
 
     await tx.confirmedPromise;
-    this.createdPlanets.push({ ...planet, createTx: tx?.hash, revealTx: undefined });
+    this.createdPlanets.push({
+      ...planet,
+      createTx: tx?.hash,
+      revealTx: undefined,
+    });
   }
 
-  public async revealPlanet(planet: LobbyPlanet, initializers: LobbyInitializers) {
+  public async revealPlanet(
+    planet: LobbyPlanet,
+    initializers: LobbyInitializers
+  ) {
     const planetData = this.generatePlanetData(planet, initializers);
     const getArgs = async () => {
       const revealArgs = await this.makeRevealProof(
@@ -164,7 +193,7 @@ export class ArenaCreationManager {
     } as WorldLocation;
 
     const txIntent: UnconfirmedReveal = {
-      methodName: 'revealLocation',
+      methodName: "revealLocation",
       contract: this.contract.contract,
       locationId: location.toString() as LocationId,
       location: worldLocation,
@@ -177,37 +206,42 @@ export class ArenaCreationManager {
 
     await tx.confirmedPromise;
     console.log(`reveal tx accepted`);
-    const createdPlanet = this.createdPlanets.find((p) => p.x == planet.x && p.y == planet.y);
-    if (!createdPlanet) throw new Error('created planet not found');
+    const createdPlanet = this.createdPlanets.find(
+      (p) => p.x == planet.x && p.y == planet.y
+    );
+    if (!createdPlanet) throw new Error("created planet not found");
     createdPlanet.revealTx = tx?.hash;
   }
 
-  // to do: simplify planet creation so either only create lobby planets 
+  // to do: simplify planet creation so either only create lobby planets
   // or only create init planets
-  public async bulkCreateLobbyPlanets({config, planets} :
-    {
-      config: LobbyInitializers;
-      planets?: LobbyPlanet[];
-    }) {
+  public async bulkCreateLobbyPlanets({
+    config,
+    planets,
+  }: {
+    config: LobbyInitializers;
+    planets?: LobbyPlanet[];
+  }) {
     // make create Planet args
     const planetsToCreate = planets || config.ADMIN_PLANETS;
     const initPlanets = this.lobbyPlanetsToInitPlanets(config, planetsToCreate);
 
-
     const args = Promise.resolve([initPlanets]);
     const txIntent = {
-      methodName: 'bulkCreateAndReveal' as ContractMethodName,
+      methodName: "bulkCreateAndReveal" as ContractMethodName,
       contract: this.lobbyContract(),
       args: args,
     };
 
     const tx = await this.contract.submitTransaction(txIntent, {
-      gasLimit: '15000000',
+      gasLimit: "15000000",
     });
 
     await tx.confirmedPromise;
 
-    planetsToCreate.map((p) => this.createdPlanets.push({ ...p, createTx: tx?.hash, revealTx: tx?.hash }));
+    planetsToCreate.map((p) =>
+      this.createdPlanets.push({ ...p, createTx: tx?.hash, revealTx: tx?.hash })
+    );
   }
 
   public async bulkCreateInitPlanets({
@@ -220,20 +254,22 @@ export class ArenaCreationManager {
     CHUNK_SIZE?: number;
   }) {
     const planetsToCreate = planets || config.INIT_PLANETS;
-    const createPlanetTxs = _.chunk(planetsToCreate, CHUNK_SIZE).map(async (chunk) => {
-      const args = Promise.resolve([chunk]);
-      const txIntent = {
-        methodName: 'bulkCreateAndReveal' as ContractMethodName,
-        contract: this.lobbyContract(),
-        args: args,
-      };
+    const createPlanetTxs = _.chunk(planetsToCreate, CHUNK_SIZE).map(
+      async (chunk) => {
+        const args = Promise.resolve([chunk]);
+        const txIntent = {
+          methodName: "bulkCreateAndReveal" as ContractMethodName,
+          contract: this.lobbyContract(),
+          args: args,
+        };
 
-      const tx = await this.contract.submitTransaction(txIntent, {
-        gasLimit: OPTIMISM_GAS_LIMIT,
-      });
+        const tx = await this.contract.submitTransaction(txIntent, {
+          gasLimit: OPTIMISM_GAS_LIMIT,
+        });
 
-      return tx.confirmedPromise;
-    });
+        return tx.confirmedPromise;
+      }
+    );
 
     await Promise.all(createPlanetTxs);
     console.log(
@@ -245,20 +281,23 @@ export class ArenaCreationManager {
   public async whitelistPlayer(address: EthAddress) {
     const args = Promise.resolve([address]);
     const txIntent = {
-      methodName: 'addToWhitelist' as ContractMethodName,
+      methodName: "addToWhitelist" as ContractMethodName,
       contract: this.contract.contract,
       args: args,
     };
 
     const tx = await this.contract.submitTransaction(txIntent, {
-      gasLimit: '15000000',
+      gasLimit: "15000000",
     });
 
     await tx.confirmedPromise;
     this.whitelistedAddresses.push(address);
   }
 
-  public lobbyPlanetToInitPlanet(planet: LobbyPlanet, initializers: LobbyInitializers) {
+  public lobbyPlanetToInitPlanet(
+    planet: LobbyPlanet,
+    initializers: LobbyInitializers
+  ) {
     const locationFunc = initializers.DISABLE_ZK_CHECKS
       ? fakeHash(initializers.PLANET_RARITY)
       : mimcHash(initializers.PLANETHASH_KEY);
@@ -287,7 +326,9 @@ export class ArenaCreationManager {
       requireValidLocationId: false,
       isTargetPlanet: planet.isTargetPlanet,
       isSpawnPlanet: planet.isSpawnPlanet,
-      blockedPlanetIds: planet.blockedPlanetLocs.map((p) => locationFunc(p.x, p.y).toString()),
+      blockedPlanetIds: planet.blockedPlanetLocs.map((p) =>
+        locationFunc(p.x, p.y).toString()
+      ),
     };
   }
 
@@ -296,7 +337,9 @@ export class ArenaCreationManager {
     planets: LobbyPlanet[]
   ): InitPlanet[] {
     const initPlanets: InitPlanet[] = [];
-    planets.forEach((p) => initPlanets.push(this.lobbyPlanetToInitPlanet(p, initializers)));
+    planets.forEach((p) =>
+      initPlanets.push(this.lobbyPlanetToInitPlanet(p, initializers))
+    );
     // SORT INIT PLANETS SO THEY HAVE SAME ORDER ON-CHAIN. THIS CAN BREAK CONFIG HASH OTHERWISE.
     initPlanets.sort((a, b) => (a.location > b.location ? 1 : -1));
     return initPlanets;
@@ -306,19 +349,26 @@ export class ArenaCreationManager {
     lobbyReceipt: TransactionReceipt,
     contract: DarkForest
   ): { owner: EthAddress; lobby: EthAddress } {
-    const lobbyCreatedHash = keccak256(toUtf8Bytes('LobbyCreated(address,address)'));
-    const log = lobbyReceipt.logs.find((log) => log.topics[0] === lobbyCreatedHash);
+    const lobbyCreatedHash = keccak256(
+      toUtf8Bytes("LobbyCreated(address,address)")
+    );
+    const log = lobbyReceipt.logs.find(
+      (log) => log.topics[0] === lobbyCreatedHash
+    );
     if (log) {
       return {
         owner: address(contract.interface.parseLog(log).args.creatorAddress),
         lobby: address(contract.interface.parseLog(log).args.lobbyAddress),
       };
     } else {
-      throw new Error('Lobby Created event not found');
+      throw new Error("Lobby Created event not found");
     }
   }
 
-  private generatePlanetData(planet: LobbyPlanet, initializers: LobbyInitializers) {
+  private generatePlanetData(
+    planet: LobbyPlanet,
+    initializers: LobbyInitializers
+  ) {
     const location = initializers.DISABLE_ZK_CHECKS
       ? fakeHash(initializers.PLANET_RARITY)(planet.x, planet.y).toString()
       : mimcHash(initializers.PLANETHASH_KEY)(planet.x, planet.y).toString();
@@ -383,10 +433,13 @@ export class ArenaCreationManager {
         planetHashKey.toString(),
         spaceTypeKey.toString(),
         scale.toString(),
-        mirrorX ? '1' : '0',
-        mirrorY ? '1' : '0',
+        mirrorX ? "1" : "0",
+        mirrorY ? "1" : "0",
       ]);
-      return buildContractCallArgs(proof, publicSignals) as RevealSnarkContractCallArgs;
+      return buildContractCallArgs(
+        proof,
+        publicSignals
+      ) as RevealSnarkContractCallArgs;
     } else {
       const input: RevealSnarkInput = {
         x: modPBigInt(x).toString(),
@@ -394,19 +447,26 @@ export class ArenaCreationManager {
         PLANETHASH_KEY: planetHashKey.toString(),
         SPACETYPE_KEY: spaceTypeKey.toString(),
         SCALE: scale.toString(),
-        xMirror: mirrorX ? '1' : '0',
-        yMirror: mirrorY ? '1' : '0',
+        xMirror: mirrorX ? "1" : "0",
+        yMirror: mirrorY ? "1" : "0",
       };
 
       const { proof, publicSignals }: SnarkJSProofAndSignals =
-        await window.snarkjs.groth16.fullProve(input, revealCircuitPath, revealZkeyPath);
+        await window.snarkjs.groth16.fullProve(
+          input,
+          revealCircuitPath,
+          revealZkeyPath
+        );
 
-      return buildContractCallArgs(proof, publicSignals) as RevealSnarkContractCallArgs;
+      return buildContractCallArgs(
+        proof,
+        publicSignals
+      ) as RevealSnarkContractCallArgs;
     }
   }
 
   private lobbyContract() {
-    if(!this.arenaAddress) throw new Error('no lobby created');
+    if (!this.arenaAddress) throw new Error("no lobby created");
     return this.connection.getContract<DarkForest>(this.arenaAddress);
   }
 
@@ -424,13 +484,13 @@ export class ArenaCreationManager {
   }
 
   getParentAddress() {
-    return this.parentAddress
+    return this.parentAddress;
   }
 
   getArenaAddress() {
     return this.arenaAddress;
   }
-  
+
   get arenaCreated() {
     return this.created;
   }
@@ -441,7 +501,11 @@ export class ArenaCreationManager {
   ): Promise<ArenaCreationManager> {
     try {
       const contract = await makeContractsAPI({ connection, contractAddress });
-      const manager = new ArenaCreationManager(contractAddress, contract, connection);
+      const manager = new ArenaCreationManager(
+        contractAddress,
+        contract,
+        connection
+      );
       return manager;
     } catch (e) {
       throw new Error("couldn't connect to blockchain.");

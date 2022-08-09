@@ -1,11 +1,11 @@
-import { Setting } from '@darkforest_eth/types';
-import { EventEmitter } from 'events';
-import NotificationManager from '../../Frontend/Game/NotificationManager';
-import { setBooleanSetting } from '../../Frontend/Utils/SettingsHooks';
-import GameUIManager from './GameUIManager';
+import { Setting } from "@dfdao/types";
+import { EventEmitter } from "events";
+import NotificationManager from "../../Frontend/Game/NotificationManager";
+import { setBooleanSetting } from "../../Frontend/Utils/SettingsHooks";
+import GameUIManager from "./GameUIManager";
 
 export const enum TutorialManagerEvent {
-  StateChanged = 'StateChanged',
+  StateChanged = "StateChanged",
 }
 
 export const enum TutorialState {
@@ -59,19 +59,19 @@ class TutorialManager extends EventEmitter {
     } else if (newState === TutorialState.HowToGetScore) {
       const targetLocation = this.uiManager.getPlayerTargetPlanets();
       if (targetLocation.length > 0) {
-        this.uiManager.centerLocationId(targetLocation[0].locationId)
-      };
+        this.uiManager.centerLocationId(targetLocation[0].locationId);
+      }
     } else if (newState === TutorialState.BlockedPlanet) {
       const blockedLocation = this.uiManager.getPlayerBlockedPlanets();
       if (blockedLocation.length > 0) {
-        this.uiManager.centerLocationId(blockedLocation[0].locationId)
-      };
-    }else if (newState === TutorialState.DefensePlanet) {
+        this.uiManager.centerLocationId(blockedLocation[0].locationId);
+      }
+    } else if (newState === TutorialState.DefensePlanet) {
       const defenseLocation = this.uiManager.getPlayerDefensePlanets();
       if (defenseLocation.length > 0) {
-        this.uiManager.centerLocationId(defenseLocation[0].locationId)
-      };
-    }else if (newState === TutorialState.ZoomOut) {
+        this.uiManager.centerLocationId(defenseLocation[0].locationId);
+      }
+    } else if (newState === TutorialState.ZoomOut) {
       const homeLocation = this.uiManager.getHomeHash();
       if (homeLocation) this.uiManager.centerLocationId(homeLocation);
     }
@@ -85,11 +85,31 @@ class TutorialManager extends EventEmitter {
   }
 
   private shouldSkipState(state: TutorialState) {
-    if (!this.uiManager.getSpaceJunkEnabled() && state === TutorialState.SpaceJunk) return true;
-    if (this.uiManager.getMySpaceships().length == 0 && state === TutorialState.Spaceship) return true;
-    if(this.uiManager.getPlayerTargetPlanets().length == 0 && state === TutorialState.HowToGetScore) return true;
-    if(this.uiManager.getPlayerBlockedPlanets().length == 0 && state === TutorialState.BlockedPlanet) return true;
-    if(this.uiManager.getPlayerDefensePlanets().length == 0 && state === TutorialState.DefensePlanet) return true;
+    if (
+      !this.uiManager.getSpaceJunkEnabled() &&
+      state === TutorialState.SpaceJunk
+    )
+      return true;
+    if (
+      this.uiManager.getMySpaceships().length == 0 &&
+      state === TutorialState.Spaceship
+    )
+      return true;
+    if (
+      this.uiManager.getPlayerTargetPlanets().length == 0 &&
+      state === TutorialState.HowToGetScore
+    )
+      return true;
+    if (
+      this.uiManager.getPlayerBlockedPlanets().length == 0 &&
+      state === TutorialState.BlockedPlanet
+    )
+      return true;
+    if (
+      this.uiManager.getPlayerDefensePlanets().length == 0 &&
+      state === TutorialState.DefensePlanet
+    )
+      return true;
 
     return false;
   }

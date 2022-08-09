@@ -4,7 +4,7 @@ import {
   PlanetMessageResponse,
   PostMessageRequest,
   SignedMessage,
-} from '@darkforest_eth/types';
+} from "@dfdao/types";
 
 export async function getMessagesOnPlanets(
   request: PlanetMessageRequest
@@ -16,14 +16,14 @@ export async function getMessagesOnPlanets(
   try {
     const response = await fetch(`${process.env.DF_WEBSERVER_URL}/messages`, {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(request),
-      method: 'POST',
+      method: "POST",
     });
     const responseBody = (await response.json()) as PlanetMessageResponse;
     if (response.status === 500) {
-      throw new Error('failed to load messages');
+      throw new Error("failed to load messages");
     }
     return responseBody;
   } catch (e) {
@@ -41,22 +41,24 @@ export async function addMessage(
   try {
     const res = await fetch(`${process.env.DF_WEBSERVER_URL}/add-message`, {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(request),
-      method: 'POST',
+      method: "POST",
     });
 
     if (res.status === 500) {
-      throw new Error('server error');
+      throw new Error("server error");
     }
   } catch (e) {
-    console.log('failed to add message', request);
+    console.log("failed to add message", request);
     console.log(e);
   }
 }
 
-export async function deleteMessages(request: SignedMessage<DeleteMessagesRequest>): Promise<void> {
+export async function deleteMessages(
+  request: SignedMessage<DeleteMessagesRequest>
+): Promise<void> {
   if (!process.env.DF_WEBSERVER_URL) {
     return;
   }
@@ -64,17 +66,17 @@ export async function deleteMessages(request: SignedMessage<DeleteMessagesReques
   try {
     const res = await fetch(`${process.env.DF_WEBSERVER_URL}/delete-messages`, {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(request),
-      method: 'POST',
+      method: "POST",
     });
 
     if (res.status === 500) {
-      throw new Error('server error');
+      throw new Error("server error");
     }
   } catch (e) {
-    console.log('failed delete messages', request);
+    console.log("failed delete messages", request);
     console.log(e);
   }
 }

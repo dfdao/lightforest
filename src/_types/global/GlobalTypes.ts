@@ -1,7 +1,7 @@
-import { Rectangle } from '@darkforest_eth/types';
-import { Dispatch, SetStateAction } from 'react';
-import GameManager from '../../Backend/GameLogic/GameManager';
-import GameUIManager from '../../Backend/GameLogic/GameUIManager';
+import { Rectangle } from "@dfdao/types";
+import { Dispatch, SetStateAction } from "react";
+import GameManager from "../../Backend/GameLogic/GameManager";
+import GameUIManager from "../../Backend/GameLogic/GameUIManager";
 
 export type Hook<T> = [T, Dispatch<SetStateAction<T>>];
 

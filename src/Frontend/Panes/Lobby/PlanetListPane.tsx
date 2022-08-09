@@ -1,14 +1,14 @@
-import { BLOCK_EXPLORER_URL } from '@darkforest_eth/constants';
-import _, { chunk } from 'lodash';
-import React, { useEffect, useMemo, useState } from 'react';
-import styled from 'styled-components';
+import { BLOCK_EXPLORER_URL } from "@dfdao/constants";
+import _, { chunk } from "lodash";
+import React, { useEffect, useMemo, useState } from "react";
+import styled from "styled-components";
 import {
   CreatedPlanet,
   ArenaCreationManager,
-} from '../../../Backend/GameLogic/ArenaCreationManager';
-import { Link, Spacer } from '../../Components/CoreUI';
-import { Row } from '../../Components/Row';
-import { Sub } from '../../Components/Text';
+} from "../../../Backend/GameLogic/ArenaCreationManager";
+import { Link, Spacer } from "../../Components/CoreUI";
+import { Row } from "../../Components/Row";
+import { Sub } from "../../Components/Text";
 import {
   CloseButton,
   CloseButtonStyle,
@@ -16,10 +16,21 @@ import {
   LobbyPlanet,
   mirrorX,
   mirrorY,
-} from './LobbiesUtils';
-import { InvalidConfigError, LobbyConfigAction, LobbyConfigState, toInitializers } from './Reducer';
+} from "./LobbiesUtils";
+import {
+  InvalidConfigError,
+  LobbyConfigAction,
+  LobbyConfigState,
+  toInitializers,
+} from "./Reducer";
 
-const PLANET_TYPE_NAMES = ['Planet', 'Asteroid Field', 'Foundry', 'Spacetime Rip', 'Quasar'];
+const PLANET_TYPE_NAMES = [
+  "Planet",
+  "Asteroid Field",
+  "Foundry",
+  "Spacetime Rip",
+  "Quasar",
+];
 export function PlanetListPane({
   config,
   onUpdate,
@@ -35,7 +46,9 @@ export function PlanetListPane({
   maxPlanetsPerPage?: number;
   selectedIndex?: number;
 }) {
-  const [createdPlanets, setCreatedPlanets] = useState<CreatedPlanet[] | undefined>();
+  const [createdPlanets, setCreatedPlanets] = useState<
+    CreatedPlanet[] | undefined
+  >();
 
   useEffect(() => {
     setCreatedPlanets(arenaCreationManager?.planets);
@@ -60,16 +73,16 @@ export function PlanetListPane({
         }}
         isSelected={index === selectedIndex}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <StagedPlanetIcon>
             {PLANET_TYPE_NAMES[planet.planetType] &&
               PLANET_TYPE_NAMES[planet.planetType].charAt(0).toUpperCase()}
           </StagedPlanetIcon>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <span
                 style={{
-                  color: '#fff',
+                  color: "#fff",
                 }}
               >
                 ({planet.x},{planet.y})
@@ -77,17 +90,21 @@ export function PlanetListPane({
               {planet.blockedPlanetLocs.length > 0 && (
                 <span>
                   🚫 {planet.blockedPlanetLocs.length} planet
-                  {planet.blockedPlanetLocs.length > 1 && 's'}
+                  {planet.blockedPlanetLocs.length > 1 && "s"}
                 </span>
               )}
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ color: '#bbb' }}>Level {planet.level}</span>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <span style={{ color: "#bbb" }}>Level {planet.level}</span>
               {planet.isSpawnPlanet && (
-                <span style={{ color: '#F4BF00', letterSpacing: '0.06em' }}>SPAWN</span>
+                <span style={{ color: "#F4BF00", letterSpacing: "0.06em" }}>
+                  SPAWN
+                </span>
               )}
               {planet.isTargetPlanet && (
-                <span style={{ color: '#FF4163', letterSpacing: '0.06em' }}>TARGET</span>
+                <span style={{ color: "#FF4163", letterSpacing: "0.06em" }}>
+                  TARGET
+                </span>
               )}
             </div>
           </div>
@@ -98,7 +115,11 @@ export function PlanetListPane({
               onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
                 e.stopPropagation();
                 e.nativeEvent.stopImmediatePropagation();
-                onUpdate({ type: 'ADMIN_PLANETS', value: undefined, index: index });
+                onUpdate({
+                  type: "ADMIN_PLANETS",
+                  value: undefined,
+                  index: index,
+                });
               }}
             />
           )}
@@ -140,7 +161,7 @@ export function PlanetListPane({
             {LobbyPlanets.length > maxPlanetsPerPage && (
               <PaginationContainer>
                 <PaginationArrowContainer
-                  style={{ transform: 'rotate(180deg)' }}
+                  style={{ transform: "rotate(180deg)" }}
                   onClick={() => {
                     setCurrentPage(Math.max(currentPage - 1, 0));
                   }}
@@ -149,16 +170,22 @@ export function PlanetListPane({
                   <IconArrowRight />
                 </PaginationArrowContainer>
                 <span>
-                  Page {currentPage + 1} of{' '}
+                  Page {currentPage + 1} of{" "}
                   {Math.floor(LobbyPlanets.length / maxPlanetsPerPage) + 1}
                 </span>
                 <PaginationArrowContainer
                   onClick={() => {
                     setCurrentPage(
-                      Math.min(currentPage + 1, Math.floor(LobbyPlanets.length / maxPlanetsPerPage))
+                      Math.min(
+                        currentPage + 1,
+                        Math.floor(LobbyPlanets.length / maxPlanetsPerPage)
+                      )
                     );
                   }}
-                  disabled={currentPage === Math.floor(LobbyPlanets.length / maxPlanetsPerPage)}
+                  disabled={
+                    currentPage ===
+                    Math.floor(LobbyPlanets.length / maxPlanetsPerPage)
+                  }
                 >
                   <IconArrowRight />
                 </PaginationArrowContainer>
@@ -174,10 +201,10 @@ export function PlanetListPane({
     );
   }
 
-  const CreatedPlanetListItem: React.FC<{ planet: CreatedPlanet; index: number }> = ({
-    planet,
-    index,
-  }) => {
+  const CreatedPlanetListItem: React.FC<{
+    planet: CreatedPlanet;
+    index: number;
+  }> = ({ planet, index }) => {
     const [hoveringPlanet, setHoveringPlanet] = useState<boolean>(false);
     return (
       <StagedPlanetListItem
@@ -192,26 +219,32 @@ export function PlanetListPane({
         {hoveringPlanet && (
           <HoverWrapper>
             {planet.createTx && (
-              <Link to={`${BLOCK_EXPLORER_URL}/${planet.createTx}`} style={{ margin: 'auto' }}>
+              <Link
+                to={`${BLOCK_EXPLORER_URL}/${planet.createTx}`}
+                style={{ margin: "auto" }}
+              >
                 <u>Create Tx</u>
               </Link>
             )}
             {planet.revealTx && (
-              <Link to={`${BLOCK_EXPLORER_URL}/${planet.revealTx}`} style={{ margin: 'auto' }}>
+              <Link
+                to={`${BLOCK_EXPLORER_URL}/${planet.revealTx}`}
+                style={{ margin: "auto" }}
+              >
                 <u>Reveal Tx</u>
               </Link>
             )}
           </HoverWrapper>
         )}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <StagedPlanetIcon>
             {PLANET_TYPE_NAMES[planet.planetType].charAt(0).toUpperCase()}
           </StagedPlanetIcon>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <span
                 style={{
-                  color: '#fff',
+                  color: "#fff",
                 }}
               >
                 ({planet.x},{planet.y})
@@ -219,17 +252,21 @@ export function PlanetListPane({
               {planet.blockedPlanetLocs.length > 0 && (
                 <span>
                   🚫 {planet.blockedPlanetLocs.length} planet
-                  {planet.blockedPlanetLocs.length > 1 && 's'}
+                  {planet.blockedPlanetLocs.length > 1 && "s"}
                 </span>
               )}
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ color: '#bbb' }}>Level {planet.level}</span>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <span style={{ color: "#bbb" }}>Level {planet.level}</span>
               {planet.isSpawnPlanet && (
-                <span style={{ color: '#F4BF00', letterSpacing: '0.06em' }}>SPAWN</span>
+                <span style={{ color: "#F4BF00", letterSpacing: "0.06em" }}>
+                  SPAWN
+                </span>
               )}
               {planet.isTargetPlanet && (
-                <span style={{ color: '#FF4163', letterSpacing: '0.06em' }}>TARGET</span>
+                <span style={{ color: "#FF4163", letterSpacing: "0.06em" }}>
+                  TARGET
+                </span>
               )}
             </div>
           </div>
@@ -238,7 +275,11 @@ export function PlanetListPane({
     );
   };
 
-  function CreatedPlanets({ planets }: { planets: CreatedPlanet[] | undefined }) {
+  function CreatedPlanets({
+    planets,
+  }: {
+    planets: CreatedPlanet[] | undefined;
+  }) {
     return planets && planets.length > 0 ? (
       <>
         <Row>
@@ -257,7 +298,7 @@ export function PlanetListPane({
       <Row>
         <Sub>
           {arenaCreationManager
-            ? 'No planets created '
+            ? "No planets created "
             : "Planets won't be created on-chain until world is created"}
         </Sub>
       </Row>
@@ -269,7 +310,10 @@ export function PlanetListPane({
       {config.ADMIN_CAN_ADD_PLANETS.displayValue ? (
         <>
           {config.NO_ADMIN.displayValue && arenaCreationManager && (
-            <Sub>You cannot stage planets after universe creation if admin disabled.</Sub>
+            <Sub>
+              You cannot stage planets after universe creation if admin
+              disabled.
+            </Sub>
           )}
           <StagedPlanets config={config} onUpdate={onUpdate} />
           <Spacer height={24} />
@@ -296,7 +340,7 @@ const StagedPlanetListItem = styled.div<{ isSelected: boolean }>`
   cursor: pointer;
   position: relative;
   justify-content: space-between;
-  background: ${({ isSelected }) => (isSelected ? '#252525' : 'transparent')};
+  background: ${({ isSelected }) => (isSelected ? "#252525" : "transparent")};
   transition: all 0.2s ease-in-out;
   &:hover {
     background: #252525;
@@ -320,12 +364,14 @@ const PaginationContainer = styled.div`
   margin-top: 8px;
 `;
 
-const PaginationArrowContainer = styled(CloseButtonStyle)<{ disabled: boolean }>`
+const PaginationArrowContainer = styled(CloseButtonStyle)<{
+  disabled: boolean;
+}>`
   background: transparent;
-  color: ${({ disabled }) => (disabled ? '#bbb' : '#fff')};
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  color: ${({ disabled }) => (disabled ? "#bbb" : "#fff")};
+  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
   &:hover {
-    background: ${({ disabled }) => (disabled ? 'transparent' : '#505050')};
+    background: ${({ disabled }) => (disabled ? "transparent" : "#505050")};
   }
 `;
 
@@ -346,12 +392,18 @@ const HoverWrapper = styled.div`
 
 const IconArrowRight = () => {
   return (
-    <svg width='15' height='15' viewBox='0 0 15 15' fill='none' xmlns='http://www.w3.org/2000/svg'>
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 15 15"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <path
-        d='M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z'
-        fill='currentColor'
-        fillRule='evenodd'
-        clipRule='evenodd'
+        d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z"
+        fill="currentColor"
+        fillRule="evenodd"
+        clipRule="evenodd"
       ></path>
     </svg>
   );

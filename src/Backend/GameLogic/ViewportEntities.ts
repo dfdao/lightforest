@@ -1,5 +1,5 @@
-import { MAX_PLANET_LEVEL, MIN_PLANET_LEVEL } from '@darkforest_eth/constants';
-import { isLocatable } from '@darkforest_eth/gamelogic';
+import { MAX_PLANET_LEVEL, MIN_PLANET_LEVEL } from "@dfdao/constants";
+import { isLocatable } from "@dfdao/gamelogic";
 import {
   Chunk,
   LocatablePlanet,
@@ -8,11 +8,14 @@ import {
   PlanetRenderInfo,
   Radii,
   WorldCoords,
-} from '@darkforest_eth/types';
-import Viewport from '../../Frontend/Game/Viewport';
-import { planetLevelToAnimationSpeed, sinusoidalAnimation } from '../Utils/Animation';
-import GameManager from './GameManager';
-import GameUIManager from './GameUIManager';
+} from "@dfdao/types";
+import Viewport from "../../Frontend/Game/Viewport";
+import {
+  planetLevelToAnimationSpeed,
+  sinusoidalAnimation,
+} from "../Utils/Animation";
+import GameManager from "./GameManager";
+import GameUIManager from "./GameUIManager";
 
 /**
  * Efficiently calculates which planets are in the viewport, and allows you to find the nearest
@@ -59,7 +62,9 @@ export class ViewportEntities {
     this.uiManager.updateDiagnostics((d) => {
       d.visibleChunks = this.cachedExploredChunks.size;
       d.visiblePlanets = this.cachedPlanets.size;
-      d.totalPlanets = this.gameManager.getGameObjects().getAllPlanetsMap().size;
+      d.totalPlanets = this.gameManager
+        .getGameObjects()
+        .getAllPlanetsMap().size;
     });
   }
 
@@ -121,14 +126,14 @@ export class ViewportEntities {
     const radii = this.getPlanetRadii(Viewport.getInstance());
     const planetsToRemove = new Set(Array.from(this.cachedPlanets.keys()));
     const player = this.uiManager.getAccount();
-    if(!player) return;
+    if (!player) return;
     newPlanetsInViewport.forEach((planet: LocatablePlanet) => {
       planetsToRemove.delete(planet.locationId);
 
       const newPlanetInfo: PlanetRenderInfo = {
         planet: planet,
         radii: radii.get(planet.planetLevel) as Radii,
-        blocked: this.gameManager.playerMoveBlocked(player, planet.locationId)
+        blocked: this.gameManager.playerMoveBlocked(player, planet.locationId),
       };
 
       if (!planet.emojiBobAnimation) {
@@ -158,13 +163,16 @@ export class ViewportEntities {
    * If a smaller and a larger planet are both within respective radii of coords, the smaller
    * planet is returned.
    */
-  public getNearestVisiblePlanet(coords: WorldCoords): LocatablePlanet | undefined {
+  public getNearestVisiblePlanet(
+    coords: WorldCoords
+  ): LocatablePlanet | undefined {
     const radii = this.getPlanetRadii(Viewport.getInstance());
     let bestPlanet: LocatablePlanet | undefined;
 
     for (const planetInfo of this.cachedPlanets.values()) {
       const planet = planetInfo.planet;
-      const distThreshold = radii.get(planet.planetLevel)?.radiusWorld as number;
+      const distThreshold = radii.get(planet.planetLevel)
+        ?.radiusWorld as number;
 
       if (
         Math.abs(coords.x - planet.location.coords.x) <= distThreshold &&
@@ -187,7 +195,9 @@ export class ViewportEntities {
     const result = new Map();
 
     for (let i = MIN_PLANET_LEVEL; i <= MAX_PLANET_LEVEL; i++) {
-      const radiusWorld = this.uiManager.getRadiusOfPlanetLevel(i as PlanetLevel);
+      const radiusWorld = this.uiManager.getRadiusOfPlanetLevel(
+        i as PlanetLevel
+      );
       const radiusPixels = viewport.worldToCanvasDist(radiusWorld);
 
       result.set(i, { radiusWorld, radiusPixels });
@@ -203,7 +213,9 @@ export class ViewportEntities {
   private getVisiblePlanetLevels(viewport: Viewport) {
     const result = [];
 
-    const viewportWidthPx = viewport.worldToCanvasDist(viewport.getViewportWorldWidth());
+    const viewportWidthPx = viewport.worldToCanvasDist(
+      viewport.getViewportWorldWidth()
+    );
     const minPlanetSize = viewportWidthPx > 40_000 ? 3 : 1;
 
     for (let i = 0; i <= MAX_PLANET_LEVEL; i++) {

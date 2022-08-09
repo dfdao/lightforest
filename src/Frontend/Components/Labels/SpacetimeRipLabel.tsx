@@ -1,6 +1,6 @@
-import { PlanetType, PlanetTypeNames } from '@darkforest_eth/types';
-import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import { PlanetType, PlanetTypeNames } from "@dfdao/types";
+import React from "react";
+import styled, { keyframes } from "styled-components";
 
 const Wrap = styled.span`
   position: relative;
@@ -43,9 +43,9 @@ function SpacetimeRipLabelRaw() {
     <Wrap>
       <Static>{PlanetTypeNames[PlanetType.TRADING_POST]}</Static>
       <Anim>
-        {PlanetTypeNames[PlanetType.TRADING_POST].split('').map((c, i) => (
+        {PlanetTypeNames[PlanetType.TRADING_POST].split("").map((c, i) => (
           <AnimDelay i={i} key={i}>
-            {c === ' ' ? <>&nbsp;</> : c}
+            {c === " " ? <>&nbsp;</> : c}
           </AnimDelay>
         ))}
       </Anim>

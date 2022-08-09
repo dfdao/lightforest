@@ -1,26 +1,33 @@
-import { RECOMMENDED_MODAL_WIDTH } from '@darkforest_eth/constants';
-import { ModalName } from '@darkforest_eth/types';
-import React, { useState } from 'react';
-import { Btn } from '../../Components/Btn';
-import { Expand, Spacer } from '../../Components/CoreUI';
-import { DarkForestTextInput, TextInput } from '../../Components/Input';
-import { TwitterLink } from '../../Components/Labels/Labels';
-import { LoadingSpinner } from '../../Components/LoadingSpinner';
-import { Red } from '../../Components/Text';
-import { usePlayer, useUIManager } from '../../Utils/AppHooks';
-import { ModalPane } from '../../Views/Game/ModalPane';
-import { TabbedView } from '../../Views/TabbedView';
+import { RECOMMENDED_MODAL_WIDTH } from "@dfdao/constants";
+import { ModalName } from "@dfdao/types";
+import React, { useState } from "react";
+import { Btn } from "../../Components/Btn";
+import { Expand, Spacer } from "../../Components/CoreUI";
+import { DarkForestTextInput, TextInput } from "../../Components/Input";
+import { TwitterLink } from "../../Components/Labels/Labels";
+import { LoadingSpinner } from "../../Components/LoadingSpinner";
+import { Red } from "../../Components/Text";
+import { usePlayer, useUIManager } from "../../Utils/AppHooks";
+import { ModalPane } from "../../Views/Game/ModalPane";
+import { TabbedView } from "../../Views/TabbedView";
 
-export function TwitterVerifyPane({ visible, onClose }: { visible: boolean; onClose: () => void }) {
+export function TwitterVerifyPane({
+  visible,
+  onClose,
+}: {
+  visible: boolean;
+  onClose: () => void;
+}) {
   const uiManager = useUIManager();
   const user = usePlayer(uiManager);
-  const [twitterHandleInputValue, setTwitterHandleInputValue] = useState<string>('');
+  const [twitterHandleInputValue, setTwitterHandleInputValue] =
+    useState<string>("");
   const [verifying, setVerifying] = useState(false);
   const [disconnecting, setDisconnecting] = useState(false);
   const [error, setError] = useState(false);
 
   const onTwitterInputChange = (newHandle: string) => {
-    setTwitterHandleInputValue(newHandle.replace('@', ''));
+    setTwitterHandleInputValue(newHandle.replace("@", ""));
   };
 
   /**
@@ -29,9 +36,15 @@ export function TwitterVerifyPane({ visible, onClose }: { visible: boolean; onCl
    */
   const onTweetClick = async () => {
     if (uiManager) {
-      const tweetText = await uiManager.generateVerificationTweet(twitterHandleInputValue);
-      const str = `Verifying my @darkforest_eth @d_fdao arena account (https://arena.dfdao.xyz): ${tweetText}`;
-      window.open(`https://twitter.com/intent/tweet?hashtags=darkforest&text=${encodeURI(str)}`);
+      const tweetText = await uiManager.generateVerificationTweet(
+        twitterHandleInputValue
+      );
+      const str = `Verifying my @dfdao @d_fdao arena account (https://arena.dfdao.xyz): ${tweetText}`;
+      window.open(
+        `https://twitter.com/intent/tweet?hashtags=darkforest&text=${encodeURI(
+          str
+        )}`
+      );
     }
   };
 
@@ -55,7 +68,7 @@ export function TwitterVerifyPane({ visible, onClose }: { visible: boolean; onCl
    * Called when the user clicks the 'disconnect' button. Allows them to disconnect their account from twitter.
    */
   const onDisconnectClick = async () => {
-    if (confirm('are you sure you want to disconnect your twitter?')) {
+    if (confirm("are you sure you want to disconnect your twitter?")) {
       try {
         setDisconnecting(true);
         await uiManager?.disconnectTwitter(twitterHandleInputValue);
@@ -70,7 +83,7 @@ export function TwitterVerifyPane({ visible, onClose }: { visible: boolean; onCl
   return (
     <ModalPane
       id={ModalName.TwitterVerify}
-      title='Connect/Disconnect Twitter'
+      title="Connect/Disconnect Twitter"
       visible={visible}
       onClose={onClose}
       initialPosition={{ y: 100, x: window.innerWidth / 2 - 300 }}
@@ -78,7 +91,7 @@ export function TwitterVerifyPane({ visible, onClose }: { visible: boolean; onCl
     >
       {user.value !== undefined && user.value.twitter === undefined && (
         <TabbedView
-          tabTitles={['Tweet Proof', 'Verify Tweet']}
+          tabTitles={["Tweet Proof", "Verify Tweet"]}
           tabContents={(i: number) => {
             if (i === 0)
               return (
@@ -86,15 +99,15 @@ export function TwitterVerifyPane({ visible, onClose }: { visible: boolean; onCl
                   Tweet a signed message, proving account ownership!
                   <Spacer height={8} />
                   <TextInput
-                    placeholder='Your Twitter handle'
+                    placeholder="Your Twitter handle"
                     value={twitterHandleInputValue}
-                    onChange={(e: Event & React.ChangeEvent<DarkForestTextInput>) =>
-                      onTwitterInputChange(e.target.value)
-                    }
+                    onChange={(
+                      e: Event & React.ChangeEvent<DarkForestTextInput>
+                    ) => onTwitterInputChange(e.target.value)}
                   />
                   <Spacer height={8} />
                   <Expand />
-                  <Btn size='stretch' onClick={onTweetClick}>
+                  <Btn size="stretch" onClick={onTweetClick}>
                     Tweet
                   </Btn>
                 </>
@@ -106,11 +119,11 @@ export function TwitterVerifyPane({ visible, onClose }: { visible: boolean; onCl
                   After tweeting, click the button below to verify ownership!
                   <Spacer height={8} />
                   <TextInput
-                    placeholder='Your Twitter handle'
+                    placeholder="Your Twitter handle"
                     value={twitterHandleInputValue}
-                    onChange={(e: Event & React.ChangeEvent<DarkForestTextInput>) =>
-                      onTwitterInputChange(e.target.value)
-                    }
+                    onChange={(
+                      e: Event & React.ChangeEvent<DarkForestTextInput>
+                    ) => onTwitterInputChange(e.target.value)}
                   />
                   <Spacer height={8} />
                   <Expand />
@@ -120,8 +133,16 @@ export function TwitterVerifyPane({ visible, onClose }: { visible: boolean; onCl
                       <Red>error verifying ownership</Red>
                     </>
                   )}
-                  <Btn size='stretch' disabled={verifying} onClick={onVerifyClick}>
-                    {verifying ? <LoadingSpinner initialText={'Verifying...'} /> : 'Verify'}
+                  <Btn
+                    size="stretch"
+                    disabled={verifying}
+                    onClick={onVerifyClick}
+                  >
+                    {verifying ? (
+                      <LoadingSpinner initialText={"Verifying..."} />
+                    ) : (
+                      "Verify"
+                    )}
                   </Btn>
                 </>
               );
@@ -132,14 +153,18 @@ export function TwitterVerifyPane({ visible, onClose }: { visible: boolean; onCl
 
       {user.value !== undefined && user.value.twitter && (
         <>
-          You are connected, <TwitterLink twitter={user.value.twitter} />. You can disconnect from
-          twitter anytime by clicking the button below.
+          You are connected, <TwitterLink twitter={user.value.twitter} />. You
+          can disconnect from twitter anytime by clicking the button below.
           <Spacer height={16} />
-          <Btn size='stretch' disabled={disconnecting} onClick={onDisconnectClick}>
+          <Btn
+            size="stretch"
+            disabled={disconnecting}
+            onClick={onDisconnectClick}
+          >
             {verifying ? (
-              <LoadingSpinner initialText={'Disconnecting Twitter...'} />
+              <LoadingSpinner initialText={"Disconnecting Twitter..."} />
             ) : (
-              'Disconnect Twitter'
+              "Disconnect Twitter"
             )}
           </Btn>
         </>

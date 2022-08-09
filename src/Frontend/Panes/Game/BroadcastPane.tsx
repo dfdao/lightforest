@@ -1,16 +1,16 @@
-import { isUnconfirmedRevealTx } from '@darkforest_eth/serde';
-import { EthAddress, LocationId } from '@darkforest_eth/types';
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { Btn } from '../../Components/Btn';
-import { CenterBackgroundSubtext, Spacer } from '../../Components/CoreUI';
-import { LoadingSpinner } from '../../Components/LoadingSpinner';
-import { Blue, White } from '../../Components/Text';
-import { formatDuration, TimeUntil } from '../../Components/TimeUntil';
-import dfstyles from '../../Styles/dfstyles';
-import { usePlanet, useUIManager } from '../../Utils/AppHooks';
-import { useEmitterValue } from '../../Utils/EmitterHooks';
-import { ModalHandle } from '../../Views/Game/ModalPane';
+import { isUnconfirmedRevealTx } from "@dfdao/serde";
+import { EthAddress, LocationId } from "@dfdao/types";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { Btn } from "../../Components/Btn";
+import { CenterBackgroundSubtext, Spacer } from "../../Components/CoreUI";
+import { LoadingSpinner } from "../../Components/LoadingSpinner";
+import { Blue, White } from "../../Components/Text";
+import { formatDuration, TimeUntil } from "../../Components/TimeUntil";
+import dfstyles from "../../Styles/dfstyles";
+import { usePlanet, useUIManager } from "../../Utils/AppHooks";
+import { useEmitterValue } from "../../Utils/EmitterHooks";
+import { ModalHandle } from "../../Views/Game/ModalPane";
 
 const BroadcastWrapper = styled.div`
   & .row {
@@ -42,8 +42,8 @@ export function BroadcastPaneHelpContent() {
     <div>
       Reveal this planet's location to all other players on-chain!
       <Spacer height={8} />
-      Broadcasting can be a potent offensive tactic! Reveal a powerful enemy's location, and maybe
-      someone else will take care of them for you?
+      Broadcasting can be a potent offensive tactic! Reveal a powerful enemy's
+      location, and maybe someone else will take care of them for you?
     </div>
   );
 }
@@ -56,7 +56,10 @@ export function BroadcastPane({
   initialPlanetId: LocationId | undefined;
 }) {
   const uiManager = useUIManager();
-  const planetId = useEmitterValue(uiManager.selectedPlanetId$, initialPlanetId);
+  const planetId = useEmitterValue(
+    uiManager.selectedPlanetId$,
+    initialPlanetId
+  );
   const planet = usePlanet(uiManager, planetId).value;
 
   const getLoc = () => {
@@ -76,7 +79,8 @@ export function BroadcastPane({
 
   const [account, setAccount] = useState<EthAddress | undefined>(undefined); // consider moving this one to parent
   const isRevealed = planet?.coordsRevealed;
-  const broadcastCooldownPassed = uiManager.getNextBroadcastAvailableTimestamp() <= Date.now();
+  const broadcastCooldownPassed =
+    uiManager.getNextBroadcastAvailableTimestamp() <= Date.now();
   const currentlyBroadcastingAnyPlanet = uiManager.isCurrentlyRevealing();
 
   useEffect(() => {
@@ -91,7 +95,7 @@ export function BroadcastPane({
   } else if (planet?.transactions?.hasTransaction(isUnconfirmedRevealTx)) {
     revealBtn = (
       <Btn disabled={true}>
-        <LoadingSpinner initialText={'Broadcasting...'} />
+        <LoadingSpinner initialText={"Broadcasting..."} />
       </Btn>
     );
   } else if (!broadcastCooldownPassed) {
@@ -113,19 +117,23 @@ export function BroadcastPane({
       )}
       {planet?.owner === account && (
         <p>
-          <Blue>INFO:</Blue> You own this planet! Revealing its location is a dangerous flex.
+          <Blue>INFO:</Blue> You own this planet! Revealing its location is a
+          dangerous flex.
         </p>
       )}
       {isRevealed && (
         <p>
-          <Blue>INFO:</Blue> This planet's location is already revealed, and can't be revealed
-          again!
+          <Blue>INFO:</Blue> This planet's location is already revealed, and
+          can't be revealed again!
         </p>
       )}
       {!broadcastCooldownPassed && (
         <p>
-          <Blue>INFO:</Blue> You must wait{' '}
-          <TimeUntil timestamp={uiManager.getNextBroadcastAvailableTimestamp()} ifPassed={'now!'} />{' '}
+          <Blue>INFO:</Blue> You must wait{" "}
+          <TimeUntil
+            timestamp={uiManager.getNextBroadcastAvailableTimestamp()}
+            ifPassed={"now!"}
+          />{" "}
           to reveal another planet.
         </p>
       )}
@@ -136,25 +144,27 @@ export function BroadcastPane({
     return (
       <BroadcastWrapper>
         <div>
-          You can broadcast a planet to publically reveal its location on the map. You can only
-          broadcast a planet's location once every{' '}
+          You can broadcast a planet to publically reveal its location on the
+          map. You can only broadcast a planet's location once every{" "}
           <White>
-            {formatDuration(uiManager.contractConstants.LOCATION_REVEAL_COOLDOWN * 1000)}
+            {formatDuration(
+              uiManager.contractConstants.LOCATION_REVEAL_COOLDOWN * 1000
+            )}
           </White>
           .
         </div>
-        <div className='message'>{warningsSection}</div>
-        <div className='row'>
+        <div className="message">{warningsSection}</div>
+        <div className="row">
           <span>Coordinates</span>
           <span>{`(${getLoc().x}, ${getLoc().y})`}</span>
         </div>
         <Spacer height={8} />
-        <p style={{ textAlign: 'right' }}>{revealBtn}</p>
+        <p style={{ textAlign: "right" }}>{revealBtn}</p>
       </BroadcastWrapper>
     );
   } else {
     return (
-      <CenterBackgroundSubtext width='100%' height='75px'>
+      <CenterBackgroundSubtext width="100%" height="75px">
         Select a Planet
       </CenterBackgroundSubtext>
     );

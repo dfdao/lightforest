@@ -1,29 +1,40 @@
-import { ModalName, Planet, PlanetType } from '@darkforest_eth/types';
-import React, { useCallback, useEffect, useMemo } from 'react';
-import GameUIManager from '../../../Backend/GameLogic/GameUIManager';
-import { Wrapper } from '../../../Backend/Utils/Wrapper';
-import { CapturePlanetButton } from '../../Components/CapturePlanetButton';
-import { TargetPlanetButton } from '../../Components/TargetPlanetButton';
-import { VerticalSplit } from '../../Components/CoreUI';
-import { MineArtifactButton } from '../../Components/MineArtifactButton';
+import { ModalName, Planet, PlanetType } from "@dfdao/types";
+import React, { useCallback, useEffect, useMemo } from "react";
+import GameUIManager from "../../../Backend/GameLogic/GameUIManager";
+import { Wrapper } from "../../../Backend/Utils/Wrapper";
+import { CapturePlanetButton } from "../../Components/CapturePlanetButton";
+import { TargetPlanetButton } from "../../Components/TargetPlanetButton";
+import { VerticalSplit } from "../../Components/CoreUI";
+import { MineArtifactButton } from "../../Components/MineArtifactButton";
 import {
   OpenBroadcastPaneButton,
   OpenHatPaneButton,
   OpenManagePlanetArtifactsButton,
   OpenPlanetInfoButton,
   OpenUpgradeDetailsPaneButton,
-} from '../../Components/OpenPaneButtons';
-import { snips } from '../../Styles/dfstyles';
-import { useAddress, useSelectedPlanet, useUIManager } from '../../Utils/AppHooks';
-import { useEmitterSubscribe } from '../../Utils/EmitterHooks';
-import { useOnUp } from '../../Utils/KeyEmitters';
-import { EXIT_PANE, TOGGLE_ABANDON, TOGGLE_SEND } from '../../Utils/ShortcutConstants';
-import UIEmitter, { UIEmitterEvent } from '../../Utils/UIEmitter';
-import { ModalHandle, ModalPane } from '../../Views/Game/ModalPane';
-import { PlanetCard, PlanetCardTitle } from '../../Views/Game/PlanetCard';
-import { getNotifsForPlanet, PlanetNotifications } from '../../Views/PlanetNotifications';
-import { SendResources } from '../../Views/Game/SendResources';
-import { WithdrawSilver } from '../../Views/Game/WithdrawSilver';
+} from "../../Components/OpenPaneButtons";
+import { snips } from "../../Styles/dfstyles";
+import {
+  useAddress,
+  useSelectedPlanet,
+  useUIManager,
+} from "../../Utils/AppHooks";
+import { useEmitterSubscribe } from "../../Utils/EmitterHooks";
+import { useOnUp } from "../../Utils/KeyEmitters";
+import {
+  EXIT_PANE,
+  TOGGLE_ABANDON,
+  TOGGLE_SEND,
+} from "../../Utils/ShortcutConstants";
+import UIEmitter, { UIEmitterEvent } from "../../Utils/UIEmitter";
+import { ModalHandle, ModalPane } from "../../Views/Game/ModalPane";
+import { PlanetCard, PlanetCardTitle } from "../../Views/Game/PlanetCard";
+import {
+  getNotifsForPlanet,
+  PlanetNotifications,
+} from "../../Views/PlanetNotifications";
+import { SendResources } from "../../Views/Game/SendResources";
+import { WithdrawSilver } from "../../Views/Game/WithdrawSilver";
 
 function PlanetContextPaneContent({
   modal,
@@ -39,7 +50,10 @@ function PlanetContextPaneContent({
   onToggleAbandon: () => void;
 }) {
   const account = useAddress(uiManager);
-  const notifs = useMemo(() => getNotifsForPlanet(planet.value, account), [planet, account]);
+  const notifs = useMemo(
+    () => getNotifsForPlanet(planet.value, account),
+    [planet, account]
+  );
   const owned = planet.value?.owner === account;
 
   useEffect(() => {
@@ -60,7 +74,9 @@ function PlanetContextPaneContent({
 
   let upgradeRow = null;
   if (!p?.destroyed && owned) {
-    upgradeRow = <OpenUpgradeDetailsPaneButton modal={modal} planetId={p?.locationId} />;
+    upgradeRow = (
+      <OpenUpgradeDetailsPaneButton modal={modal} planetId={p?.locationId} />
+    );
   }
 
   let hatRow = null;
@@ -97,7 +113,10 @@ function PlanetContextPaneContent({
           <OpenPlanetInfoButton modal={modal} planetId={p?.locationId} />
         </>
         <>
-          <OpenManagePlanetArtifactsButton modal={modal} planetId={p?.locationId} />
+          <OpenManagePlanetArtifactsButton
+            modal={modal}
+            planetId={p?.locationId}
+          />
           {hatRow}
         </>
       </VerticalSplit>
@@ -111,14 +130,20 @@ export function SelectedPlanetHelpContent() {
   return (
     <div>
       <p>
-        This pane allows you to interact with the currently selected planet. Pressing the ESCAPE key
-        allows you to deselect the current planet.
+        This pane allows you to interact with the currently selected planet.
+        Pressing the ESCAPE key allows you to deselect the current planet.
       </p>
     </div>
   );
 }
 
-export function PlanetContextPane({ visible, onClose }: { visible: boolean; onClose: () => void }) {
+export function PlanetContextPane({
+  visible,
+  onClose,
+}: {
+  visible: boolean;
+  onClose: () => void;
+}) {
   const uiManager = useUIManager();
   const planet = useSelectedPlanet(uiManager);
 
@@ -126,7 +151,11 @@ export function PlanetContextPane({ visible, onClose }: { visible: boolean; onCl
   const doSend = useCallback(() => {
     if (!uiManager) return;
     const uiEmitter = UIEmitter.getInstance();
-    if (uiManager.isSendingForces() || uiManager.isSendingShip() || uiManager.isAbandoning()) {
+    if (
+      uiManager.isSendingForces() ||
+      uiManager.isSendingShip() ||
+      uiManager.isAbandoning()
+    ) {
       uiEmitter.emit(UIEmitterEvent.SendInitiated, planet.value);
     } else {
       uiEmitter.emit(UIEmitterEvent.SendCancelled);
@@ -134,7 +163,11 @@ export function PlanetContextPane({ visible, onClose }: { visible: boolean; onCl
   }, [planet, uiManager]);
 
   const toggleSendingForces = useCallback(() => {
-    if (planet.value?.destroyed && !uiManager.isSendingShip(planet.value?.locationId)) return;
+    if (
+      planet.value?.destroyed &&
+      !uiManager.isSendingShip(planet.value?.locationId)
+    )
+      return;
     const isAbandoning = uiManager.isAbandoning();
     if (isAbandoning) return;
     const isSending = uiManager.isSendingForces();
@@ -210,10 +243,12 @@ export function PlanetContextPane({ visible, onClose }: { visible: boolean; onCl
       visible={visible}
       onClose={onClose}
       id={ModalName.PlanetContextPane}
-      title={(small: boolean) => <PlanetCardTitle small={small} planet={planet} />}
+      title={(small: boolean) => (
+        <PlanetCardTitle small={small} planet={planet} />
+      )}
       hideClose
       helpContent={SelectedPlanetHelpContent}
-      width='375px'
+      width="375px"
     >
       {render}
     </ModalPane>

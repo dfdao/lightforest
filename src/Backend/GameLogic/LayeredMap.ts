@@ -1,6 +1,6 @@
-import { MAX_PLANET_LEVEL, MIN_PLANET_LEVEL } from '@darkforest_eth/constants';
-import { LocationId, Radii, WorldCoords, WorldLocation } from '@darkforest_eth/types';
-import { Box, Circle, Point, QuadTree } from 'js-quadtree';
+import { MAX_PLANET_LEVEL, MIN_PLANET_LEVEL } from "@dfdao/constants";
+import { LocationId, Radii, WorldCoords, WorldLocation } from "@dfdao/types";
+import { Box, Circle, Point, QuadTree } from "js-quadtree";
 
 /**
  * For every point in each of the planet quadtrees, we store a pointer to the planet.
@@ -22,7 +22,12 @@ export class LayeredMap {
     // add 500k so that players have the ability to mine far outside the current world radius.
     worldRadius += 500_000;
 
-    const worldSize = new Box(-worldRadius, -worldRadius, worldRadius * 2, worldRadius * 2);
+    const worldSize = new Box(
+      -worldRadius,
+      -worldRadius,
+      worldRadius * 2,
+      worldRadius * 2
+    );
 
     this.perLevelPlanetQuadtrees = new Map();
     this.insertedLocations = new Set();
@@ -46,18 +51,25 @@ export class LayeredMap {
     }
     const quadTree = this.perLevelPlanetQuadtrees.get(planetLevel);
     const newPointData: PlanetPointData = { locationId: location.hash };
-    quadTree?.insert(new Point(location.coords.x, location.coords.y, newPointData));
+    quadTree?.insert(
+      new Point(location.coords.x, location.coords.y, newPointData)
+    );
     this.insertedLocations.add(location.hash);
   }
 
   /**
    * Gets all the planets within the given world radius of a world location.
    */
-  public getPlanetsInCircle(coords: WorldCoords, worldRadius: number): LocationId[] {
+  public getPlanetsInCircle(
+    coords: WorldCoords,
+    worldRadius: number
+  ): LocationId[] {
     const results = [];
     for (const quad of this.perLevelPlanetQuadtrees.values()) {
       results.push(
-        ...quad.query(new Circle(coords.x, coords.y, worldRadius)).map(this.getPointLocationId)
+        ...quad
+          .query(new Circle(coords.x, coords.y, worldRadius))
+          .map(this.getPointLocationId)
       );
     }
     return results;
@@ -90,7 +102,10 @@ export class LayeredMap {
       );
 
       const planets =
-        this.perLevelPlanetQuadtrees.get(level)?.query(bounds).map(this.getPointLocationId) || [];
+        this.perLevelPlanetQuadtrees
+          .get(level)
+          ?.query(bounds)
+          .map(this.getPointLocationId) || [];
 
       result.push(...planets);
     }

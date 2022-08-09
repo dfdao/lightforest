@@ -1,18 +1,18 @@
-import { isUnconfirmedWithdrawSilverTx } from '@darkforest_eth/serde';
-import { Planet, PlanetType, TooltipName } from '@darkforest_eth/types';
-import React, { useCallback, useMemo, useState } from 'react';
-import styled from 'styled-components';
-import { Wrapper } from '../../../Backend/Utils/Wrapper';
-import { Hook } from '../../../_types/global/GlobalTypes';
-import { Btn } from '../../Components/Btn';
-import { CenterBackgroundSubtext } from '../../Components/CoreUI';
-import { DarkForestNumberInput, NumberInput } from '../../Components/Input';
-import { LoadingSpinner } from '../../Components/LoadingSpinner';
-import { Row } from '../../Components/Row';
-import { Red } from '../../Components/Text';
-import { TooltipTrigger } from '../../Panes/Tooltip';
-import dfstyles from '../../Styles/dfstyles';
-import { useUIManager } from '../../Utils/AppHooks';
+import { isUnconfirmedWithdrawSilverTx } from "@dfdao/serde";
+import { Planet, PlanetType, TooltipName } from "@dfdao/types";
+import React, { useCallback, useMemo, useState } from "react";
+import styled from "styled-components";
+import { Wrapper } from "../../../Backend/Utils/Wrapper";
+import { Hook } from "../../../_types/global/GlobalTypes";
+import { Btn } from "../../Components/Btn";
+import { CenterBackgroundSubtext } from "../../Components/CoreUI";
+import { DarkForestNumberInput, NumberInput } from "../../Components/Input";
+import { LoadingSpinner } from "../../Components/LoadingSpinner";
+import { Row } from "../../Components/Row";
+import { Red } from "../../Components/Text";
+import { TooltipTrigger } from "../../Panes/Tooltip";
+import dfstyles from "../../Styles/dfstyles";
+import { useUIManager } from "../../Utils/AppHooks";
 
 const StyledSilverInput = styled.div`
   width: fit-content;
@@ -52,7 +52,9 @@ function SilverInput({
     <StyledSilverInput>
       <InputWrapper>
         <NumberInput
-          onChange={(e: Event & React.ChangeEvent<DarkForestNumberInput>) => setAmt(e.target.value)}
+          onChange={(e: Event & React.ChangeEvent<DarkForestNumberInput>) =>
+            setAmt(e.target.value)
+          }
           value={amt}
         />
       </InputWrapper>
@@ -67,7 +69,11 @@ const TextWrapper = styled.span`
   text-align: center;
 `;
 
-export function WithdrawSilver({ wrapper }: { wrapper: Wrapper<Planet | undefined> }) {
+export function WithdrawSilver({
+  wrapper,
+}: {
+  wrapper: Wrapper<Planet | undefined>;
+}) {
   const uiManager = useUIManager();
 
   const [error, setError] = useState<boolean>(false);
@@ -76,7 +82,7 @@ export function WithdrawSilver({ wrapper }: { wrapper: Wrapper<Planet | undefine
   const withdraw = useCallback(
     (silver: number | undefined) => {
       if (!wrapper.value) return;
-      if (typeof silver !== 'number') {
+      if (typeof silver !== "number") {
         setError(true);
       } else {
         uiManager.withdrawSilver(wrapper.value.locationId, silver);
@@ -87,10 +93,16 @@ export function WithdrawSilver({ wrapper }: { wrapper: Wrapper<Planet | undefine
   );
 
   const withdrawing = useMemo(
-    () => !!wrapper.value?.transactions?.hasTransaction(isUnconfirmedWithdrawSilverTx),
+    () =>
+      !!wrapper.value?.transactions?.hasTransaction(
+        isUnconfirmedWithdrawSilverTx
+      ),
     [wrapper]
   );
-  const empty = useMemo(() => !!(wrapper.value && wrapper.value.silver < 1), [wrapper]);
+  const empty = useMemo(
+    () => !!(wrapper.value && wrapper.value.silver < 1),
+    [wrapper]
+  );
 
   if (wrapper.value?.planetType === PlanetType.TRADING_POST) {
     return (
@@ -105,7 +117,11 @@ export function WithdrawSilver({ wrapper }: { wrapper: Wrapper<Planet | undefine
           <TooltipTrigger name={TooltipName.WithdrawSilverButton}>
             <Btn onClick={() => withdraw(amt)} disabled={withdrawing || empty}>
               <TextWrapper>
-                {withdrawing ? <LoadingSpinner initialText='Withdrawing...' /> : 'Withdraw Silver'}
+                {withdrawing ? (
+                  <LoadingSpinner initialText="Withdrawing..." />
+                ) : (
+                  "Withdraw Silver"
+                )}
               </TextWrapper>
             </Btn>
           </TooltipTrigger>
@@ -114,7 +130,7 @@ export function WithdrawSilver({ wrapper }: { wrapper: Wrapper<Planet | undefine
     );
   } else {
     return (
-      <CenterBackgroundSubtext width='100%' height='75px'>
+      <CenterBackgroundSubtext width="100%" height="75px">
         Select a Spacetime Rip
       </CenterBackgroundSubtext>
     );

@@ -1,17 +1,17 @@
-import { EMPTY_ADDRESS } from '@darkforest_eth/constants';
-import { formatNumber } from '@darkforest_eth/gamelogic';
-import { getPlayerColor } from '@darkforest_eth/procedural';
-import { Planet, PlanetType, PlanetTypeNames } from '@darkforest_eth/types';
-import React from 'react';
-import { getPlanetRank } from '../../../Backend/Utils/Utils';
-import dfstyles from '../../Styles/dfstyles';
-import { useAddress, usePlayer, useUIManager } from '../../Utils/AppHooks';
-import { EmSpacer } from '../CoreUI';
-import { Colored, Sub, Subber, White } from '../Text';
-import { TextPreview } from '../TextPreview';
-import { OptionalPlanetBiomeLabelAnim } from './BiomeLabels';
-import { TwitterLink } from './Labels';
-import { SpacetimeRipLabel } from './SpacetimeRipLabel';
+import { EMPTY_ADDRESS } from "@dfdao/constants";
+import { formatNumber } from "@dfdao/gamelogic";
+import { getPlayerColor } from "@dfdao/procedural";
+import { Planet, PlanetType, PlanetTypeNames } from "@dfdao/types";
+import React from "react";
+import { getPlanetRank } from "../../../Backend/Utils/Utils";
+import dfstyles from "../../Styles/dfstyles";
+import { useAddress, usePlayer, useUIManager } from "../../Utils/AppHooks";
+import { EmSpacer } from "../CoreUI";
+import { Colored, Sub, Subber, White } from "../Text";
+import { TextPreview } from "../TextPreview";
+import { OptionalPlanetBiomeLabelAnim } from "./BiomeLabels";
+import { TwitterLink } from "./Labels";
+import { SpacetimeRipLabel } from "./SpacetimeRipLabel";
 
 /* note that we generally prefer `Planet | undefined` over `Planet` because it
    makes it easier to pass in selected / hovering planet from the emitters      */
@@ -42,7 +42,7 @@ export function StatText({
     }
     content = formatNumber(stat, 2);
   } else {
-    content = 'n/a';
+    content = "n/a";
   }
   return <span style={textStyle}>{content}</span>;
 }
@@ -57,7 +57,10 @@ export function GrowthText({
   style?: React.CSSProperties;
 }) {
   const paused = planet && planet.pausers > 0;
-  const statStyle = { ...style, textDecoration: paused ? 'line-through' : 'none' };
+  const statStyle = {
+    ...style,
+    textDecoration: paused ? "line-through" : "none",
+  };
 
   return <StatText style={statStyle} planet={planet} getStat={getStat} />;
 }
@@ -85,7 +88,8 @@ export const EnergyCapText = ({ planet }: { planet: Planet | undefined }) => (
 export function PlanetEnergyLabel({ planet }: { planet: Planet | undefined }) {
   return (
     <span>
-      <EnergyText planet={planet} /> <Subber>/</Subber> <EnergyCapText planet={planet} />
+      <EnergyText planet={planet} /> <Subber>/</Subber>{" "}
+      <EnergyCapText planet={planet} />
     </span>
   );
 }
@@ -93,7 +97,8 @@ export function PlanetEnergyLabel({ planet }: { planet: Planet | undefined }) {
 export function PlanetSilverLabel({ planet }: { planet: Planet | undefined }) {
   return (
     <span>
-      <SilverText planet={planet} /> <Subber>/</Subber> <SilverCapText planet={planet} />
+      <SilverText planet={planet} /> <Subber>/</Subber>{" "}
+      <SilverCapText planet={planet} />
     </span>
   );
 }
@@ -104,9 +109,13 @@ export const DefenseText = ({ planet }: { planet: Planet | undefined }) => (
 );
 
 const getRange = (p: Planet) => p.range;
-export const RangeText = ({ planet, buff }: { planet: Planet | undefined; buff?: number }) => (
-  <StatText planet={planet} getStat={getRange} buff={buff} />
-);
+export const RangeText = ({
+  planet,
+  buff,
+}: {
+  planet: Planet | undefined;
+  buff?: number;
+}) => <StatText planet={planet} getStat={getRange} buff={buff} />;
 
 const getJunk = (p: Planet) => p.spaceJunk;
 export const JunkText = ({ planet }: { planet: Planet | undefined }) => (
@@ -114,19 +123,27 @@ export const JunkText = ({ planet }: { planet: Planet | undefined }) => (
 );
 
 const getSpeed = (p: Planet) => p.speed;
-export const SpeedText = ({ planet, buff }: { planet: Planet | undefined; buff?: number }) => (
-  <StatText planet={planet} getStat={getSpeed} buff={buff} />
-);
+export const SpeedText = ({
+  planet,
+  buff,
+}: {
+  planet: Planet | undefined;
+  buff?: number;
+}) => <StatText planet={planet} getStat={getSpeed} buff={buff} />;
 
 const getEnergyGrowth = (p: Planet) => p.energyGrowth;
-export const EnergyGrowthText = ({ planet }: { planet: Planet | undefined }) => (
-  <GrowthText planet={planet} getStat={getEnergyGrowth} />
-);
+export const EnergyGrowthText = ({
+  planet,
+}: {
+  planet: Planet | undefined;
+}) => <GrowthText planet={planet} getStat={getEnergyGrowth} />;
 
 const getSilverGrowth = (p: Planet) => p.silverGrowth;
-export const SilverGrowthText = ({ planet }: { planet: Planet | undefined }) => (
-  <GrowthText planet={planet} getStat={getSilverGrowth} />
-);
+export const SilverGrowthText = ({
+  planet,
+}: {
+  planet: Planet | undefined;
+}) => <GrowthText planet={planet} getStat={getSilverGrowth} />;
 
 // level and rank stuff
 export const PlanetLevelText = ({ planet }: { planet: Planet | undefined }) =>
@@ -144,7 +161,7 @@ export const LevelRankText = ({
 }) => (
   <>
     <PlanetLevelText planet={planet} />
-    {delim || ', '}
+    {delim || ", "}
     <PlanetRankText planet={planet} />
   </>
 );
@@ -159,14 +176,18 @@ export const LevelRankTextEm = ({
   planet ? (
     <Sub>
       lvl <White>{planet.planetLevel}</White>
-      {delim || ', '}
+      {delim || ", "}
       rank <White>{getPlanetRank(planet)}</White>
     </Sub>
   ) : (
     <></>
   );
 
-export const PlanetTypeLabelAnim = ({ planet }: { planet: Planet | undefined }) => (
+export const PlanetTypeLabelAnim = ({
+  planet,
+}: {
+  planet: Planet | undefined;
+}) => (
   <>
     {planet &&
       (planet.planetType === PlanetType.TRADING_POST ? (
@@ -177,7 +198,11 @@ export const PlanetTypeLabelAnim = ({ planet }: { planet: Planet | undefined }) 
   </>
 );
 
-export const PlanetBiomeTypeLabelAnim = ({ planet }: { planet: Planet | undefined }) => (
+export const PlanetBiomeTypeLabelAnim = ({
+  planet,
+}: {
+  planet: Planet | undefined;
+}) => (
   <>
     {planet?.planetType !== PlanetType.TRADING_POST && (
       <>
@@ -193,7 +218,7 @@ export const PlanetLevel = ({ planet }: { planet: Planet | undefined }) => {
   if (!planet) return <></>;
   return (
     <>
-      <Sub>{'Level '}</Sub>
+      <Sub>{"Level "}</Sub>
       {planet.planetLevel}
     </>
   );
@@ -203,7 +228,7 @@ export const PlanetRank = ({ planet }: { planet: Planet | undefined }) => {
   if (!planet) return <></>;
   return (
     <>
-      <Sub>{'Rank '}</Sub>
+      <Sub>{"Rank "}</Sub>
       {getPlanetRank(planet)}
     </>
   );
@@ -224,18 +249,23 @@ export function PlanetOwnerLabel({
   const uiManager = useUIManager();
   const account = useAddress(uiManager);
   const owner = usePlayer(uiManager, planet?.owner);
-  const teamsEnabled = uiManager.getGameManager().getContractConstants().TEAMS_ENABLED;
+  const teamsEnabled = uiManager
+    .getGameManager()
+    .getContractConstants().TEAMS_ENABLED;
   const defaultColor = dfstyles.colors.subtext;
 
   if (!planet) return <>/</>;
 
-  if (planet.owner === EMPTY_ADDRESS || !owner.value) return <Sub>Unclaimed</Sub>;
+  if (planet.owner === EMPTY_ADDRESS || !owner.value)
+    return <Sub>Unclaimed</Sub>;
 
   if (abbreviateOwnAddress && planet.owner === account) {
     return <Colored color={dfstyles.colors.dfgreen}>yours!</Colored>;
   }
 
-  const color = colorWithOwnerColor ? defaultColor : getPlayerColor(owner.value, teamsEnabled);
+  const color = colorWithOwnerColor
+    ? defaultColor
+    : getPlayerColor(owner.value, teamsEnabled);
   if (planet.owner && owner.value?.twitter) {
     return <TwitterLink color={color} twitter={owner.value.twitter} />;
   }

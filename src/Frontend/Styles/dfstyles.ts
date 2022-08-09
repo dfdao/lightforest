@@ -1,47 +1,47 @@
-import { RECOMMENDED_MODAL_WIDTH } from '@darkforest_eth/constants';
-import { SpaceType } from '@darkforest_eth/types';
-import color from 'color';
-import styled, { css } from 'styled-components';
+import { RECOMMENDED_MODAL_WIDTH } from "@dfdao/constants";
+import { SpaceType } from "@dfdao/types";
+import color from "color";
+import styled, { css } from "styled-components";
 
 export const ARTIFACT_ROW_H = 48;
 
 export const SPACE_TYPE_COLORS = {
-  [SpaceType.NEBULA]: 'rgb(0, 20.4, 81.6)',
-  [SpaceType.SPACE]: 'rgb(0, 5.4, 43.35)',
-  [SpaceType.DEEP_SPACE]: 'rgb(2.04, 0, 6.12)',
-  [SpaceType.DEAD_SPACE]: 'rgb(0, 37, 1)',
+  [SpaceType.NEBULA]: "rgb(0, 20.4, 81.6)",
+  [SpaceType.SPACE]: "rgb(0, 5.4, 43.35)",
+  [SpaceType.DEEP_SPACE]: "rgb(2.04, 0, 6.12)",
+  [SpaceType.DEAD_SPACE]: "rgb(0, 37, 1)",
 } as const;
 
-const text = color('#bbb').hex();
+const text = color("#bbb").hex();
 const textLight = color(text).lighten(0.3).hex();
 const subtext = color(text).darken(0.3).hex();
 const subbertext = color(text).darken(0.5).hex();
 const subbesttext = color(text).darken(0.8).hex();
 
-const background = '#151515';
-const backgrounddark = '#252525';
+const background = "#151515";
+const backgrounddark = "#252525";
 const backgroundlight = color(background).lighten(0.5).hex();
 const backgroundlighter = color(backgroundlight).lighten(0.3).hex();
 
-const border = '#777';
+const border = "#777";
 const borderDark = color(border).darken(0.2).hex();
 const borderDarker = color(borderDark).darken(0.2).hex();
 const borderDarkest = color(borderDarker).darken(0.5).hex();
 
-const blueBackground = '#0a0a23';
+const blueBackground = "#0a0a23";
 
-const dfblue = '#00ADE1';
-const dfgreen = '#00DC82';
+const dfblue = "#00ADE1";
+const dfgreen = "#00DC82";
 const dfgreendark = color(dfgreen).darken(0.7).hex();
 const dfgreenlight = color(dfgreen).lighten(0.1).hex();
-const dfred = '#FF6492';
-const dfyellow = '#e8e228';
-const dfpurple = '#9189d9';
-const dfwhite = '#ffffff';
-const dforange = 'rgb(196, 101, 0)';
+const dfred = "#FF6492";
+const dfyellow = "#e8e228";
+const dfpurple = "#9189d9";
+const dfwhite = "#ffffff";
+const dforange = "rgb(196, 101, 0)";
 const dfgold = color(dfyellow).hex();
-const dfsilver = '#c0c0c0';
-const dfbronze = '#cd7f32';
+const dfsilver = "#c0c0c0";
+const dfbronze = "#cd7f32";
 
 const dfstyles = {
   colors: {
@@ -74,56 +74,56 @@ const dfstyles = {
     dfsilver,
     dfbronze,
 
-    artifactBackground: 'rgb(21, 17, 71)',
+    artifactBackground: "rgb(21, 17, 71)",
 
     icons: {
-      twitter: '#1DA1F2',
-      github: '#8e65db',
-      discord: '#7289da',
-      email: '#D44638',
-      blog: '#ffcb1f',
+      twitter: "#1DA1F2",
+      github: "#8e65db",
+      discord: "#7289da",
+      email: "#D44638",
+      blog: "#ffcb1f",
     },
   },
 
-  borderRadius: '3px',
+  borderRadius: "3px",
 
-  fontSize: '16pt',
-  fontSizeS: '12pt',
-  fontSizeXS: '10pt',
-  fontH1: '42pt',
-  fontH1S: '36pt',
-  fontH2: '24pt',
+  fontSize: "16pt",
+  fontSizeS: "12pt",
+  fontSizeXS: "10pt",
+  fontH1: "42pt",
+  fontH1S: "36pt",
+  fontH2: "24pt",
 
-  titleFont: 'perfect_dos_vga_437regular',
+  titleFont: "perfect_dos_vga_437regular",
 
-  screenSizeS: '660px',
+  screenSizeS: "660px",
 
   game: {
-    terminalWidth: '240pt',
-    fontSize: '12pt',
-    canvasbg: '#100544',
+    terminalWidth: "240pt",
+    fontSize: "12pt",
+    canvasbg: "#100544",
     rangecolors: {
-      dash: '#9691bf',
-      dashenergy: '#f5c082',
-      colorenergy: '#080330',
-      color100: '#050228',
-      color50: '#050233',
-      color25: '#050238',
+      dash: "#9691bf",
+      dashenergy: "#f5c082",
+      colorenergy: "#080330",
+      color100: "#050228",
+      color50: "#050233",
+      color25: "#050238",
     },
     bonuscolors: {
-      energyCap: 'hsl(360, 73%, 70%)',
-      speed: 'hsl(290, 73%, 70%)',
-      def: 'hsl(231, 73%, 70%)',
-      spaceJunk: 'hsl(43, 33%, 29%)',
-      energyGro: 'hsl(136, 73%, 70%)',
-      range: 'hsl(50, 73%, 70%)',
+      energyCap: "hsl(360, 73%, 70%)",
+      speed: "hsl(290, 73%, 70%)",
+      def: "hsl(231, 73%, 70%)",
+      spaceJunk: "hsl(43, 33%, 29%)",
+      energyGro: "hsl(136, 73%, 70%)",
+      range: "hsl(50, 73%, 70%)",
     },
-    toolbarHeight: '12em',
-    terminalFontSize: '10pt',
+    toolbarHeight: "12em",
+    terminalFontSize: "10pt",
 
     styles: {
-      active: 'filter: brightness(80%)',
-      animProps: 'ease-in-out infinite alternate-reverse',
+      active: "filter: brightness(80%)",
+      animProps: "ease-in-out infinite alternate-reverse",
     },
   },
 
@@ -163,18 +163,18 @@ export const snips = {
   // It is unclear where this should go in this file
   destroyedBackground: {
     backgroundImage: 'url("/public/img/destroyedbg.png")',
-    backgroundSize: '150px',
-    backgroundPosition: 'right bottom',
-    backgroundRepeat: 'no-repeat',
+    backgroundSize: "150px",
+    backgroundPosition: "right bottom",
+    backgroundRepeat: "no-repeat",
   } as CSSStyleDeclaration & React.CSSProperties,
 };
 
 export const PortalButton = styled.button`
-background: ${dfstyles.colors.text};
-color: ${dfstyles.colors.borderDarkest};
-border: 1px solid ${dfstyles.colors.borderDarkest};
-border-radius: 3px;
-padding: 2px 5px;
-`
+  background: ${dfstyles.colors.text};
+  color: ${dfstyles.colors.borderDarkest};
+  border: 1px solid ${dfstyles.colors.borderDarkest};
+  border-radius: 3px;
+  padding: 2px 5px;
+`;
 
 export default dfstyles;

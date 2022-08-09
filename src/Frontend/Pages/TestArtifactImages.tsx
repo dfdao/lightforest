@@ -1,9 +1,13 @@
-import { EMPTY_ARTIFACT_ID } from '@darkforest_eth/constants';
-import { ArtifactFileColor, artifactFileName, setForceAncient } from '@darkforest_eth/gamelogic';
-import { ArtifactRarity, ArtifactType, Biome } from '@darkforest_eth/types';
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import { ARTIFACT_URL } from '../Components/ArtifactImage';
+import { EMPTY_ARTIFACT_ID } from "@dfdao/constants";
+import {
+  ArtifactFileColor,
+  artifactFileName,
+  setForceAncient,
+} from "@dfdao/gamelogic";
+import { ArtifactRarity, ArtifactType, Biome } from "@dfdao/types";
+import React, { useEffect } from "react";
+import styled from "styled-components";
+import { ARTIFACT_URL } from "../Components/ArtifactImage";
 
 const Container = styled.div`
   width: fit-content;
@@ -24,8 +28,12 @@ const relicArtifacts = Object.values(ArtifactType).filter(
   (type) => type >= ArtifactType.Wormhole && type <= ArtifactType.BlackDomain
 );
 
-const knownTypes = Object.values(ArtifactType).filter((type) => type !== ArtifactType.Unknown);
-const knownBiomes = Object.values(Biome).filter((biome) => biome !== Biome.UNKNOWN);
+const knownTypes = Object.values(ArtifactType).filter(
+  (type) => type !== ArtifactType.Unknown
+);
+const knownBiomes = Object.values(Biome).filter(
+  (biome) => biome !== Biome.UNKNOWN
+);
 const knownRarities = Object.values(ArtifactRarity).filter(
   (rarity) => rarity !== ArtifactRarity.Unknown
 );
@@ -44,7 +52,12 @@ function ArtifactPreviewer({
   thumb: boolean;
 }) {
   return (
-    <video width={250} loop autoPlay key={type + '-' + biome + '-' + rarity + 'vid'}>
+    <video
+      width={250}
+      loop
+      autoPlay
+      key={type + "-" + biome + "-" + rarity + "vid"}
+    >
       <source
         src={
           ARTIFACT_URL +
@@ -61,7 +74,7 @@ function ArtifactPreviewer({
             { forceAncient: ancient === true, skipCaching: true }
           )
         }
-        type={'video/webm'}
+        type={"video/webm"}
       />
     </video>
   );

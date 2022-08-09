@@ -1,9 +1,9 @@
-import { ArtifactType, Upgrade } from '@darkforest_eth/types';
-import React from 'react';
-import styled from 'styled-components';
-import { EmSpacer, Spacer } from '../../Components/CoreUI';
-import { Icon, IconType } from '../../Components/Icons';
-import dfstyles from '../../Styles/dfstyles';
+import { ArtifactType, Upgrade } from "@dfdao/types";
+import React from "react";
+import styled from "styled-components";
+import { EmSpacer, Spacer } from "../../Components/CoreUI";
+import { Icon, IconType } from "../../Components/Icons";
+import dfstyles from "../../Styles/dfstyles";
 
 const { dfgreen, dfred, subtext } = dfstyles.colors;
 
@@ -11,9 +11,9 @@ function upgradeValue(value: number) {
   const normalizedValue = Math.floor(value - 100);
 
   if (normalizedValue >= -0) {
-    return '+' + normalizedValue + '%';
+    return "+" + normalizedValue + "%";
   } else {
-    return normalizedValue + '%';
+    return normalizedValue + "%";
   }
 }
 
@@ -60,16 +60,16 @@ export function UpgradeStatsView({
 
   switch (artifactType) {
     case ArtifactType.BlackDomain:
-      specialDescription = 'locks planet';
+      specialDescription = "locks planet";
       break;
     case ArtifactType.Wormhole:
-      specialDescription = 'decreases travel time';
+      specialDescription = "decreases travel time";
       break;
     case ArtifactType.BloomFilter:
       specialDescription = "refills planet's energy and silver";
       break;
     case ArtifactType.PhotoidCannon:
-      specialDescription = 'single use sniper';
+      specialDescription = "single use sniper";
       break;
   }
 
@@ -86,12 +86,32 @@ export function UpgradeStatsView({
 
   return (
     <UpgradeSummaryContainer>
-      <SingleUpgrade {...iconProps} icon={IconType.Defense} getMultiplier={getDefenseMult} />
-      <SingleUpgrade {...iconProps} icon={IconType.Energy} getMultiplier={getEnergyCapMult} />
+      <SingleUpgrade
+        {...iconProps}
+        icon={IconType.Defense}
+        getMultiplier={getDefenseMult}
+      />
+      <SingleUpgrade
+        {...iconProps}
+        icon={IconType.Energy}
+        getMultiplier={getEnergyCapMult}
+      />
       <Spacer height={2} />
-      <SingleUpgrade {...iconProps} icon={IconType.EnergyGrowth} getMultiplier={getEnergyGroMult} />
-      <SingleUpgrade {...iconProps} icon={IconType.Range} getMultiplier={getRangeMult} />
-      <SingleUpgrade {...iconProps} icon={IconType.Speed} getMultiplier={getSpeedMult} />
+      <SingleUpgrade
+        {...iconProps}
+        icon={IconType.EnergyGrowth}
+        getMultiplier={getEnergyGroMult}
+      />
+      <SingleUpgrade
+        {...iconProps}
+        icon={IconType.Range}
+        getMultiplier={getRangeMult}
+      />
+      <SingleUpgrade
+        {...iconProps}
+        icon={IconType.Speed}
+        getMultiplier={getSpeedMult}
+      />
     </UpgradeSummaryContainer>
   );
 }

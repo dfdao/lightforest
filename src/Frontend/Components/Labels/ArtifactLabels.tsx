@@ -1,23 +1,23 @@
-import { isAncient } from '@darkforest_eth/gamelogic';
+import { isAncient } from "@dfdao/gamelogic";
 import {
   Artifact,
   ArtifactRarity,
   ArtifactRarityNames,
   ArtifactTypeNames,
   BiomeNames,
-} from '@darkforest_eth/types';
-import React from 'react';
-import styled from 'styled-components';
-import { RarityColors } from '../../Styles/Colors';
-import { LegendaryLabel } from './LegendaryLabel';
-import { MythicLabel } from './MythicLabel';
+} from "@dfdao/types";
+import React from "react";
+import styled from "styled-components";
+import { RarityColors } from "../../Styles/Colors";
+import { LegendaryLabel } from "./LegendaryLabel";
+import { MythicLabel } from "./MythicLabel";
 
 export const ArtifactRarityText = ({ rarity }: { rarity: ArtifactRarity }) => (
   <>{ArtifactRarityNames[rarity]}</>
 );
 
 export const ArtifactBiomeText = ({ artifact }: { artifact: Artifact }) => (
-  <>{isAncient(artifact) ? 'Ancient' : BiomeNames[artifact.planetBiome]}</>
+  <>{isAncient(artifact) ? "Ancient" : BiomeNames[artifact.planetBiome]}</>
 );
 
 export const ArtifactTypeText = ({ artifact }: { artifact: Artifact }) => (
@@ -26,7 +26,9 @@ export const ArtifactTypeText = ({ artifact }: { artifact: Artifact }) => (
 
 // colored labels
 
-export const StyledArtifactRarityLabel = styled.span<{ rarity: ArtifactRarity }>`
+export const StyledArtifactRarityLabel = styled.span<{
+  rarity: ArtifactRarity;
+}>`
   color: ${({ rarity }) => RarityColors[rarity]};
 `;
 
@@ -36,7 +38,11 @@ export const ArtifactRarityLabel = ({ rarity }: { rarity: ArtifactRarity }) => (
   </StyledArtifactRarityLabel>
 );
 
-export const ArtifactRarityLabelAnim = ({ rarity }: { rarity: ArtifactRarity }) =>
+export const ArtifactRarityLabelAnim = ({
+  rarity,
+}: {
+  rarity: ArtifactRarity;
+}) =>
   rarity === ArtifactRarity.Mythic ? (
     <MythicLabel />
   ) : rarity === ArtifactRarity.Legendary ? (
@@ -47,9 +53,14 @@ export const ArtifactRarityLabelAnim = ({ rarity }: { rarity: ArtifactRarity }) 
 
 // combined labels
 
-export const ArtifactRarityBiomeTypeText = ({ artifact }: { artifact: Artifact }) => (
+export const ArtifactRarityBiomeTypeText = ({
+  artifact,
+}: {
+  artifact: Artifact;
+}) => (
   <>
-    <ArtifactRarityText rarity={artifact.rarity} /> <ArtifactBiomeText artifact={artifact} />{' '}
+    <ArtifactRarityText rarity={artifact.rarity} />{" "}
+    <ArtifactBiomeText artifact={artifact} />{" "}
     <ArtifactTypeText artifact={artifact} />
   </>
 );

@@ -1,10 +1,10 @@
-import { RECOMMENDED_MODAL_WIDTH } from '@darkforest_eth/constants';
-import { ModalName } from '@darkforest_eth/types';
-import React from 'react';
-import { Spacer } from '../../Components/CoreUI';
-import { useMyArtifactsList, useUIManager } from '../../Utils/AppHooks';
-import { ModalHandle, ModalPane } from '../../Views/Game/ModalPane';
-import { AllArtifacts } from './ArtifactsList';
+import { RECOMMENDED_MODAL_WIDTH } from "@dfdao/constants";
+import { ModalName } from "@dfdao/types";
+import React from "react";
+import { Spacer } from "../../Components/CoreUI";
+import { useMyArtifactsList, useUIManager } from "../../Utils/AppHooks";
+import { ModalHandle, ModalPane } from "../../Views/Game/ModalPane";
+import { AllArtifacts } from "./ArtifactsList";
 
 function HelpContent() {
   return (
@@ -12,9 +12,9 @@ function HelpContent() {
       <p>These are all the artifacts you currently own.</p>
       <Spacer height={8} />
       <p>
-        The table is interactive, and allows you to sort the artifacts by clicking each column's
-        header. You can also view more information about a particular artifact by clicking on its
-        name.
+        The table is interactive, and allows you to sort the artifacts by
+        clicking each column's header. You can also view more information about
+        a particular artifact by clicking on its name.
       </p>
     </div>
   );
@@ -30,12 +30,14 @@ export function PlayerArtifactsPane({
   const uiManager = useUIManager();
   const artifacts = useMyArtifactsList(uiManager);
 
-  const render = (handle: ModalHandle) => <AllArtifacts modal={handle} artifacts={artifacts} />;
+  const render = (handle: ModalHandle) => (
+    <AllArtifacts modal={handle} artifacts={artifacts} />
+  );
 
   return (
     <ModalPane
       id={ModalName.YourArtifacts}
-      title={'Your Inventory'}
+      title={"Your Inventory"}
       visible={visible}
       onClose={onClose}
       helpContent={HelpContent}

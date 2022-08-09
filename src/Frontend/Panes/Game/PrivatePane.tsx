@@ -1,10 +1,10 @@
-import { ModalName } from '@darkforest_eth/types';
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { Sub } from '../../Components/Text';
-import { TextPreview } from '../../Components/TextPreview';
-import { useUIManager } from '../../Utils/AppHooks';
-import { ModalPane } from '../../Views/Game/ModalPane';
+import { ModalName } from "@dfdao/types";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { Sub } from "../../Components/Text";
+import { TextPreview } from "../../Components/TextPreview";
+import { useUIManager } from "../../Utils/AppHooks";
+import { ModalPane } from "../../Views/Game/ModalPane";
 
 const StyledPrivatePane = styled.div`
   width: 36em;
@@ -15,7 +15,13 @@ const StyledPrivatePane = styled.div`
     justify-content: space-between;
   }
 `;
-export function PrivatePane({ visible, onClose }: { visible: boolean; onClose: () => void }) {
+export function PrivatePane({
+  visible,
+  onClose,
+}: {
+  visible: boolean;
+  onClose: () => void;
+}) {
   const uiManager = useUIManager();
 
   const [sKey, setSKey] = useState<string | undefined>(undefined);
@@ -24,12 +30,12 @@ export function PrivatePane({ visible, onClose }: { visible: boolean; onClose: (
     if (!uiManager) return;
     setSKey(uiManager.getPrivateKey());
     const coords = uiManager.getHomeCoords();
-    setHome(coords ? `(${coords.x}, ${coords.y})` : '');
+    setHome(coords ? `(${coords.x}, ${coords.y})` : "");
   }, [uiManager]);
   return (
     <ModalPane
       id={ModalName.Private}
-      title='View Secret Key and Home Coords'
+      title="View Secret Key and Home Coords"
       visible={visible}
       onClose={onClose}
     >
@@ -40,7 +46,11 @@ export function PrivatePane({ visible, onClose }: { visible: boolean; onClose: (
           </Sub>
         </p>
         <p>
-          <TextPreview text={sKey} focusedWidth={'150px'} unFocusedWidth={'150px'} />
+          <TextPreview
+            text={sKey}
+            focusedWidth={"150px"}
+            unFocusedWidth={"150px"}
+          />
         </p>
         <br />
         <p>

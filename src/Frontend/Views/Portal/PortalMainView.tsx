@@ -1,30 +1,30 @@
-import { EthAddress, ModalName } from '@darkforest_eth/types';
-import { IconType } from '@darkforest_eth/ui';
-import React, { useEffect, useState } from 'react';
-import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
-import styled from 'styled-components';
-import { loadAccountData } from '../../../Backend/Network/GraphApi/AccountApi';
-import { loadRecentMaps } from '../../../Backend/Network/GraphApi/MapsApi';
-import { Btn } from '../../Components/Btn';
-import Button from '../../Components/Button';
-import { Dropdown, DropdownItem } from '../../Components/Dropdown';
-import { Icon } from '../../Components/Icons';
-import { Modal } from '../../Components/Modal';
-import { PortalHistoryView } from './PortalHistoryView';
-import dfstyles from '../../Styles/dfstyles';
-import { useTwitters } from '../../Utils/AppHooks';
-import { competitiveConfig } from '../../Utils/constants';
-import { ModalPane } from '../Game/ModalPane';
-import { Account } from './Account';
-import { AccountInfoView } from './AccountInfoView';
-import { MapInfoView } from './MapInfoView';
-import { PortalCommunityView } from './PortalCommunityView';
-import { MatchmakingView } from './MatchmakingView';
-import { PortalHomeView } from './PortalHomeView';
-import { truncateAddress, truncateString } from './PortalUtils';
+import { EthAddress, ModalName } from "@dfdao/types";
+import { IconType } from "@dfdao/ui";
+import React, { useEffect, useState } from "react";
+import { Redirect, Route, Switch, useHistory } from "react-router-dom";
+import styled from "styled-components";
+import { loadAccountData } from "../../../Backend/Network/GraphApi/AccountApi";
+import { loadRecentMaps } from "../../../Backend/Network/GraphApi/MapsApi";
+import { Btn } from "../../Components/Btn";
+import Button from "../../Components/Button";
+import { Dropdown, DropdownItem } from "../../Components/Dropdown";
+import { Icon } from "../../Components/Icons";
+import { Modal } from "../../Components/Modal";
+import { PortalHistoryView } from "./PortalHistoryView";
+import dfstyles from "../../Styles/dfstyles";
+import { useTwitters } from "../../Utils/AppHooks";
+import { competitiveConfig } from "../../Utils/constants";
+import { ModalPane } from "../Game/ModalPane";
+import { Account } from "./Account";
+import { AccountInfoView } from "./AccountInfoView";
+import { MapInfoView } from "./MapInfoView";
+import { PortalCommunityView } from "./PortalCommunityView";
+import { MatchmakingView } from "./MatchmakingView";
+import { PortalHomeView } from "./PortalHomeView";
+import { truncateAddress, truncateString } from "./PortalUtils";
 
 export function PortalMainView() {
-  const [input, setInput] = useState<string>('');
+  const [input, setInput] = useState<string>("");
   const [openSearch, setOpenSearch] = useState<boolean>(false);
   const [results, setResults] = useState<DropdownItem[]>([]);
   const [helpOpen, setHelpOpen] = useState<boolean>(false);
@@ -34,7 +34,7 @@ export function PortalMainView() {
   useEffect(() => {
     async function handleSearch() {
       if (input.length == 0) {
-        setResults([{ label: 'No results found.', action: () => {} }]);
+        setResults([{ label: "No results found.", action: () => {} }]);
         return;
       }
       let results: DropdownItem[] = [];
@@ -52,7 +52,8 @@ export function PortalMainView() {
       if (configHashes && configHashes.length > 0) {
         results.push({
           label: `Map - ${truncateString(configHashes[0].configHash, 8)}`,
-          action: () => history.push(`/portal/map/${configHashes[0].configHash}`),
+          action: () =>
+            history.push(`/portal/map/${configHashes[0].configHash}`),
         });
       }
       // check accounts
@@ -66,7 +67,7 @@ export function PortalMainView() {
       if (results.length > 0) {
         setResults(results);
       } else {
-        setResults([{ label: 'No results found.', action: () => {} }]);
+        setResults([{ label: "No results found.", action: () => {} }]);
       }
     }
     handleSearch();
@@ -77,7 +78,7 @@ export function PortalMainView() {
 
     // FIXME: What is this?
     return (
-      <Modal title='Help'>
+      <Modal title="Help">
         <HelpWrapper>
           <HelpInner>
             <HelpClose
@@ -100,18 +101,18 @@ export function PortalMainView() {
       <MainContainer>
         <TopBar>
           <TitleContainer>
-            <Title onClick={() => history.push('/portal/home')}>Home</Title>
+            <Title onClick={() => history.push("/portal/home")}>Home</Title>
           </TitleContainer>
 
           <TitleContainer>
-            <InputContainer style={{ width: '100%' }}>
+            <InputContainer style={{ width: "100%" }}>
               <PortalInput
-                placeholder={'Search for a map hash, twitter, or address'}
+                placeholder={"Search for a map hash, twitter, or address"}
                 // TODO: fix type
                 onChange={(e: any) => setInput(e.target.value)}
                 onFocus={() => setOpenSearch(true)}
                 onBlur={() => setOpenSearch(false)}
-                style={{ width: '100%' }}
+                style={{ width: "100%" }}
               />
               <Dropdown items={results} open={input.length > 0 && openSearch} />
             </InputContainer>
@@ -119,19 +120,32 @@ export function PortalMainView() {
           <Account />
         </TopBar>
         <Switch>
-          <Redirect path='/portal/map' to={`/portal/map/${competitiveConfig}`} exact={true} />
-
-          <Route path={'/portal/home'} exact={true} component={PortalHomeView} />
-          <Route path={'/portal/map/:configHash'} component={MapInfoView} />
-          <Route path={'/portal/account/:account'} component={AccountInfoView} />
-          <Route path={'/portal/history'} component={PortalHistoryView} />
-          <Route path={'/portal/community'} component={PortalCommunityView} />
-          <Route path={'/portal/matchmaking'} component={MatchmakingView} />
+          <Redirect
+            path="/portal/map"
+            to={`/portal/map/${competitiveConfig}`}
+            exact={true}
+          />
 
           <Route
-            path='/portal/*'
+            path={"/portal/home"}
+            exact={true}
+            component={PortalHomeView}
+          />
+          <Route path={"/portal/map/:configHash"} component={MapInfoView} />
+          <Route
+            path={"/portal/account/:account"}
+            component={AccountInfoView}
+          />
+          <Route path={"/portal/history"} component={PortalHistoryView} />
+          <Route path={"/portal/community"} component={PortalCommunityView} />
+          <Route path={"/portal/matchmaking"} component={MatchmakingView} />
+
+          <Route
+            path="/portal/*"
             component={() => (
-              <TitleContainer style={{ justifyContent: 'center' }}>Page Not Found</TitleContainer>
+              <TitleContainer style={{ justifyContent: "center" }}>
+                Page Not Found
+              </TitleContainer>
             )}
           />
         </Switch>

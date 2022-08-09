@@ -1,9 +1,9 @@
-import { TooltipName } from '@darkforest_eth/types';
-import React from 'react';
-import { Checkbox, DarkForestCheckbox } from '../../Components/Input';
-import { Row } from '../../Components/Row';
-import { PortalTooltipTrigger } from '../Tooltip';
-import { LobbiesPaneProps, Warning } from './LobbiesUtils';
+import { TooltipName } from "@dfdao/types";
+import React from "react";
+import { Checkbox, DarkForestCheckbox } from "../../Components/Input";
+import { Row } from "../../Components/Row";
+import { PortalTooltipTrigger } from "../Tooltip";
+import { LobbiesPaneProps, Warning } from "./LobbiesUtils";
 
 export function AdminPermissionsPane({ config, onUpdate }: LobbiesPaneProps) {
   const checkboxes = [];
@@ -13,15 +13,15 @@ export function AdminPermissionsPane({ config, onUpdate }: LobbiesPaneProps) {
         <PortalTooltipTrigger
           name={TooltipName.Empty}
           extraContent={
-            'When admin is disabled, no players can access admin controls once the world is created.'
+            "When admin is disabled, no players can access admin controls once the world is created."
           }
-          style={{ width: '100%' }}
+          style={{ width: "100%" }}
         >
           <Checkbox
-            label='Admin disabled?'
+            label="Admin disabled?"
             checked={config.NO_ADMIN.displayValue}
             onChange={(e: Event & React.ChangeEvent<DarkForestCheckbox>) =>
-              onUpdate({ type: 'NO_ADMIN', value: e.target.checked })
+              onUpdate({ type: "NO_ADMIN", value: e.target.checked })
             }
           />
         </PortalTooltipTrigger>
@@ -44,10 +44,10 @@ export function AdminPermissionsPane({ config, onUpdate }: LobbiesPaneProps) {
       </Row> */}
       <Row>
         <Checkbox
-          label='Allowlist enabled?'
+          label="Allowlist enabled?"
           checked={config.WHITELIST_ENABLED.displayValue}
           onChange={(e: Event & React.ChangeEvent<DarkForestCheckbox>) =>
-            onUpdate({ type: 'WHITELIST_ENABLED', value: e.target.checked })
+            onUpdate({ type: "WHITELIST_ENABLED", value: e.target.checked })
           }
         />
       </Row>
@@ -57,14 +57,16 @@ export function AdminPermissionsPane({ config, onUpdate }: LobbiesPaneProps) {
       <Row>
         <PortalTooltipTrigger
           name={TooltipName.Empty}
-          extraContent={'When enabled, this match will contribute to the players ranking'}
-          style={{ width: '100%' }}
+          extraContent={
+            "When enabled, this match will contribute to the players ranking"
+          }
+          style={{ width: "100%" }}
         >
           <Checkbox
-            label='Ranked match?'
+            label="Ranked match?"
             checked={config.RANKED.displayValue}
             onChange={(e: Event & React.ChangeEvent<DarkForestCheckbox>) =>
-              onUpdate({ type: 'RANKED', value: e.target.checked })
+              onUpdate({ type: "RANKED", value: e.target.checked })
             }
           />
         </PortalTooltipTrigger>

@@ -1,32 +1,35 @@
-import { EMPTY_ADDRESS } from '@darkforest_eth/constants';
-import { address } from '@darkforest_eth/serde';
+import { EMPTY_ADDRESS } from "@dfdao/constants";
+import { address } from "@dfdao/serde";
 import {
   ArenaLeaderboard,
   ArenaLeaderboardEntry,
   EthAddress,
   Leaderboard,
   LeaderboardEntry,
-} from '@darkforest_eth/types';
+} from "@dfdao/types";
 import {
   roundEndTimestamp,
   roundStartTimestamp,
   competitiveConfig,
   apiUrl,
-} from '../../../Frontend/Utils/constants';
-import { getGraphQLData } from '../GraphApi';
-import { getAllTwitters } from '../UtilityServerAPI';
+} from "../../../Frontend/Utils/constants";
+import { getGraphQLData } from "../GraphApi";
+import { getAllTwitters } from "../UtilityServerAPI";
 
-const testData: { data: { configPlayers: GraphConfigPlayer[] }; error: undefined } = {
+const testData: {
+  data: { configPlayers: GraphConfigPlayer[] };
+  error: undefined;
+} = {
   data: {
     configPlayers: [
       {
-        address: '0x9ceb592706faf42dc2299d9089fca49c8f35de60',
+        address: "0x9ceb592706faf42dc2299d9089fca49c8f35de60",
         elo: 1400,
         wins: 14,
         losses: 2,
       },
       {
-        address: '0x74f511484aC94B24b4d73C0089B7B782202EEA53',
+        address: "0x74f511484aC94B24b4d73C0089B7B782202EEA53",
         elo: 400,
         wins: 2,
         losses: 14,

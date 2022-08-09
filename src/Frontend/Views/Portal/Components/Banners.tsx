@@ -1,7 +1,7 @@
-import dfstyles from '@darkforest_eth/ui/dist/styles';
-import React from 'react';
-import { useHistory } from 'react-router-dom';
-import styled from 'styled-components';
+import dfstyles from "@dfdao/ui/dist/styles";
+import React from "react";
+import { useHistory } from "react-router-dom";
+import styled from "styled-components";
 
 export const OfficialGameBanner: React.FC<{
   configHash: string;
@@ -38,11 +38,11 @@ export const TutorialBanner: React.FC<{
       <TutorialBackground />
       <BannerTitle
         style={{
-          bottom: '50%',
-          transform: 'translateY(50%)',
-          borderRadius: '20px',
-          background: '#000000cc',
-          alignSelf: 'center',
+          bottom: "50%",
+          transform: "translateY(50%)",
+          borderRadius: "20px",
+          background: "#000000cc",
+          alignSelf: "center",
           padding: 0,
         }}
       >
@@ -85,14 +85,14 @@ const BannerTitle = styled.span`
 `;
 
 const OfficialGameBackground = styled.div`
-  background: url('/public/img/deathstar.png');
+  background: url("/public/img/deathstar.png");
   flex-grow: 1;
   border-radius: 20px;
   filter: brightness(0.8) blur(2px);
 `;
 
 const TutorialBackground = styled.div`
-  background: url('/public/img/tutorial-banner.png');
+  background: url("/public/img/tutorial-banner.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: auto 100%;

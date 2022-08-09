@@ -1,19 +1,19 @@
-import { EMPTY_ADDRESS } from '@darkforest_eth/constants';
-import { address } from '@darkforest_eth/serde';
+import { EMPTY_ADDRESS } from "@dfdao/constants";
+import { address } from "@dfdao/serde";
 import {
   ArenaLeaderboard,
   ArenaLeaderboardEntry,
   Leaderboard,
   LeaderboardEntry,
-} from '@darkforest_eth/types';
+} from "@dfdao/types";
 import {
   roundEndTimestamp,
   roundStartTimestamp,
   competitiveConfig,
   apiUrl,
-} from '../../../Frontend/Utils/constants';
-import { getGraphQLData } from '../GraphApi';
-import { getAllTwitters } from '../UtilityServerAPI';
+} from "../../../Frontend/Utils/constants";
+import { getGraphQLData } from "../GraphApi";
+import { getAllTwitters } from "../UtilityServerAPI";
 
 export async function loadArenaLeaderboard(
   config: string = competitiveConfig,
@@ -39,7 +39,10 @@ query {
   if (rawData.error) {
     throw new Error(rawData.error);
   }
-  const ret = await convertData(rawData.data.arenas, config == competitiveConfig);
+  const ret = await convertData(
+    rawData.data.arenas,
+    config == competitiveConfig
+  );
   return ret;
 }
 
@@ -58,7 +61,10 @@ export interface GraphArena {
   moves: number;
 }
 
-async function convertData(arenas: GraphArena[], isCompetitive: boolean): Promise<Leaderboard> {
+async function convertData(
+  arenas: GraphArena[],
+  isCompetitive: boolean
+): Promise<Leaderboard> {
   let entries: LeaderboardEntry[] = [];
   const twitters = await getAllTwitters();
 
@@ -73,7 +79,8 @@ async function convertData(arenas: GraphArena[], isCompetitive: boolean): Promis
       arena.startTime == 0 ||
       arena.winners.length == 0 ||
       !arena.winners[0].address ||
-      (isCompetitive && (roundEnd <= arena.endTime || roundStart >= arena.startTime))
+      (isCompetitive &&
+        (roundEnd <= arena.endTime || roundStart >= arena.startTime))
     )
       continue;
 

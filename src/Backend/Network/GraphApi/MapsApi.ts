@@ -1,6 +1,6 @@
-import { EthAddress } from '@darkforest_eth/types';
-import { apiUrl } from '../../../Frontend/Utils/constants';
-import { getGraphQLData } from '../GraphApi';
+import { EthAddress } from "@dfdao/types";
+import { apiUrl } from "../../../Frontend/Utils/constants";
+import { getGraphQLData } from "../GraphApi";
 
 export interface MapInfo {
   creator: EthAddress;
@@ -15,7 +15,11 @@ export async function loadRecentMaps(
   configHash?: string,
   creator?: string
 ): Promise<MapInfo[] | undefined> {
-  const where = configHash ? `configHash: "${configHash}"` : creator ? `creator: "${creator}"` : '';
+  const where = configHash
+    ? `configHash: "${configHash}"`
+    : creator
+    ? `creator: "${creator}"`
+    : "";
   const query = `
 	query {
 		arenas(${

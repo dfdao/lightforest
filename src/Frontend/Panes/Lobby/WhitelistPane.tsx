@@ -1,4 +1,4 @@
-// import { EthAddress } from '@darkforest_eth/types';
+// import { EthAddress } from '@dfdao/types';
 // import React, { useEffect, useState } from 'react';
 // import styled from 'styled-components';
 // import { LobbyAdminTools } from '../../../Backend/Utils/LobbyAdminTools';
@@ -147,7 +147,7 @@
 //         value: address,
 //         index: config.WHITELIST.displayValue?.length || 0,
 //       });
-    
+
 //     setAddress(defaultAddress);
 //   }
 

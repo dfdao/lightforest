@@ -1,16 +1,16 @@
-import { TooltipName } from '@darkforest_eth/types';
-import _ from 'lodash';
-import React from 'react';
+import { TooltipName } from "@dfdao/types";
+import _ from "lodash";
+import React from "react";
 import {
   Checkbox,
   DarkForestCheckbox,
   DarkForestNumberInput,
   NumberInput,
-} from '../../Components/Input';
-import { Row } from '../../Components/Row';
-import { DarkForestSlider, Slider } from '../../Components/Slider';
-import { PortalTooltipTrigger } from '../Tooltip';
-import { LobbiesPaneProps, Warning } from './LobbiesUtils';
+} from "../../Components/Input";
+import { Row } from "../../Components/Row";
+import { DarkForestSlider, Slider } from "../../Components/Slider";
+import { PortalTooltipTrigger } from "../Tooltip";
+import { LobbiesPaneProps, Warning } from "./LobbiesUtils";
 
 function JunkPerLevel({
   value,
@@ -21,10 +21,10 @@ function JunkPerLevel({
     <div>
       <span>Level {index}</span>
       <NumberInput
-        format='integer'
+        format="integer"
         value={value}
         onChange={(e: Event & React.ChangeEvent<DarkForestNumberInput>) => {
-          onUpdate({ type: 'PLANET_LEVEL_JUNK', index, value: e.target.value });
+          onUpdate({ type: "PLANET_LEVEL_JUNK", index, value: e.target.value });
         }}
       />
     </div>
@@ -32,37 +32,39 @@ function JunkPerLevel({
 }
 
 const rowChunkSize = 5;
-const junkRowStyle = { gap: '8px' } as CSSStyleDeclaration & React.CSSProperties;
+const junkRowStyle = { gap: "8px" } as CSSStyleDeclaration &
+  React.CSSProperties;
 
 export function SpaceJunkPane({ config, onUpdate }: LobbiesPaneProps) {
   let spaceJunkOptions = null;
   if (config.SPACE_JUNK_ENABLED.currentValue === true) {
-    const junk = _.chunk(config.PLANET_LEVEL_JUNK.displayValue, rowChunkSize).map(
-      (items, rowIdx) => {
-        return (
-          <Row key={`junk-row-${rowIdx}`} style={junkRowStyle}>
-            {items.map((displayValue, idx) => (
-              <JunkPerLevel
-                key={`junk-lvl-${idx}`}
-                config={config}
-                value={displayValue}
-                index={rowIdx * rowChunkSize + idx}
-                onUpdate={onUpdate}
-              />
-            ))}
-          </Row>
-        );
-      }
-    );
+    const junk = _.chunk(
+      config.PLANET_LEVEL_JUNK.displayValue,
+      rowChunkSize
+    ).map((items, rowIdx) => {
+      return (
+        <Row key={`junk-row-${rowIdx}`} style={junkRowStyle}>
+          {items.map((displayValue, idx) => (
+            <JunkPerLevel
+              key={`junk-lvl-${idx}`}
+              config={config}
+              value={displayValue}
+              index={rowIdx * rowChunkSize + idx}
+              onUpdate={onUpdate}
+            />
+          ))}
+        </Row>
+      );
+    });
     spaceJunkOptions = (
       <>
         <Row>
           <span>Player space junk maximum</span>
           <NumberInput
-            format='integer'
+            format="integer"
             value={config.SPACE_JUNK_LIMIT.displayValue}
             onChange={(e: Event & React.ChangeEvent<DarkForestNumberInput>) => {
-              onUpdate({ type: 'SPACE_JUNK_LIMIT', value: e.target.value });
+              onUpdate({ type: "SPACE_JUNK_LIMIT", value: e.target.value });
             }}
           />
         </Row>
@@ -71,15 +73,18 @@ export function SpaceJunkPane({ config, onUpdate }: LobbiesPaneProps) {
         </Row>
         <Row>
           <Slider
-            label='Speed boost when abandoning planet'
-            variant='filled'
+            label="Speed boost when abandoning planet"
+            variant="filled"
             min={1}
             max={11}
             value={config.ABANDON_SPEED_CHANGE_PERCENT.displayValue}
             step={0.1}
-            formatOptions={{ style: 'unit', unit: 'x' }}
+            formatOptions={{ style: "unit", unit: "x" }}
             onChange={(e: Event & React.ChangeEvent<DarkForestSlider>) => {
-              onUpdate({ type: 'ABANDON_SPEED_CHANGE_PERCENT', value: e.target.value });
+              onUpdate({
+                type: "ABANDON_SPEED_CHANGE_PERCENT",
+                value: e.target.value,
+              });
             }}
           />
         </Row>
@@ -88,15 +93,18 @@ export function SpaceJunkPane({ config, onUpdate }: LobbiesPaneProps) {
         </Row>
         <Row>
           <Slider
-            label='Range boost when abandoning planet'
-            variant='filled'
+            label="Range boost when abandoning planet"
+            variant="filled"
             min={1}
             max={11}
             value={config.ABANDON_RANGE_CHANGE_PERCENT.displayValue}
             step={0.1}
-            formatOptions={{ style: 'unit', unit: 'x' }}
+            formatOptions={{ style: "unit", unit: "x" }}
             onChange={(e: Event & React.ChangeEvent<DarkForestSlider>) => {
-              onUpdate({ type: 'ABANDON_RANGE_CHANGE_PERCENT', value: e.target.value });
+              onUpdate({
+                type: "ABANDON_RANGE_CHANGE_PERCENT",
+                value: e.target.value,
+              });
             }}
           />
         </Row>
@@ -116,18 +124,20 @@ export function SpaceJunkPane({ config, onUpdate }: LobbiesPaneProps) {
   return (
     <>
       <Row>
-      <PortalTooltipTrigger
+        <PortalTooltipTrigger
           name={TooltipName.Empty}
-          extraContent={'If enabled, space junk accrues as players capture planets. Players must abandon planets to reduce their total.'}
-          style={{ width: '100%' }}
+          extraContent={
+            "If enabled, space junk accrues as players capture planets. Players must abandon planets to reduce their total."
+          }
+          style={{ width: "100%" }}
         >
-        <Checkbox
-          label='Space junk enabled?'
-          checked={config.SPACE_JUNK_ENABLED.displayValue}
-          onChange={(e: Event & React.ChangeEvent<DarkForestCheckbox>) => {
-            onUpdate({ type: 'SPACE_JUNK_ENABLED', value: e.target.checked });
-          }}
-        />
+          <Checkbox
+            label="Space junk enabled?"
+            checked={config.SPACE_JUNK_ENABLED.displayValue}
+            onChange={(e: Event & React.ChangeEvent<DarkForestCheckbox>) => {
+              onUpdate({ type: "SPACE_JUNK_ENABLED", value: e.target.checked });
+            }}
+          />
         </PortalTooltipTrigger>
       </Row>
       <Row>

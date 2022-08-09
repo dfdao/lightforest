@@ -1,7 +1,7 @@
-import { monomitter, Monomitter } from '@darkforest_eth/events';
-import { isSpaceShip } from '@darkforest_eth/gamelogic';
-import { Artifact, EthAddress, Planet } from '@darkforest_eth/types';
-import _ from 'lodash';
+import { monomitter, Monomitter } from "@dfdao/events";
+import { isSpaceShip } from "@dfdao/gamelogic";
+import { Artifact, EthAddress, Planet } from "@dfdao/types";
+import _ from "lodash";
 
 /**
  * Create a monomitter to emit objects with a given id from a cached map of ids to objects.
@@ -122,7 +122,9 @@ export function generateDiffEmitter<Obj>(
   emitter.subscribe((instance) => {
     currPrevEmitter$.publish({
       current: _.cloneDeep(instance) as Obj,
-      previous: prevInstance ? _.cloneDeep(prevInstance) : (_.cloneDeep(instance) as Obj),
+      previous: prevInstance
+        ? _.cloneDeep(prevInstance)
+        : (_.cloneDeep(instance) as Obj),
     });
     prevInstance = _.cloneDeep(instance);
   });

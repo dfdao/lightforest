@@ -1,18 +1,18 @@
-import { CONTRACT_ADDRESS } from '@darkforest_eth/contracts';
-import { address } from '@darkforest_eth/serde';
-import { IconType } from '@darkforest_eth/ui';
-import React, { CSSProperties, useMemo, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import styled, { createGlobalStyle, CSSObject } from 'styled-components';
-import { isRoundOngoing } from '../../Backend/Utils/Utils';
-import { Btn } from '../Components/Btn';
-import { EmSpacer, Link, Spacer } from '../Components/CoreUI';
-import { EmailCTA, EmailCTAMode } from '../Components/Email';
-import { Icon } from '../Components/Icons';
-import { Modal } from '../Components/Modal';
-import { Red, White, Text, HideSmall } from '../Components/Text';
-import dfstyles from '../Styles/dfstyles';
-import { ArenaPortalButton } from '../Views/Portal/PortalHomeView';
+import { CONTRACT_ADDRESS } from "@dfdao/contracts";
+import { address } from "@dfdao/serde";
+import { IconType } from "@dfdao/ui";
+import React, { CSSProperties, useMemo, useState } from "react";
+import { useHistory } from "react-router-dom";
+import styled, { createGlobalStyle, CSSObject } from "styled-components";
+import { isRoundOngoing } from "../../Backend/Utils/Utils";
+import { Btn } from "../Components/Btn";
+import { EmSpacer, Link, Spacer } from "../Components/CoreUI";
+import { EmailCTA, EmailCTAMode } from "../Components/Email";
+import { Icon } from "../Components/Icons";
+import { Modal } from "../Components/Modal";
+import { Red, White, Text, HideSmall } from "../Components/Text";
+import dfstyles from "../Styles/dfstyles";
+import { ArenaPortalButton } from "../Views/Portal/PortalHomeView";
 
 export const enum LandingPageZIndex {
   Background = 0,
@@ -21,13 +21,13 @@ export const enum LandingPageZIndex {
 }
 
 const links = {
-  twitter: 'http://twitter.com/darkforest_eth',
-  email: 'mailto:zeroxhank@gmail.com',
-  blog: 'https://blog.zkga.me/',
-  discord: 'https://discord.gg/WzYuegCh',
-  github: 'https://github.com/darkforest-eth',
-  wiki: 'https://dfwiki.net/wiki/Main_Page',
-  plugins: 'https://plugins.zkga.me/',
+  twitter: "http://twitter.com/darkforest_eth",
+  email: "mailto:zeroxhank@gmail.com",
+  blog: "https://blog.zkga.me/",
+  discord: "https://discord.gg/WzYuegCh",
+  github: "https://github.com/darkforest-eth",
+  wiki: "https://dfwiki.net/wiki/Main_Page",
+  plugins: "https://plugins.zkga.me/",
 };
 
 export default function LandingPage() {
@@ -39,9 +39,12 @@ export default function LandingPage() {
       <Container>
         <BackgroundImage />
         <Nav>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
             <Icon
-              style={{ width: '80px', height: '80px' } as CSSStyleDeclaration & CSSProperties}
+              style={
+                { width: "80px", height: "80px" } as CSSStyleDeclaration &
+                  CSSProperties
+              }
               type={IconType.Dfdao}
             />
             {/* <div>
@@ -127,17 +130,20 @@ export default function LandingPage() {
             </Badge>
             {/* <Title>Playing is building</Title> */}
             {/* <Desc>Play dfdao's fast-paced, free version of the premier on-chain game.</Desc> */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <ArenaPortalButton style={{ flex: '2' }} onClick={() => history.push('/portal')}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <ArenaPortalButton
+                style={{ flex: "2" }}
+                onClick={() => history.push("/portal")}
+              >
                 Enter
               </ArenaPortalButton>
               <ArenaPortalButton
-                style={{ flex: '1' }}
+                style={{ flex: "1" }}
                 secondary
                 onClick={() =>
                   window.open(
-                    'https://medium.com/dfdao/%EF%B8%8F-the-galactic-league-%EF%B8%8F-aa17acc9c7d7',
-                    'blank'
+                    "https://medium.com/dfdao/%EF%B8%8F-the-galactic-league-%EF%B8%8F-aa17acc9c7d7",
+                    "blank"
                   )
                 }
               >
@@ -180,7 +186,7 @@ const BgGrid = styled.img`
 
 const NavLink = styled(Link)`
   color: #fff;
-  font-family: 'Karla', sans-serif;
+  font-family: "Karla", sans-serif;
   text-transform: uppercase;
   text-decoration: none;
   font-weight: 500;
@@ -214,8 +220,8 @@ const WallbreakersButton = styled.div`
   // border: 1px solid #646464;
   padding: 8px;
   cursor: pointer;
-  box-shadow: 0px 0px 1px rgba(66, 71, 76, 0.32), 0px 4px 8px rgba(66, 71, 76, 0.06),
-    0px 8px 48px rgba(87, 87, 87, 0.08);
+  box-shadow: 0px 0px 1px rgba(66, 71, 76, 0.32),
+    0px 4px 8px rgba(66, 71, 76, 0.06), 0px 8px 48px rgba(87, 87, 87, 0.08);
 `;
 
 const Container = styled.div`
@@ -290,7 +296,7 @@ const ImgContainer = styled.div`
 `;
 
 const Title = styled.h1`
-  font-family: 'Karla', sans-serif;
+  font-family: "Karla", sans-serif;
   font-weight: 700;
   text-transform: uppercase;
   font-size: calc(36px + (64 - 36) * (100vw - 320px) / (1920 - 320));
@@ -298,7 +304,7 @@ const Title = styled.h1`
 `;
 
 const Desc = styled.span`
-  font-family: 'Inconsolata', monospace;
+  font-family: "Inconsolata", monospace;
   color: #fff;
   font-size: 1.5rem;
 `;

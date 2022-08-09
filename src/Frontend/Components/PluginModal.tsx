@@ -1,10 +1,10 @@
-import { ModalId } from '@darkforest_eth/types';
-import React, { useCallback, useState } from 'react';
-import ReactDOM from 'react-dom';
-import { useUIManager } from '../Utils/AppHooks';
-import { useEmitterSubscribe } from '../Utils/EmitterHooks';
-import { ModalPane } from '../Views/Game/ModalPane';
-import { PluginElements } from './CoreUI';
+import { ModalId } from "@dfdao/types";
+import React, { useCallback, useState } from "react";
+import ReactDOM from "react-dom";
+import { useUIManager } from "../Utils/AppHooks";
+import { useEmitterSubscribe } from "../Utils/EmitterHooks";
+import { ModalPane } from "../Views/Game/ModalPane";
+import { PluginElements } from "./CoreUI";
 
 export function PluginModal({
   title,
@@ -31,7 +31,7 @@ export function PluginModal({
   const isModalOpen = (modalId: ModalId) => {
     const pos = modalManager.getModalPosition(modalId);
     if (pos) {
-      return pos.state !== 'closed';
+      return pos.state !== "closed";
     } else {
       return false;
     }
@@ -58,7 +58,13 @@ export function PluginModal({
   );
 
   return ReactDOM.createPortal(
-    <ModalPane id={id} title={title} visible={visible} onClose={onClose} width={width}>
+    <ModalPane
+      id={id}
+      title={title}
+      visible={visible}
+      onClose={onClose}
+      width={width}
+    >
       <PluginElements ref={handleRef} />
     </ModalPane>,
     container

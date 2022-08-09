@@ -11,30 +11,34 @@ import {
   RevealedCoords,
   Transaction,
   WorldLocation,
-} from '@darkforest_eth/types';
-import { IDBPDatabase, openDB } from 'idb';
-import stringify from 'json-stable-stringify';
-import _ from 'lodash';
-import { MAX_CHUNK_SIZE } from '../../Frontend/Utils/constants';
-import { ChunkId, ChunkStore, PersistedChunk } from '../../_types/darkforest/api/ChunkStoreTypes';
+} from "@dfdao/types";
+import { IDBPDatabase, openDB } from "idb";
+import stringify from "json-stable-stringify";
+import _ from "lodash";
+import { MAX_CHUNK_SIZE } from "../../Frontend/Utils/constants";
+import {
+  ChunkId,
+  ChunkStore,
+  PersistedChunk,
+} from "../../_types/darkforest/api/ChunkStoreTypes";
 import {
   addToChunkMap,
   getChunkKey,
   getChunkOfSideLengthContainingPoint,
   toExploredChunk,
   toPersistedChunk,
-} from '../Miner/ChunkUtils';
-import { SerializedPlugin } from '../Plugins/SerializedPlugin';
+} from "../Miner/ChunkUtils";
+import { SerializedPlugin } from "../Plugins/SerializedPlugin";
 
 const enum ObjectStore {
-  DEFAULT = 'default',
-  BOARD = 'knownBoard',
-  UNCONFIRMED_ETH_TXS = 'unminedEthTxs',
-  PLUGINS = 'plugins',
+  DEFAULT = "default",
+  BOARD = "knownBoard",
+  UNCONFIRMED_ETH_TXS = "unminedEthTxs",
+  PLUGINS = "plugins",
   /**
    * Store modal positions so that we can keep modal panes open across sessions.
    */
-  MODAL_POS = 'modalPositions',
+  MODAL_POS = "modalPositions",
 }
 
 const enum DBActionType {
@@ -59,10 +63,10 @@ interface PersistentChunkStoreConfig {
   db: IDBPDatabase;
   contractAddress: EthAddress;
   account: EthAddress;
-  configHash?: string
+  configHash?: string;
 }
 
-export const MODAL_POSITIONS_KEY = 'modal_positions';
+export const MODAL_POSITIONS_KEY = "modal_positions";
 
 class PersistentChunkStore implements ChunkStore {
   private diagnosticUpdater?: DiagnosticUpdater;
@@ -74,9 +78,14 @@ class PersistentChunkStore implements ChunkStore {
   private confirmedTxHashes: Set<string>;
   private account: EthAddress;
   private contractAddress: EthAddress;
-  private configHash?: string; 
+  private configHash?: string;
 
-  constructor({ db, account, contractAddress, configHash }: PersistentChunkStoreConfig) {
+  constructor({
+    db,
+    account,
+    contractAddress,
+    configHash,
+  }: PersistentChunkStoreConfig) {
     this.db = db;
     this.queuedChunkWrites = [];
     this.confirmedTxHashes = new Set<string>();
@@ -103,10 +112,12 @@ class PersistentChunkStore implements ChunkStore {
   static async create({
     account,
     contractAddress,
-    configHash
-  }: Omit<PersistentChunkStoreConfig, 'db'>): Promise<PersistentChunkStore> {
-    console.log('chunk config hash', configHash);
-    const dbString = configHash ? `darkforest-${configHash}-${account}` : `darkforest-${contractAddress}-${account}`;
+    configHash,
+  }: Omit<PersistentChunkStoreConfig, "db">): Promise<PersistentChunkStore> {
+    console.log("chunk config hash", configHash);
+    const dbString = configHash
+      ? `darkforest-${configHash}-${account}`
+      : `darkforest-${contractAddress}-${account}`;
     const db = await openDB(dbString, 1, {
       upgrade(db) {
         db.createObjectStore(ObjectStore.DEFAULT);
@@ -117,7 +128,12 @@ class PersistentChunkStore implements ChunkStore {
       },
     });
 
-    const localStorageManager = new PersistentChunkStore({ db, account, contractAddress, configHash });
+    const localStorageManager = new PersistentChunkStore({
+      db,
+      account,
+      contractAddress,
+      configHash,
+    });
 
     await localStorageManager.loadChunks();
 
@@ -138,7 +154,9 @@ class PersistentChunkStore implements ChunkStore {
     key: string,
     objStore: ObjectStore = ObjectStore.DEFAULT
   ): Promise<string | undefined> {
-    const dbStr = this.configHash ? `${this.configHash}-${this.account}-${key}` : `${this.contractAddress}-${this.account}-${key}`
+    const dbStr = this.configHash
+      ? `${this.configHash}-${this.account}-${key}`
+      : `${this.contractAddress}-${this.account}-${key}`;
     return await this.db.get(objStore, dbStr);
   }
 
@@ -151,14 +169,21 @@ class PersistentChunkStore implements ChunkStore {
   private async setKey(
     key: string,
     value: string,
-    objStore: ObjectStore = ObjectStore.DEFAULT,
+    objStore: ObjectStore = ObjectStore.DEFAULT
   ): Promise<void> {
-    const dbStr = this.configHash ? `${this.configHash}-${this.account}-${key}` : `${this.contractAddress}-${this.account}-${key}`
+    const dbStr = this.configHash
+      ? `${this.configHash}-${this.account}-${key}`
+      : `${this.contractAddress}-${this.account}-${key}`;
     await this.db.put(objStore, value, dbStr);
   }
 
-  private async removeKey(key: string, objStore: ObjectStore = ObjectStore.DEFAULT): Promise<void> {
-    const dbStr = this.configHash ? `${this.configHash}-${this.account}-${key}` : `${this.contractAddress}-${this.account}-${key}`
+  private async removeKey(
+    key: string,
+    objStore: ObjectStore = ObjectStore.DEFAULT
+  ): Promise<void> {
+    const dbStr = this.configHash
+      ? `${this.configHash}-${this.account}-${key}`
+      : `${this.contractAddress}-${this.account}-${key}`;
     await this.db.delete(objStore, dbStr);
   }
 
@@ -166,7 +191,7 @@ class PersistentChunkStore implements ChunkStore {
     updateChunkTxs: DBTx[],
     collection: ObjectStore
   ): Promise<void> {
-    const tx = this.db.transaction(collection, 'readwrite');
+    const tx = this.db.transaction(collection, "readwrite");
     updateChunkTxs.forEach((updateChunkTx) => {
       updateChunkTx.forEach(({ type, dbKey: key, dbValue: value }) => {
         if (type === DBActionType.UPDATE) {
@@ -188,7 +213,7 @@ class PersistentChunkStore implements ChunkStore {
     // so we append a random alphanumeric character to the front of keys
     // and then bulk query for keys starting with 0, then 1, then 2, etc.
     // see the `getBucket` function in `ChunkUtils.ts` for more information.
-    const borders = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ~';
+    const borders = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ~";
     let chunkCount = 0;
 
     for (let idx = 0; idx < borders.length - 1; idx += 1) {
@@ -229,7 +254,7 @@ class PersistentChunkStore implements ChunkStore {
    * which bricks the user's account.
    */
   public async getHomeLocations(): Promise<WorldLocation[]> {
-    const homeLocations = await this.getKey('homeLocations');
+    const homeLocations = await this.getKey("homeLocations");
     let parsed: WorldLocation[] = [];
     if (homeLocations) {
       parsed = JSON.parse(homeLocations) as WorldLocation[];
@@ -246,15 +271,15 @@ class PersistentChunkStore implements ChunkStore {
       locationList = [location];
     }
     locationList = Array.from(new Set(locationList));
-    await this.setKey('homeLocations', stringify(locationList));
+    await this.setKey("homeLocations", stringify(locationList));
   }
 
   public async confirmHomeLocation(location: WorldLocation): Promise<void> {
-    await this.setKey('homeLocations', stringify([location]));
+    await this.setKey("homeLocations", stringify([location]));
   }
 
   public async getSavedTouchedPlanetIds(): Promise<LocationId[]> {
-    const touchedPlanetIds = await this.getKey('touchedPlanetIds');
+    const touchedPlanetIds = await this.getKey("touchedPlanetIds");
 
     if (touchedPlanetIds) {
       const parsed = JSON.parse(touchedPlanetIds) as LocationId[];
@@ -265,7 +290,7 @@ class PersistentChunkStore implements ChunkStore {
   }
 
   public async getSavedRevealedCoords(): Promise<RevealedCoords[]> {
-    const revealedPlanetIds = await this.getKey('revealedPlanetIds');
+    const revealedPlanetIds = await this.getKey("revealedPlanetIds");
 
     if (revealedPlanetIds) {
       const parsed = JSON.parse(revealedPlanetIds);
@@ -280,7 +305,7 @@ class PersistentChunkStore implements ChunkStore {
     return [];
   }
   public async getSavedClaimedCoords(): Promise<ClaimedCoords[]> {
-    const claimedPlanetIds = await this.getKey('claimedPlanetIds');
+    const claimedPlanetIds = await this.getKey("claimedPlanetIds");
 
     if (claimedPlanetIds) {
       const parsed = JSON.parse(claimedPlanetIds);
@@ -296,15 +321,15 @@ class PersistentChunkStore implements ChunkStore {
   }
 
   public async saveTouchedPlanetIds(ids: LocationId[]) {
-    await this.setKey('touchedPlanetIds', stringify(ids));
+    await this.setKey("touchedPlanetIds", stringify(ids));
   }
 
   public async saveRevealedCoords(revealedCoordTups: RevealedCoords[]) {
-    await this.setKey('revealedPlanetIds', stringify(revealedCoordTups));
+    await this.setKey("revealedPlanetIds", stringify(revealedCoordTups));
   }
 
   public async saveClaimedCoords(claimedCoordTupps: ClaimedCoords[]) {
-    await this.setKey('claimedPlanetIds', stringify(claimedCoordTupps));
+    await this.setKey("claimedPlanetIds", stringify(claimedCoordTupps));
   }
 
   /**
@@ -317,7 +342,10 @@ class PersistentChunkStore implements ChunkStore {
     let sideLength = chunkLoc.sideLength;
 
     while (sideLength <= MAX_CHUNK_SIZE) {
-      const testChunkLoc = getChunkOfSideLengthContainingPoint(chunkLoc.bottomLeft, sideLength);
+      const testChunkLoc = getChunkOfSideLengthContainingPoint(
+        chunkLoc.bottomLeft,
+        sideLength
+      );
       const chunk = this.getChunkById(getChunkKey(testChunkLoc));
       if (chunk) {
         return chunk;
@@ -422,8 +450,16 @@ class PersistentChunkStore implements ChunkStore {
       clearingSideLen < chunk.chunkFootprint.sideLength;
       clearingSideLen *= 2
     ) {
-      for (let x = 0; x < chunk.chunkFootprint.sideLength; x += clearingSideLen) {
-        for (let y = 0; y < chunk.chunkFootprint.sideLength; y += clearingSideLen) {
+      for (
+        let x = 0;
+        x < chunk.chunkFootprint.sideLength;
+        x += clearingSideLen
+      ) {
+        for (
+          let y = 0;
+          y < chunk.chunkFootprint.sideLength;
+          y += clearingSideLen
+        ) {
           const queryChunk: Rectangle = {
             bottomLeft: {
               x: chunk.chunkFootprint.bottomLeft.x + x,
@@ -446,13 +482,19 @@ class PersistentChunkStore implements ChunkStore {
     this.nUpdatesLastTwoMins += 1;
     if (this.nUpdatesLastTwoMins === 50) {
       this.throttledSaveChunkCacheToDisk.cancel();
-      this.throttledSaveChunkCacheToDisk = _.throttle(this.persistQueuedChunks, 30000);
+      this.throttledSaveChunkCacheToDisk = _.throttle(
+        this.persistQueuedChunks,
+        30000
+      );
     }
     setTimeout(() => {
       this.nUpdatesLastTwoMins -= 1;
       if (this.nUpdatesLastTwoMins === 49) {
         this.throttledSaveChunkCacheToDisk.cancel();
-        this.throttledSaveChunkCacheToDisk = _.throttle(this.persistQueuedChunks, 5000);
+        this.throttledSaveChunkCacheToDisk = _.throttle(
+          this.persistQueuedChunks,
+          5000
+        );
       }
     }, 120000);
   }
@@ -471,7 +513,11 @@ class PersistentChunkStore implements ChunkStore {
     // in case the tx was mined and saved already
     if (!tx.hash || this.confirmedTxHashes.has(tx.hash)) return;
     const ser: PersistedTransaction = { hash: tx.hash, intent: tx.intent };
-    await this.db.put(ObjectStore.UNCONFIRMED_ETH_TXS, JSON.parse(JSON.stringify(ser)), tx.hash);
+    await this.db.put(
+      ObjectStore.UNCONFIRMED_ETH_TXS,
+      JSON.parse(JSON.stringify(ser)),
+      tx.hash
+    );
   }
 
   /**
@@ -482,13 +528,17 @@ class PersistentChunkStore implements ChunkStore {
     await this.db.delete(ObjectStore.UNCONFIRMED_ETH_TXS, txHash);
   }
 
-  public async getUnconfirmedSubmittedEthTxs(): Promise<PersistedTransaction[]> {
-    const ret: PersistedTransaction[] = await this.db.getAll(ObjectStore.UNCONFIRMED_ETH_TXS);
+  public async getUnconfirmedSubmittedEthTxs(): Promise<
+    PersistedTransaction[]
+  > {
+    const ret: PersistedTransaction[] = await this.db.getAll(
+      ObjectStore.UNCONFIRMED_ETH_TXS
+    );
     return ret;
   }
 
   public async loadPlugins(): Promise<SerializedPlugin[]> {
-    const savedPlugins = await this.getKey('plugins', ObjectStore.PLUGINS);
+    const savedPlugins = await this.getKey("plugins", ObjectStore.PLUGINS);
 
     if (!savedPlugins) {
       return [];
@@ -498,18 +548,24 @@ class PersistentChunkStore implements ChunkStore {
   }
 
   public async savePlugins(plugins: SerializedPlugin[]): Promise<void> {
-    await this.setKey('plugins', JSON.stringify(plugins), ObjectStore.PLUGINS);
+    await this.setKey("plugins", JSON.stringify(plugins), ObjectStore.PLUGINS);
   }
 
-  public async saveModalPositions(modalPositions: Map<ModalId, ModalPosition>): Promise<void> {
+  public async saveModalPositions(
+    modalPositions: Map<ModalId, ModalPosition>
+  ): Promise<void> {
     if (!this.db.objectStoreNames.contains(ObjectStore.MODAL_POS)) return;
     const serialized = JSON.stringify(Array.from(modalPositions.entries()));
     await this.setKey(MODAL_POSITIONS_KEY, serialized, ObjectStore.MODAL_POS);
   }
 
   public async loadModalPositions(): Promise<Map<ModalId, ModalPosition>> {
-    if (!this.db.objectStoreNames.contains(ObjectStore.MODAL_POS)) return new Map();
-    const winPos = await this.getKey(MODAL_POSITIONS_KEY, ObjectStore.MODAL_POS);
+    if (!this.db.objectStoreNames.contains(ObjectStore.MODAL_POS))
+      return new Map();
+    const winPos = await this.getKey(
+      MODAL_POSITIONS_KEY,
+      ObjectStore.MODAL_POS
+    );
     return new Map(winPos ? JSON.parse(winPos) : null);
   }
 }

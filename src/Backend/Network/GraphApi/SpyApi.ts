@@ -1,11 +1,11 @@
-import { LiveMatch } from '@darkforest_eth/types';
-import { apiUrl } from '../../../Frontend/Utils/constants';
-import { getGraphQLData } from '../GraphApi';
+import { LiveMatch } from "@dfdao/types";
+import { apiUrl } from "../../../Frontend/Utils/constants";
+import { getGraphQLData } from "../GraphApi";
 
 export const loadLiveMatches = async (config?: string): Promise<LiveMatch> => {
   const startTime = Math.round((Date.now() - 1000 * 60 * 60 * 24 * 7) / 1000);
 
-  const configHash = config ? `configHash: "${config}",` : '';
+  const configHash = config ? `configHash: "${config}",` : "";
   const query = `
     query {
       arenas(first: 1000, orderBy: startTime, orderDirection: desc, where: {startTime_gt: ${startTime}, ${configHash} gameOver: false}) {
@@ -24,7 +24,7 @@ planets{spawnPlanet}
 
   const response = await getGraphQLData(query, apiUrl);
 
-  if ('errors' in response) {
+  if ("errors" in response) {
     throw new Error(`error when fetching data, ${JSON.stringify(response)}`);
   }
 

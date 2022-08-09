@@ -1,9 +1,9 @@
-import { Initializers } from '@darkforest_eth/settings';
-import { EthAddress } from '@darkforest_eth/types';
-import { LobbyPlanet } from './LobbiesUtils';
+import { Initializers } from "@dfdao/settings";
+import { EthAddress } from "@dfdao/types";
+import { LobbyPlanet } from "./LobbiesUtils";
 
 // MAX int32 for graph purposes.
-export const SAFE_UPPER_BOUNDS = 2147483647 - 1// Number.MAX_SAFE_INTEGER - 1;
+export const SAFE_UPPER_BOUNDS = 2147483647 - 1; // Number.MAX_SAFE_INTEGER - 1;
 
 export class InvalidConfigError extends Error {
   key: string;
@@ -23,7 +23,9 @@ export class InvalidConfigError extends Error {
 // Throws an error if any warnings exist
 export function toInitializers(obj: LobbyConfigState) {
   const filtered: Record<string, unknown> = {};
-  for (const [key, { currentValue, displayValue, warning }] of Object.entries(obj)) {
+  for (const [key, { currentValue, displayValue, warning }] of Object.entries(
+    obj
+  )) {
     if (warning) {
       // displayValue is the invalid value, so we use that as the "value"
       throw new InvalidConfigError(warning, key, displayValue);
@@ -35,137 +37,213 @@ export function toInitializers(obj: LobbyConfigState) {
 
 // Actions aren't 1-to-1 with Initializers because we sometimes need to update into arrays
 export type LobbyConfigAction =
-  | { type: 'START_PAUSED'; value: Initializers['START_PAUSED'] | undefined }
-  | { type: 'ADMIN_CAN_ADD_PLANETS'; value: Initializers['ADMIN_CAN_ADD_PLANETS'] | undefined }
+  | { type: "START_PAUSED"; value: Initializers["START_PAUSED"] | undefined }
   | {
-      type: 'TOKEN_MINT_END_TIMESTAMP';
-      value: Initializers['TOKEN_MINT_END_TIMESTAMP'] | undefined;
+      type: "ADMIN_CAN_ADD_PLANETS";
+      value: Initializers["ADMIN_CAN_ADD_PLANETS"] | undefined;
     }
-  | { type: 'WORLD_RADIUS_LOCKED'; value: Initializers['WORLD_RADIUS_LOCKED'] | undefined }
-  | { type: 'WORLD_RADIUS_MIN'; value: Initializers['WORLD_RADIUS_MIN'] | undefined }
-  | { type: 'DISABLE_ZK_CHECKS'; value: Initializers['DISABLE_ZK_CHECKS'] | undefined }
-  | { type: 'PLANETHASH_KEY'; value: Initializers['PLANETHASH_KEY'] | undefined }
-  | { type: 'SPACETYPE_KEY'; value: Initializers['SPACETYPE_KEY'] | undefined }
-  | { type: 'BIOMEBASE_KEY'; value: Initializers['BIOMEBASE_KEY'] | undefined }
-  | { type: 'PERLIN_MIRROR_X'; value: Initializers['PERLIN_MIRROR_X'] | undefined }
-  | { type: 'PERLIN_MIRROR_Y'; value: Initializers['PERLIN_MIRROR_Y'] | undefined }
-  | { type: 'PERLIN_LENGTH_SCALE'; value: Initializers['PERLIN_LENGTH_SCALE'] | undefined }
   | {
-      type: 'MAX_NATURAL_PLANET_LEVEL';
-      value: Initializers['MAX_NATURAL_PLANET_LEVEL'] | undefined;
+      type: "TOKEN_MINT_END_TIMESTAMP";
+      value: Initializers["TOKEN_MINT_END_TIMESTAMP"] | undefined;
     }
-  | { type: 'TIME_FACTOR_HUNDREDTHS'; value: Initializers['TIME_FACTOR_HUNDREDTHS'] | undefined }
-  | { type: 'PERLIN_THRESHOLD_1'; value: Initializers['PERLIN_THRESHOLD_1'] | undefined }
-  | { type: 'PERLIN_THRESHOLD_2'; value: Initializers['PERLIN_THRESHOLD_2'] | undefined }
-  | { type: 'PERLIN_THRESHOLD_3'; value: Initializers['PERLIN_THRESHOLD_3'] | undefined }
-  | { type: 'INIT_PERLIN_MIN'; value: Initializers['INIT_PERLIN_MIN'] | undefined }
-  | { type: 'INIT_PERLIN_MAX'; value: Initializers['INIT_PERLIN_MAX'] | undefined }
-  | { type: 'BIOME_THRESHOLD_1'; value: Initializers['BIOME_THRESHOLD_1'] | undefined }
-  | { type: 'BIOME_THRESHOLD_2'; value: Initializers['BIOME_THRESHOLD_2'] | undefined }
-  | { type: 'PLANET_LEVEL_THRESHOLDS'; value: number | undefined; index: number }
-  | { type: 'PLANET_RARITY'; value: Initializers['PLANET_RARITY'] | undefined }
-  | { type: 'PLANET_TRANSFER_ENABLED'; value: Initializers['PLANET_TRANSFER_ENABLED'] | undefined }
   | {
-      type: 'PHOTOID_ACTIVATION_DELAY';
-      value: Initializers['PHOTOID_ACTIVATION_DELAY'] | undefined;
+      type: "WORLD_RADIUS_LOCKED";
+      value: Initializers["WORLD_RADIUS_LOCKED"] | undefined;
     }
-  | { type: 'SPAWN_RIM_AREA'; value: Initializers['SPAWN_RIM_AREA'] | undefined }
   | {
-      type: 'LOCATION_REVEAL_COOLDOWN';
-      value: Initializers['LOCATION_REVEAL_COOLDOWN'] | undefined;
+      type: "WORLD_RADIUS_MIN";
+      value: Initializers["WORLD_RADIUS_MIN"] | undefined;
+    }
+  | {
+      type: "DISABLE_ZK_CHECKS";
+      value: Initializers["DISABLE_ZK_CHECKS"] | undefined;
+    }
+  | {
+      type: "PLANETHASH_KEY";
+      value: Initializers["PLANETHASH_KEY"] | undefined;
+    }
+  | { type: "SPACETYPE_KEY"; value: Initializers["SPACETYPE_KEY"] | undefined }
+  | { type: "BIOMEBASE_KEY"; value: Initializers["BIOMEBASE_KEY"] | undefined }
+  | {
+      type: "PERLIN_MIRROR_X";
+      value: Initializers["PERLIN_MIRROR_X"] | undefined;
+    }
+  | {
+      type: "PERLIN_MIRROR_Y";
+      value: Initializers["PERLIN_MIRROR_Y"] | undefined;
+    }
+  | {
+      type: "PERLIN_LENGTH_SCALE";
+      value: Initializers["PERLIN_LENGTH_SCALE"] | undefined;
+    }
+  | {
+      type: "MAX_NATURAL_PLANET_LEVEL";
+      value: Initializers["MAX_NATURAL_PLANET_LEVEL"] | undefined;
+    }
+  | {
+      type: "TIME_FACTOR_HUNDREDTHS";
+      value: Initializers["TIME_FACTOR_HUNDREDTHS"] | undefined;
+    }
+  | {
+      type: "PERLIN_THRESHOLD_1";
+      value: Initializers["PERLIN_THRESHOLD_1"] | undefined;
+    }
+  | {
+      type: "PERLIN_THRESHOLD_2";
+      value: Initializers["PERLIN_THRESHOLD_2"] | undefined;
+    }
+  | {
+      type: "PERLIN_THRESHOLD_3";
+      value: Initializers["PERLIN_THRESHOLD_3"] | undefined;
+    }
+  | {
+      type: "INIT_PERLIN_MIN";
+      value: Initializers["INIT_PERLIN_MIN"] | undefined;
+    }
+  | {
+      type: "INIT_PERLIN_MAX";
+      value: Initializers["INIT_PERLIN_MAX"] | undefined;
+    }
+  | {
+      type: "BIOME_THRESHOLD_1";
+      value: Initializers["BIOME_THRESHOLD_1"] | undefined;
+    }
+  | {
+      type: "BIOME_THRESHOLD_2";
+      value: Initializers["BIOME_THRESHOLD_2"] | undefined;
+    }
+  | {
+      type: "PLANET_LEVEL_THRESHOLDS";
+      value: number | undefined;
+      index: number;
+    }
+  | { type: "PLANET_RARITY"; value: Initializers["PLANET_RARITY"] | undefined }
+  | {
+      type: "PLANET_TRANSFER_ENABLED";
+      value: Initializers["PLANET_TRANSFER_ENABLED"] | undefined;
+    }
+  | {
+      type: "PHOTOID_ACTIVATION_DELAY";
+      value: Initializers["PHOTOID_ACTIVATION_DELAY"] | undefined;
+    }
+  | {
+      type: "SPAWN_RIM_AREA";
+      value: Initializers["SPAWN_RIM_AREA"] | undefined;
+    }
+  | {
+      type: "LOCATION_REVEAL_COOLDOWN";
+      value: Initializers["LOCATION_REVEAL_COOLDOWN"] | undefined;
     }
   // TODO(#2134): Add to UI when this scoring functionality is re-enabled
   // | { type: 'CLAIM_PLANET_COOLDOWN'; value: Initializers['CLAIM_PLANET_COOLDOWN'] | undefined }
-  | { type: 'PLANET_TYPE_WEIGHTS'; value: Initializers['PLANET_TYPE_WEIGHTS'] | undefined }
-  | { type: 'SILVER_SCORE_VALUE'; value: Initializers['SILVER_SCORE_VALUE'] | undefined }
   | {
-      type: 'ARTIFACT_POINT_VALUES';
+      type: "PLANET_TYPE_WEIGHTS";
+      value: Initializers["PLANET_TYPE_WEIGHTS"] | undefined;
+    }
+  | {
+      type: "SILVER_SCORE_VALUE";
+      value: Initializers["SILVER_SCORE_VALUE"] | undefined;
+    }
+  | {
+      type: "ARTIFACT_POINT_VALUES";
       value: number | undefined;
       index: number;
     }
-  | { type: 'SPACE_JUNK_ENABLED'; value: Initializers['SPACE_JUNK_ENABLED'] | undefined }
-  | { type: 'SPACE_JUNK_LIMIT'; value: Initializers['SPACE_JUNK_LIMIT'] | undefined }
-  | { type: 'PLANET_LEVEL_JUNK'; index: number; value: number | undefined }
   | {
-      type: 'ABANDON_SPEED_CHANGE_PERCENT';
-      value: Initializers['ABANDON_SPEED_CHANGE_PERCENT'] | undefined;
+      type: "SPACE_JUNK_ENABLED";
+      value: Initializers["SPACE_JUNK_ENABLED"] | undefined;
     }
   | {
-      type: 'ABANDON_RANGE_CHANGE_PERCENT';
-      value: Initializers['ABANDON_RANGE_CHANGE_PERCENT'] | undefined;
+      type: "SPACE_JUNK_LIMIT";
+      value: Initializers["SPACE_JUNK_LIMIT"] | undefined;
     }
-  | { type: 'CAPTURE_ZONES_ENABLED'; value: Initializers['CAPTURE_ZONES_ENABLED'] | undefined }
+  | { type: "PLANET_LEVEL_JUNK"; index: number; value: number | undefined }
+  | {
+      type: "ABANDON_SPEED_CHANGE_PERCENT";
+      value: Initializers["ABANDON_SPEED_CHANGE_PERCENT"] | undefined;
+    }
+  | {
+      type: "ABANDON_RANGE_CHANGE_PERCENT";
+      value: Initializers["ABANDON_RANGE_CHANGE_PERCENT"] | undefined;
+    }
+  | {
+      type: "CAPTURE_ZONES_ENABLED";
+      value: Initializers["CAPTURE_ZONES_ENABLED"] | undefined;
+    }
   // TODO(#2299): Add to UI when this functionality is implemented
   // | { type: 'CAPTURE_ZONE_COUNT'; value: Initializers['CAPTURE_ZONE_COUNT'] | undefined }
   | {
-      type: 'CAPTURE_ZONE_CHANGE_BLOCK_INTERVAL';
-      value: Initializers['CAPTURE_ZONE_CHANGE_BLOCK_INTERVAL'] | undefined;
+      type: "CAPTURE_ZONE_CHANGE_BLOCK_INTERVAL";
+      value: Initializers["CAPTURE_ZONE_CHANGE_BLOCK_INTERVAL"] | undefined;
     }
-  | { type: 'CAPTURE_ZONE_RADIUS'; value: Initializers['CAPTURE_ZONE_RADIUS'] | undefined }
   | {
-      type: 'CAPTURE_ZONE_PLANET_LEVEL_SCORE';
+      type: "CAPTURE_ZONE_RADIUS";
+      value: Initializers["CAPTURE_ZONE_RADIUS"] | undefined;
+    }
+  | {
+      type: "CAPTURE_ZONE_PLANET_LEVEL_SCORE";
       value: number | undefined;
       index: number;
     }
   | {
-      type: 'CAPTURE_ZONE_HOLD_BLOCKS_REQUIRED';
-      value: Initializers['CAPTURE_ZONE_HOLD_BLOCKS_REQUIRED'] | undefined;
+      type: "CAPTURE_ZONE_HOLD_BLOCKS_REQUIRED";
+      value: Initializers["CAPTURE_ZONE_HOLD_BLOCKS_REQUIRED"] | undefined;
     }
   | {
-      type: 'CAPTURE_ZONES_PER_5000_WORLD_RADIUS';
-      value: Initializers['CAPTURE_ZONES_PER_5000_WORLD_RADIUS'] | undefined;
+      type: "CAPTURE_ZONES_PER_5000_WORLD_RADIUS";
+      value: Initializers["CAPTURE_ZONES_PER_5000_WORLD_RADIUS"] | undefined;
     }
-  | { type: 'WHITELIST_ENABLED'; value: boolean | undefined }
+  | { type: "WHITELIST_ENABLED"; value: boolean | undefined }
   | {
-      type: 'ADMIN_PLANETS';
+      type: "ADMIN_PLANETS";
       value: LobbyPlanet | undefined;
       index: number;
       number?: number;
     }
-  | { type: 'MANUAL_SPAWN'; value: Initializers['MANUAL_SPAWN'] | undefined }
+  | { type: "MANUAL_SPAWN"; value: Initializers["MANUAL_SPAWN"] | undefined }
   | {
-      type: 'TARGET_PLANETS';
-      value: Initializers['TARGET_PLANETS'] | undefined;
+      type: "TARGET_PLANETS";
+      value: Initializers["TARGET_PLANETS"] | undefined;
     }
   | {
-      type: 'CLAIM_VICTORY_ENERGY_PERCENT';
-      value: Initializers['CLAIM_VICTORY_ENERGY_PERCENT'] | undefined;
+      type: "CLAIM_VICTORY_ENERGY_PERCENT";
+      value: Initializers["CLAIM_VICTORY_ENERGY_PERCENT"] | undefined;
     }
   | {
-      type: 'RANDOM_ARTIFACTS';
-      value: Initializers['RANDOM_ARTIFACTS'] | undefined;
+      type: "RANDOM_ARTIFACTS";
+      value: Initializers["RANDOM_ARTIFACTS"] | undefined;
     }
   | {
-      type: 'MODIFIERS';
+      type: "MODIFIERS";
       index: number;
       value: number | undefined;
     }
   | {
-      type: 'SPACESHIPS';
+      type: "SPACESHIPS";
       index: number;
       value: boolean | undefined;
     }
   | {
-      type: 'WHITELIST';
+      type: "WHITELIST";
       index: number;
       value: EthAddress | undefined;
     }
-  | { type: 'NO_ADMIN'; value: Initializers['NO_ADMIN'] | undefined }
-  | { type: 'RANKED'; value: Initializers['RANKED'] | undefined }
-  | { type: 'CONFIRM_START'; value: Initializers['CONFIRM_START'] | undefined }
-  | { type: 'BLOCK_MOVES'; value: Initializers['BLOCK_MOVES'] | undefined }
-  | { type: 'BLOCK_CAPTURE'; value: Initializers['BLOCK_CAPTURE'] | undefined }
+  | { type: "NO_ADMIN"; value: Initializers["NO_ADMIN"] | undefined }
+  | { type: "RANKED"; value: Initializers["RANKED"] | undefined }
+  | { type: "CONFIRM_START"; value: Initializers["CONFIRM_START"] | undefined }
+  | { type: "BLOCK_MOVES"; value: Initializers["BLOCK_MOVES"] | undefined }
+  | { type: "BLOCK_CAPTURE"; value: Initializers["BLOCK_CAPTURE"] | undefined }
   | {
-      type: 'TEAMS_ENABLED';
-      value: Initializers['TEAMS_ENABLED'] | undefined;
+      type: "TEAMS_ENABLED";
+      value: Initializers["TEAMS_ENABLED"] | undefined;
     }
   | {
-      type: 'TARGETS_REQUIRED_FOR_VICTORY';
-      value: Initializers['TARGETS_REQUIRED_FOR_VICTORY'] | undefined;
+      type: "TARGETS_REQUIRED_FOR_VICTORY";
+      value: Initializers["TARGETS_REQUIRED_FOR_VICTORY"] | undefined;
     }
   | {
-      type: 'NUM_TEAMS';
-      value: Initializers['NUM_TEAMS'] | undefined;
+      type: "NUM_TEAMS";
+      value: Initializers["NUM_TEAMS"] | undefined;
     };
 
 // TODO(#2328): WHITELIST_ENABLED should just be on Initializers
@@ -184,117 +262,122 @@ export type LobbyConfigState = {
   };
 };
 
-export type LobbyAction = { type: 'RESET'; value: LobbyConfigState } | LobbyConfigAction;
+export type LobbyAction =
+  | { type: "RESET"; value: LobbyConfigState }
+  | LobbyConfigAction;
 
-export function lobbyConfigReducer(state: LobbyConfigState, action: LobbyAction) {
+export function lobbyConfigReducer(
+  state: LobbyConfigState,
+  action: LobbyAction
+) {
   let update;
   switch (action.type) {
-    case 'START_PAUSED': {
+    case "START_PAUSED": {
       update = ofBoolean(action, state);
       break;
     }
-    case 'ADMIN_CAN_ADD_PLANETS': {
+    case "ADMIN_CAN_ADD_PLANETS": {
       update = ofBoolean(action, state);
       break;
     }
-    case 'TOKEN_MINT_END_TIMESTAMP': {
+    case "TOKEN_MINT_END_TIMESTAMP": {
       // TODO: Date
       update = ofAny(action, state);
       break;
     }
-    case 'WORLD_RADIUS_LOCKED': {
+    case "WORLD_RADIUS_LOCKED": {
       update = ofBoolean(action, state);
       break;
     }
-    case 'WORLD_RADIUS_MIN': {
+    case "WORLD_RADIUS_MIN": {
       update = ofWorldRadiusMin(action, state);
       break;
     }
-    case 'DISABLE_ZK_CHECKS': {
+    case "DISABLE_ZK_CHECKS": {
       update = ofBoolean(action, state);
       break;
     }
-    case 'PLANETHASH_KEY': {
+    case "PLANETHASH_KEY": {
       update = ofPositiveInteger(action, state);
       break;
     }
-    case 'SPACETYPE_KEY': {
+    case "SPACETYPE_KEY": {
       update = ofPositiveInteger(action, state);
       break;
     }
-    case 'BIOMEBASE_KEY': {
+    case "BIOMEBASE_KEY": {
       update = ofPositiveInteger(action, state);
       break;
     }
-    case 'PERLIN_MIRROR_X': {
+    case "PERLIN_MIRROR_X": {
       update = ofBoolean(action, state);
       break;
     }
-    case 'PERLIN_MIRROR_Y': {
+    case "PERLIN_MIRROR_Y": {
       update = ofBoolean(action, state);
       break;
     }
-    case 'PERLIN_LENGTH_SCALE': {
+    case "PERLIN_LENGTH_SCALE": {
       update = ofPerlinLengthScale(action, state);
       break;
     }
-    case 'MAX_NATURAL_PLANET_LEVEL': {
+    case "MAX_NATURAL_PLANET_LEVEL": {
       update = ofMaxNaturalPlanetLevel(action, state);
       break;
     }
-    case 'TIME_FACTOR_HUNDREDTHS': {
+    case "TIME_FACTOR_HUNDREDTHS": {
       update = ofTimeFactorHundredths(action, state);
       break;
     }
-    case 'PERLIN_THRESHOLD_1': {
+    case "PERLIN_THRESHOLD_1": {
       update = ofPositiveInteger(action, state);
       break;
     }
-    case 'PERLIN_THRESHOLD_2': {
+    case "PERLIN_THRESHOLD_2": {
       update = ofPositiveInteger(action, state);
       break;
     }
-    case 'PERLIN_THRESHOLD_3': {
+    case "PERLIN_THRESHOLD_3": {
       update = ofPositiveInteger(action, state);
       break;
     }
-    case 'INIT_PERLIN_MIN': {
+    case "INIT_PERLIN_MIN": {
       update = ofPositiveInteger(action, state);
       break;
     }
-    case 'INIT_PERLIN_MAX': {
+    case "INIT_PERLIN_MAX": {
       update = ofPositiveInteger(action, state);
       break;
     }
-    case 'BIOME_THRESHOLD_1': {
+    case "BIOME_THRESHOLD_1": {
       update = ofPositiveInteger(action, state);
       break;
     }
-    case 'BIOME_THRESHOLD_2': {
+    case "BIOME_THRESHOLD_2": {
       update = ofPositiveInteger(action, state);
       break;
     }
-    case 'PLANET_LEVEL_THRESHOLDS': {
+    case "PLANET_LEVEL_THRESHOLDS": {
       update = ofPlanetLevelThresholds(action, state);
       break;
     }
-    case 'PLANET_RARITY': {
+    case "PLANET_RARITY": {
       update = ofPlanetRarity(action, state);
       break;
     }
-    case 'PLANET_TRANSFER_ENABLED': {
+    case "PLANET_TRANSFER_ENABLED": {
       update = ofBoolean(action, state);
       break;
     }
-    case 'PHOTOID_ACTIVATION_DELAY': {
+    case "PHOTOID_ACTIVATION_DELAY": {
       update = ofPositiveInteger(action, state);
       break;
     }
-    case 'SPAWN_RIM_AREA': {
+    case "SPAWN_RIM_AREA": {
       update = ofSpawnRimArea(action, state);
       break;
     }
-    case 'LOCATION_REVEAL_COOLDOWN': {
+    case "LOCATION_REVEAL_COOLDOWN": {
       update = ofPositiveInteger(action, state);
       break;
     }
@@ -303,40 +386,40 @@ export function lobbyConfigReducer(state: LobbyConfigState, action: LobbyAction)
     //   update = ofPositiveInteger(action, state);
     //   break;
     // }
-    case 'PLANET_TYPE_WEIGHTS': {
+    case "PLANET_TYPE_WEIGHTS": {
       // TODO: Add this
       update = ofNoop(action, state);
       break;
     }
-    case 'SILVER_SCORE_VALUE': {
+    case "SILVER_SCORE_VALUE": {
       update = ofPositivePercent(action, state);
       break;
     }
-    case 'ARTIFACT_POINT_VALUES': {
+    case "ARTIFACT_POINT_VALUES": {
       update = ofArtifactPointValues(action, state);
       break;
     }
-    case 'SPACE_JUNK_ENABLED': {
+    case "SPACE_JUNK_ENABLED": {
       update = ofBoolean(action, state);
       break;
     }
-    case 'SPACE_JUNK_LIMIT': {
+    case "SPACE_JUNK_LIMIT": {
       update = ofSpaceJunkLimit(action, state);
       break;
     }
-    case 'PLANET_LEVEL_JUNK': {
+    case "PLANET_LEVEL_JUNK": {
       update = ofPlanetLevelJunk(action, state);
       break;
     }
-    case 'ABANDON_SPEED_CHANGE_PERCENT': {
+    case "ABANDON_SPEED_CHANGE_PERCENT": {
       update = ofPositivePercent(action, state);
       break;
     }
-    case 'ABANDON_RANGE_CHANGE_PERCENT': {
+    case "ABANDON_RANGE_CHANGE_PERCENT": {
       update = ofPositivePercent(action, state);
       break;
     }
-    case 'CAPTURE_ZONES_ENABLED': {
+    case "CAPTURE_ZONES_ENABLED": {
       update = ofBoolean(action, state);
       break;
     }
@@ -345,99 +428,99 @@ export function lobbyConfigReducer(state: LobbyConfigState, action: LobbyAction)
     //   update = ofPositiveInteger(action, state);
     //   break;
     // }
-    case 'CAPTURE_ZONE_CHANGE_BLOCK_INTERVAL': {
+    case "CAPTURE_ZONE_CHANGE_BLOCK_INTERVAL": {
       update = ofCaptureZoneChangeBlockInterval(action, state);
       break;
     }
-    case 'CAPTURE_ZONE_RADIUS': {
+    case "CAPTURE_ZONE_RADIUS": {
       update = ofCaptureZoneRadius(action, state);
       break;
     }
-    case 'CAPTURE_ZONE_PLANET_LEVEL_SCORE': {
+    case "CAPTURE_ZONE_PLANET_LEVEL_SCORE": {
       update = ofCaptureZonePlanetLevelScore(action, state);
       break;
     }
-    case 'CAPTURE_ZONE_HOLD_BLOCKS_REQUIRED': {
+    case "CAPTURE_ZONE_HOLD_BLOCKS_REQUIRED": {
       update = ofPositiveInteger(action, state);
       break;
     }
-    case 'CAPTURE_ZONES_PER_5000_WORLD_RADIUS': {
+    case "CAPTURE_ZONES_PER_5000_WORLD_RADIUS": {
       update = ofCaptureZonesPer5000WorldRadius(action, state);
       break;
     }
-    case 'WHITELIST_ENABLED': {
+    case "WHITELIST_ENABLED": {
       update = ofBoolean(action, state);
       break;
     }
-    case 'MANUAL_SPAWN': {
+    case "MANUAL_SPAWN": {
       update = ofBoolean(action, state);
       break;
     }
-    case 'TARGET_PLANETS': {
+    case "TARGET_PLANETS": {
       update = ofBoolean(action, state);
       break;
     }
-    case 'CLAIM_VICTORY_ENERGY_PERCENT': {
+    case "CLAIM_VICTORY_ENERGY_PERCENT": {
       update = ofPositiveInteger(action, state);
       break;
     }
-    case 'RANDOM_ARTIFACTS': {
+    case "RANDOM_ARTIFACTS": {
       update = ofBoolean(action, state);
       break;
     }
-    case 'ADMIN_PLANETS': {
+    case "ADMIN_PLANETS": {
       update = ofLobbyPlanets(action, state);
       break;
     }
-    case 'WHITELIST': {
+    case "WHITELIST": {
       update = ofWhitelist(action, state);
       break;
     }
-    case 'TEAMS_ENABLED': {
+    case "TEAMS_ENABLED": {
       update = ofBoolean(action, state);
       break;
     }
-    case 'NUM_TEAMS': {
+    case "NUM_TEAMS": {
       update = ofPositiveInteger(action, state);
       break;
     }
-    case 'TARGETS_REQUIRED_FOR_VICTORY': {
+    case "TARGETS_REQUIRED_FOR_VICTORY": {
       update = ofPositiveInteger(action, state);
       break;
     }
-    case 'MODIFIERS': {
+    case "MODIFIERS": {
       update = ofModifiers(action, state);
       break;
     }
-    case 'SPACESHIPS': {
+    case "SPACESHIPS": {
       update = ofSpaceships(action, state);
       break;
     }
-    case 'WHITELIST': {
+    case "WHITELIST": {
       update = ofWhitelist(action, state);
       break;
     }
-    case 'NO_ADMIN': {
+    case "NO_ADMIN": {
       update = ofBoolean(action, state);
       break;
     }
-    case 'CONFIRM_START': {
+    case "CONFIRM_START": {
       update = ofBoolean(action, state);
       break;
     }
-    case 'BLOCK_MOVES': {
+    case "BLOCK_MOVES": {
       update = ofBoolean(action, state);
       break;
     }
-    case 'BLOCK_CAPTURE': {
+    case "BLOCK_CAPTURE": {
       update = ofBoolean(action, state);
       break;
     }
-    case 'RANKED': {
+    case "RANKED": {
       update = ofBoolean(action, state);
       break;
     }
-    case 'RESET': {
+    case "RESET": {
       // Hard reset all values that were available in the JSON
       return {
         ...state,
@@ -461,7 +544,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
   const state: Partial<LobbyConfigState> = {};
   for (const key of Object.keys(startingConfig) as [keyof LobbyInitializers]) {
     switch (key) {
-      case 'START_PAUSED': {
+      case "START_PAUSED": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -471,7 +554,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'ADMIN_CAN_ADD_PLANETS': {
+      case "ADMIN_CAN_ADD_PLANETS": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -481,7 +564,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'TOKEN_MINT_END_TIMESTAMP': {
+      case "TOKEN_MINT_END_TIMESTAMP": {
         // TODO: Handle dates
         const defaultValue = startingConfig[key];
         state[key] = {
@@ -492,7 +575,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'WORLD_RADIUS_LOCKED': {
+      case "WORLD_RADIUS_LOCKED": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -502,7 +585,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'WORLD_RADIUS_MIN': {
+      case "WORLD_RADIUS_MIN": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -512,7 +595,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'DISABLE_ZK_CHECKS': {
+      case "DISABLE_ZK_CHECKS": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -522,7 +605,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'PLANETHASH_KEY': {
+      case "PLANETHASH_KEY": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -532,7 +615,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'SPACETYPE_KEY': {
+      case "SPACETYPE_KEY": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -542,7 +625,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'BIOMEBASE_KEY': {
+      case "BIOMEBASE_KEY": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -552,7 +635,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'PERLIN_MIRROR_X': {
+      case "PERLIN_MIRROR_X": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -562,7 +645,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'PERLIN_MIRROR_Y': {
+      case "PERLIN_MIRROR_Y": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -572,7 +655,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'PERLIN_LENGTH_SCALE': {
+      case "PERLIN_LENGTH_SCALE": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -582,7 +665,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'MAX_NATURAL_PLANET_LEVEL': {
+      case "MAX_NATURAL_PLANET_LEVEL": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -592,7 +675,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'TIME_FACTOR_HUNDREDTHS': {
+      case "TIME_FACTOR_HUNDREDTHS": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -602,7 +685,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'PERLIN_THRESHOLD_1': {
+      case "PERLIN_THRESHOLD_1": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -612,7 +695,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'PERLIN_THRESHOLD_2': {
+      case "PERLIN_THRESHOLD_2": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -622,7 +705,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'PERLIN_THRESHOLD_3': {
+      case "PERLIN_THRESHOLD_3": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -632,7 +715,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'INIT_PERLIN_MIN': {
+      case "INIT_PERLIN_MIN": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -642,7 +725,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'INIT_PERLIN_MAX': {
+      case "INIT_PERLIN_MAX": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -652,7 +735,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'BIOME_THRESHOLD_1': {
+      case "BIOME_THRESHOLD_1": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -662,7 +745,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'BIOME_THRESHOLD_2': {
+      case "BIOME_THRESHOLD_2": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -672,7 +755,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'PLANET_LEVEL_THRESHOLDS': {
+      case "PLANET_LEVEL_THRESHOLDS": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -682,7 +765,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'PLANET_RARITY': {
+      case "PLANET_RARITY": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -692,7 +775,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'PLANET_TRANSFER_ENABLED': {
+      case "PLANET_TRANSFER_ENABLED": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -702,7 +785,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'PHOTOID_ACTIVATION_DELAY': {
+      case "PHOTOID_ACTIVATION_DELAY": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -712,7 +795,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'SPAWN_RIM_AREA': {
+      case "SPAWN_RIM_AREA": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -722,7 +805,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'LOCATION_REVEAL_COOLDOWN': {
+      case "LOCATION_REVEAL_COOLDOWN": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -742,7 +825,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
       //   };
       //   break;
       // }
-      case 'PLANET_TYPE_WEIGHTS': {
+      case "PLANET_TYPE_WEIGHTS": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -752,7 +835,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'SILVER_SCORE_VALUE': {
+      case "SILVER_SCORE_VALUE": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -762,7 +845,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'ARTIFACT_POINT_VALUES': {
+      case "ARTIFACT_POINT_VALUES": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -772,7 +855,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'SPACE_JUNK_ENABLED': {
+      case "SPACE_JUNK_ENABLED": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -782,7 +865,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'SPACE_JUNK_LIMIT': {
+      case "SPACE_JUNK_LIMIT": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -792,7 +875,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'PLANET_LEVEL_JUNK': {
+      case "PLANET_LEVEL_JUNK": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -802,7 +885,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'ABANDON_SPEED_CHANGE_PERCENT': {
+      case "ABANDON_SPEED_CHANGE_PERCENT": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -812,7 +895,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'ABANDON_RANGE_CHANGE_PERCENT': {
+      case "ABANDON_RANGE_CHANGE_PERCENT": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -822,7 +905,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'CAPTURE_ZONES_ENABLED': {
+      case "CAPTURE_ZONES_ENABLED": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -832,7 +915,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'CAPTURE_ZONE_COUNT': {
+      case "CAPTURE_ZONE_COUNT": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -842,7 +925,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'CAPTURE_ZONE_CHANGE_BLOCK_INTERVAL': {
+      case "CAPTURE_ZONE_CHANGE_BLOCK_INTERVAL": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -852,7 +935,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'CAPTURE_ZONE_RADIUS': {
+      case "CAPTURE_ZONE_RADIUS": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -862,7 +945,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'CAPTURE_ZONE_PLANET_LEVEL_SCORE': {
+      case "CAPTURE_ZONE_PLANET_LEVEL_SCORE": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -872,7 +955,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'CAPTURE_ZONE_HOLD_BLOCKS_REQUIRED': {
+      case "CAPTURE_ZONE_HOLD_BLOCKS_REQUIRED": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -882,7 +965,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'CAPTURE_ZONES_PER_5000_WORLD_RADIUS': {
+      case "CAPTURE_ZONES_PER_5000_WORLD_RADIUS": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -892,7 +975,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'WHITELIST_ENABLED': {
+      case "WHITELIST_ENABLED": {
         // Default this to false if we don't have it
         const defaultValue = startingConfig[key] || false;
         state[key] = {
@@ -903,7 +986,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'ADMIN_PLANETS': {
+      case "ADMIN_PLANETS": {
         // Default this to false if we don't have it
         const defaultValue = startingConfig[key] || [];
         state[key] = {
@@ -914,7 +997,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'MANUAL_SPAWN': {
+      case "MANUAL_SPAWN": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -924,7 +1007,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'TARGET_PLANETS': {
+      case "TARGET_PLANETS": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -934,7 +1017,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'CLAIM_VICTORY_ENERGY_PERCENT': {
+      case "CLAIM_VICTORY_ENERGY_PERCENT": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -944,7 +1027,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'RANDOM_ARTIFACTS': {
+      case "RANDOM_ARTIFACTS": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -954,7 +1037,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'MODIFIERS': {
+      case "MODIFIERS": {
         // Default this to false if we don't have it
         const defaultValue = startingConfig[key];
         state[key] = {
@@ -965,7 +1048,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'SPACESHIPS': {
+      case "SPACESHIPS": {
         // Default this to false if we don't have it
         const defaultValue = startingConfig[key];
         state[key] = {
@@ -976,7 +1059,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'WHITELIST': {
+      case "WHITELIST": {
         // Default this to false if we don't have it
         const defaultValue = startingConfig[key] || [];
         state[key] = {
@@ -987,7 +1070,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'NO_ADMIN': {
+      case "NO_ADMIN": {
         // Default this to false if we don't have it
         const defaultValue = startingConfig[key] || false;
         state[key] = {
@@ -998,7 +1081,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'CONFIRM_START': {
+      case "CONFIRM_START": {
         // Default this to false if we don't have it
         const defaultValue = startingConfig[key] || false;
         state[key] = {
@@ -1009,7 +1092,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'RANKED': {
+      case "RANKED": {
         // Default this to false if we don't have it
         const defaultValue = startingConfig[key] || false;
         state[key] = {
@@ -1020,7 +1103,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'BLOCK_MOVES': {
+      case "BLOCK_MOVES": {
         // Default this to false if we don't have it
         const defaultValue = startingConfig[key] || false;
         state[key] = {
@@ -1031,7 +1114,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'BLOCK_CAPTURE': {
+      case "BLOCK_CAPTURE": {
         // Default this to false if we don't have it
         const defaultValue = startingConfig[key] || false;
         state[key] = {
@@ -1042,7 +1125,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'TEAMS_ENABLED': {
+      case "TEAMS_ENABLED": {
         // Default this to false if we don't have it
         const defaultValue = startingConfig[key] || false;
         state[key] = {
@@ -1053,7 +1136,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'NUM_TEAMS': {
+      case "NUM_TEAMS": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -1063,7 +1146,7 @@ export function lobbyConfigInit(startingConfig: LobbyInitializers) {
         };
         break;
       }
-      case 'TARGETS_REQUIRED_FOR_VICTORY': {
+      case "TARGETS_REQUIRED_FOR_VICTORY": {
         const defaultValue = startingConfig[key];
         state[key] = {
           currentValue: defaultValue,
@@ -1092,7 +1175,10 @@ export function ofNoop({ type }: LobbyConfigAction, state: LobbyConfigState) {
   };
 }
 
-export function ofAny({ type, value }: LobbyConfigAction, state: LobbyConfigState) {
+export function ofAny(
+  { type, value }: LobbyConfigAction,
+  state: LobbyConfigState
+) {
   return {
     ...state[type],
     currentValue: value,
@@ -1133,7 +1219,7 @@ export function ofPositiveInteger(
     };
   }
 
-  if (typeof value !== 'number') {
+  if (typeof value !== "number") {
     return {
       ...state[type],
       displayValue: value,
@@ -1185,7 +1271,7 @@ export function ofPositiveFloat(
     };
   }
 
-  if (typeof value !== 'number') {
+  if (typeof value !== "number") {
     return {
       ...state[type],
       displayValue: value,
@@ -1229,11 +1315,11 @@ export function ofPositivePercent(
     };
   }
 
-  if (typeof value !== 'number') {
+  if (typeof value !== "number") {
     return {
       ...state[type],
       displayValue: value,
-      warning: 'Value must be a number',
+      warning: "Value must be a number",
     };
   }
 
@@ -1269,7 +1355,7 @@ export function ofPositivePercent(
 }
 
 export function ofWorldRadiusMin(
-  { type, value }: Extract<LobbyConfigAction, { type: 'WORLD_RADIUS_MIN' }>,
+  { type, value }: Extract<LobbyConfigAction, { type: "WORLD_RADIUS_MIN" }>,
   state: LobbyConfigState
 ) {
   if (value === undefined) {
@@ -1280,7 +1366,7 @@ export function ofWorldRadiusMin(
     };
   }
 
-  if (typeof value !== 'number') {
+  if (typeof value !== "number") {
     return {
       ...state[type],
       displayValue: value,
@@ -1300,7 +1386,7 @@ export function ofWorldRadiusMin(
     return {
       ...state[type],
       displayValue: value,
-      warning: 'Value must be an integer',
+      warning: "Value must be an integer",
     };
   }
 
@@ -1329,7 +1415,7 @@ export function ofWorldRadiusMin(
 }
 
 export function ofPerlinLengthScale(
-  { type, value }: Extract<LobbyConfigAction, { type: 'PERLIN_LENGTH_SCALE' }>,
+  { type, value }: Extract<LobbyConfigAction, { type: "PERLIN_LENGTH_SCALE" }>,
   state: LobbyConfigState
 ) {
   if (value === undefined) {
@@ -1340,11 +1426,11 @@ export function ofPerlinLengthScale(
     };
   }
 
-  if (typeof value !== 'number') {
+  if (typeof value !== "number") {
     return {
       ...state[type],
       displayValue: value,
-      warning: 'Value must be a number',
+      warning: "Value must be a number",
     };
   }
 
@@ -1357,7 +1443,10 @@ export function ofPerlinLengthScale(
 }
 
 export function ofMaxNaturalPlanetLevel(
-  { type, value }: Extract<LobbyConfigAction, { type: 'MAX_NATURAL_PLANET_LEVEL' }>,
+  {
+    type,
+    value,
+  }: Extract<LobbyConfigAction, { type: "MAX_NATURAL_PLANET_LEVEL" }>,
   state: LobbyConfigState
 ) {
   if (value === undefined) {
@@ -1368,7 +1457,7 @@ export function ofMaxNaturalPlanetLevel(
     };
   }
 
-  if (typeof value !== 'number') {
+  if (typeof value !== "number") {
     return {
       ...state[type],
       displayValue: value,
@@ -1396,7 +1485,7 @@ export function ofMaxNaturalPlanetLevel(
     return {
       ...state[type],
       displayValue: value,
-      warning: 'Value must be an integer',
+      warning: "Value must be an integer",
     };
   }
 
@@ -1409,7 +1498,10 @@ export function ofMaxNaturalPlanetLevel(
 }
 
 export function ofTimeFactorHundredths(
-  { type, value }: Extract<LobbyConfigAction, { type: 'TIME_FACTOR_HUNDREDTHS' }>,
+  {
+    type,
+    value,
+  }: Extract<LobbyConfigAction, { type: "TIME_FACTOR_HUNDREDTHS" }>,
   state: LobbyConfigState
 ) {
   if (value === undefined) {
@@ -1420,11 +1512,11 @@ export function ofTimeFactorHundredths(
     };
   }
 
-  if (typeof value !== 'number') {
+  if (typeof value !== "number") {
     return {
       ...state[type],
       displayValue: value,
-      warning: 'Value must be a number',
+      warning: "Value must be a number",
     };
   }
 
@@ -1440,7 +1532,7 @@ export function ofTimeFactorHundredths(
     return {
       ...state[type],
       displayValue: value,
-      warning: 'Value must be an integer',
+      warning: "Value must be an integer",
     };
   }
 
@@ -1453,7 +1545,7 @@ export function ofTimeFactorHundredths(
 }
 
 export function ofPlanetRarity(
-  { type, value }: Extract<LobbyConfigAction, { type: 'PLANET_RARITY' }>,
+  { type, value }: Extract<LobbyConfigAction, { type: "PLANET_RARITY" }>,
   state: LobbyConfigState
 ) {
   if (value === undefined) {
@@ -1464,7 +1556,7 @@ export function ofPlanetRarity(
     };
   }
 
-  if (typeof value !== 'number') {
+  if (typeof value !== "number") {
     return {
       ...state[type],
       displayValue: value,
@@ -1505,7 +1597,7 @@ export function ofPlanetRarity(
 }
 
 export function ofSpawnRimArea(
-  { type, value }: Extract<LobbyConfigAction, { type: 'SPAWN_RIM_AREA' }>,
+  { type, value }: Extract<LobbyConfigAction, { type: "SPAWN_RIM_AREA" }>,
   state: LobbyConfigState
 ) {
   if (value === undefined) {
@@ -1516,11 +1608,11 @@ export function ofSpawnRimArea(
     };
   }
 
-  if (typeof value !== 'number') {
+  if (typeof value !== "number") {
     return {
       ...state[type],
       displayValue: value,
-      warning: 'Value must be a number',
+      warning: "Value must be a number",
     };
   }
 
@@ -1540,7 +1632,7 @@ export function ofSpawnRimArea(
     return {
       ...state[type],
       displayValue: value,
-      warning: 'Spawnable area must be larger',
+      warning: "Spawnable area must be larger",
     };
   }
 
@@ -1562,7 +1654,7 @@ export function ofSpawnRimArea(
 }
 
 export function ofSpaceJunkLimit(
-  { type, value }: Extract<LobbyConfigAction, { type: 'SPACE_JUNK_LIMIT' }>,
+  { type, value }: Extract<LobbyConfigAction, { type: "SPACE_JUNK_LIMIT" }>,
   state: LobbyConfigState
 ) {
   if (value === undefined) {
@@ -1573,11 +1665,11 @@ export function ofSpaceJunkLimit(
     };
   }
 
-  if (typeof value !== 'number') {
+  if (typeof value !== "number") {
     return {
       ...state[type],
       displayValue: value,
-      warning: 'Value must be a number',
+      warning: "Value must be a number",
     };
   }
 
@@ -1633,7 +1725,11 @@ export function ofSpaceJunkLimit(
 }
 
 export function ofPlanetLevelJunk(
-  { type, index, value }: Extract<LobbyConfigAction, { type: 'PLANET_LEVEL_JUNK' }>,
+  {
+    type,
+    index,
+    value,
+  }: Extract<LobbyConfigAction, { type: "PLANET_LEVEL_JUNK" }>,
   state: LobbyConfigState
 ) {
   const prevCurrentValue = state[type].currentValue;
@@ -1659,7 +1755,7 @@ export function ofPlanetLevelJunk(
 
   displayValue[index] = value;
 
-  if (typeof value !== 'number') {
+  if (typeof value !== "number") {
     return {
       ...state[type],
       displayValue,
@@ -1702,7 +1798,11 @@ export function ofPlanetLevelJunk(
 }
 
 export function ofArtifactPointValues(
-  { type, index, value }: Extract<LobbyConfigAction, { type: 'ARTIFACT_POINT_VALUES' }>,
+  {
+    type,
+    index,
+    value,
+  }: Extract<LobbyConfigAction, { type: "ARTIFACT_POINT_VALUES" }>,
   state: LobbyConfigState
 ) {
   const prevCurrentValue = state[type].currentValue;
@@ -1727,7 +1827,7 @@ export function ofArtifactPointValues(
 
   displayValue[index] = value;
 
-  if (typeof value !== 'number') {
+  if (typeof value !== "number") {
     return {
       ...state[type],
       displayValue,
@@ -1762,7 +1862,7 @@ export function ofArtifactPointValues(
 }
 
 export function ofCaptureZoneRadius(
-  { type, value }: Extract<LobbyConfigAction, { type: 'CAPTURE_ZONE_RADIUS' }>,
+  { type, value }: Extract<LobbyConfigAction, { type: "CAPTURE_ZONE_RADIUS" }>,
   state: LobbyConfigState
 ) {
   if (value === undefined) {
@@ -1773,7 +1873,7 @@ export function ofCaptureZoneRadius(
     };
   }
 
-  if (typeof value !== 'number') {
+  if (typeof value !== "number") {
     return {
       ...state[type],
       displayValue: value,
@@ -1814,7 +1914,13 @@ export function ofCaptureZoneRadius(
 }
 
 export function ofCaptureZonesPer5000WorldRadius(
-  { type, value }: Extract<LobbyConfigAction, { type: 'CAPTURE_ZONES_PER_5000_WORLD_RADIUS' }>,
+  {
+    type,
+    value,
+  }: Extract<
+    LobbyConfigAction,
+    { type: "CAPTURE_ZONES_PER_5000_WORLD_RADIUS" }
+  >,
   state: LobbyConfigState
 ) {
   if (value === undefined) {
@@ -1825,7 +1931,7 @@ export function ofCaptureZonesPer5000WorldRadius(
     };
   }
 
-  if (typeof value !== 'number') {
+  if (typeof value !== "number") {
     return {
       ...state[type],
       displayValue: value,
@@ -1866,7 +1972,10 @@ export function ofCaptureZonesPer5000WorldRadius(
 }
 
 export function ofCaptureZoneChangeBlockInterval(
-  { type, value }: Extract<LobbyConfigAction, { type: 'CAPTURE_ZONE_CHANGE_BLOCK_INTERVAL' }>,
+  {
+    type,
+    value,
+  }: Extract<LobbyConfigAction, { type: "CAPTURE_ZONE_CHANGE_BLOCK_INTERVAL" }>,
   state: LobbyConfigState
 ) {
   if (value === undefined) {
@@ -1877,7 +1986,7 @@ export function ofCaptureZoneChangeBlockInterval(
     };
   }
 
-  if (typeof value !== 'number') {
+  if (typeof value !== "number") {
     return {
       ...state[type],
       displayValue: value,
@@ -1918,7 +2027,11 @@ export function ofCaptureZoneChangeBlockInterval(
 }
 
 export function ofCaptureZonePlanetLevelScore(
-  { type, index, value }: Extract<LobbyConfigAction, { type: 'CAPTURE_ZONE_PLANET_LEVEL_SCORE' }>,
+  {
+    type,
+    index,
+    value,
+  }: Extract<LobbyConfigAction, { type: "CAPTURE_ZONE_PLANET_LEVEL_SCORE" }>,
   state: LobbyConfigState
 ) {
   const prevCurrentValue = state[type].currentValue;
@@ -1943,7 +2056,7 @@ export function ofCaptureZonePlanetLevelScore(
 
   displayValue[index] = value;
 
-  if (typeof value !== 'number') {
+  if (typeof value !== "number") {
     return {
       ...state[type],
       displayValue,
@@ -1978,7 +2091,11 @@ export function ofCaptureZonePlanetLevelScore(
 }
 
 export function ofPlanetLevelThresholds(
-  { type, index, value }: Extract<LobbyConfigAction, { type: 'PLANET_LEVEL_THRESHOLDS' }>,
+  {
+    type,
+    index,
+    value,
+  }: Extract<LobbyConfigAction, { type: "PLANET_LEVEL_THRESHOLDS" }>,
   state: LobbyConfigState
 ) {
   const prevCurrentValue = state[type].currentValue;
@@ -2019,7 +2136,7 @@ export function ofPlanetLevelThresholds(
 
   displayValue[index] = value;
 
-  if (typeof value !== 'number') {
+  if (typeof value !== "number") {
     return {
       ...state[type],
       displayValue,
@@ -2062,7 +2179,12 @@ export function ofPlanetLevelThresholds(
 }
 
 export function ofLobbyPlanets(
-  { type, index, value, number = 1 }: Extract<LobbyConfigAction, { type: 'ADMIN_PLANETS' }>,
+  {
+    type,
+    index,
+    value,
+    number = 1,
+  }: Extract<LobbyConfigAction, { type: "ADMIN_PLANETS" }>,
   state: LobbyConfigState
 ) {
   const prevCurrentValue = state[type].currentValue;
@@ -2104,7 +2226,7 @@ export function ofLobbyPlanets(
   ) {
     return {
       ...state[type],
-      warning: 'coords, level and planetType must be numbers',
+      warning: "coords, level and planetType must be numbers",
     };
   }
 
@@ -2184,7 +2306,7 @@ export function ofLobbyPlanets(
 }
 
 export function ofModifiers(
-  { type, index, value }: Extract<LobbyConfigAction, { type: 'MODIFIERS' }>,
+  { type, index, value }: Extract<LobbyConfigAction, { type: "MODIFIERS" }>,
   state: LobbyConfigState
 ) {
   const prevCurrentValue = state[type].currentValue;
@@ -2209,7 +2331,7 @@ export function ofModifiers(
 
   displayValue[index] = value;
 
-  if (typeof value !== 'number') {
+  if (typeof value !== "number") {
     return {
       ...state[type],
       displayValue,
@@ -2244,7 +2366,7 @@ export function ofModifiers(
 }
 
 export function ofSpaceships(
-  { type, index, value }: Extract<LobbyConfigAction, { type: 'SPACESHIPS' }>,
+  { type, index, value }: Extract<LobbyConfigAction, { type: "SPACESHIPS" }>,
   state: LobbyConfigState
 ) {
   const prevCurrentValue = state[type].currentValue;
@@ -2288,7 +2410,7 @@ export function ofSpaceships(
 }
 
 export function ofWhitelist(
-  { type, index, value }: Extract<LobbyConfigAction, { type: 'WHITELIST' }>,
+  { type, index, value }: Extract<LobbyConfigAction, { type: "WHITELIST" }>,
   state: LobbyConfigState
 ) {
   const prevCurrentValue = state[type].currentValue;
@@ -2311,14 +2433,14 @@ export function ofWhitelist(
   if (value === undefined) {
     return {
       ...state[type],
-      warning: 'Address cannot be undefined',
+      warning: "Address cannot be undefined",
     };
   }
 
-  if (value.slice(0, 2) !== '0x' || value.length !== 42) {
+  if (value.slice(0, 2) !== "0x" || value.length !== 42) {
     return {
       ...state[type],
-      warning: 'Improperly formatted address',
+      warning: "Improperly formatted address",
     };
   }
 
@@ -2340,7 +2462,7 @@ export function ofWhitelist(
   if (currentValue.find((v) => value == v)) {
     return {
       ...state[type],
-      warning: 'Address already staged',
+      warning: "Address already staged",
     };
   }
   currentValue[index] = value;
