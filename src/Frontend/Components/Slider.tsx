@@ -10,6 +10,7 @@ export { DarkForestSlider, DarkForestSliderHandle };
 // This wraps the customElement in a React wrapper to make it behave exactly like a React component
 export const Slider = createComponent<
   DarkForestSlider,
+  // @ts-ignore
   {
     onChange: (e: Event & React.ChangeEvent<DarkForestSlider>) => void;
   }
@@ -21,6 +22,7 @@ export const Slider = createComponent<
 // This wraps the customElement in a React wrapper to make it behave exactly like a React component
 export const SliderHandle = createComponent<
   DarkForestSliderHandle,
+  // @ts-ignore
   {
     onChange: (e: Event & React.ChangeEvent<DarkForestSliderHandle>) => void;
   }

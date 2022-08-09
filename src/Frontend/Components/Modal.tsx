@@ -9,6 +9,7 @@ export { DarkForestModal, PositionChangedEvent };
 // This wraps the customElement in a React wrapper to make it behave exactly like a React component
 export const Modal = createComponent<
   DarkForestModal,
+  // @ts-ignore
   {
     onMouseDown: (evt: Event & React.MouseEvent<DarkForestModal>) => void;
     onPositionChanged: (evt: PositionChangedEvent) => void;

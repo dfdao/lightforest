@@ -213,7 +213,7 @@ export function ModalPane({
   } else {
     content = (
       <DFErrorBoundary>
-        {typeof children === "function" ? children(api) : children}
+        {typeof children === "function" ? (children as any)(api) : children}
       </DFErrorBoundary>
     );
   }

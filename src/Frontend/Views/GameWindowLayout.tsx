@@ -96,7 +96,7 @@ export function GameWindowLayout({
   const [modalsContainer, setModalsContainer] = useState<
     HTMLDivElement | undefined
   >();
-  const modalsContainerCB = useCallback((node) => {
+  const modalsContainerCB = useCallback((node: HTMLDivElement) => {
     setModalsContainer(node);
   }, []);
 

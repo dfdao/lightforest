@@ -43,6 +43,7 @@ export function PlayerArtifactsPane({
       helpContent={HelpContent}
       width={RECOMMENDED_MODAL_WIDTH}
     >
+      {/* @ts-ignore */}
       {render}
     </ModalPane>
   );

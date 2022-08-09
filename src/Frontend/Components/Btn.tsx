@@ -17,6 +17,7 @@ export { DarkForestButton, DarkForestShortcutButton, ShortcutPressedEvent };
 // This wraps the customElement in a React wrapper to make it behave exactly like a React component
 export const Btn = createComponent<
   DarkForestButton,
+  // @ts-ignore
   {
     onClick: (evt: Event & React.MouseEvent<DarkForestButton>) => void;
   }
@@ -26,6 +27,7 @@ export const Btn = createComponent<
 
 export const ShortcutBtn = createComponent<
   DarkForestShortcutButton,
+  // @ts-ignore
   {
     onClick: (evt: Event & React.MouseEvent<DarkForestShortcutButton>) => void;
     onShortcutPressed: (evt: ShortcutPressedEvent) => void;

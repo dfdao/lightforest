@@ -233,7 +233,7 @@ export function SendResources({
   const disableSliders = isSendingShip || isAbandoning;
 
   const updateEnergySending = useCallback(
-    (energyPercent) => {
+    (energyPercent: number) => {
       if (!locationId) return;
       uiManager.setForcesSending(locationId, energyPercent);
     },
@@ -241,7 +241,7 @@ export function SendResources({
   );
 
   const updateSilverSending = useCallback(
-    (silverPercent) => {
+    (silverPercent: number) => {
       if (!locationId) return;
       uiManager.setSilverSending(locationId, silverPercent);
     },
@@ -249,7 +249,7 @@ export function SendResources({
   );
 
   const updateArtifactSending = useCallback(
-    (sendArtifact) => {
+    (sendArtifact: Artifact | undefined) => {
       if (!locationId) return;
       uiManager.setArtifactSending(locationId, sendArtifact);
     },

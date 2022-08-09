@@ -63,7 +63,11 @@ module.exports = {
       {
         test: /\.ts(x?)$/,
         include: [path.join(__dirname, "./src/")],
-        use: ["babel-loader"],
+        loader: "esbuild-loader",
+        options: {
+          loader: "tsx",
+          target: "es2015",
+        },
       },
       {
         test: /\.css$/,

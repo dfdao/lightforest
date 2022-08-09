@@ -243,6 +243,7 @@ export function PlanetContextPane({
       visible={visible}
       onClose={onClose}
       id={ModalName.PlanetContextPane}
+      // @ts-ignore
       title={(small: boolean) => (
         <PlanetCardTitle small={small} planet={planet} />
       )}
@@ -250,6 +251,7 @@ export function PlanetContextPane({
       helpContent={SelectedPlanetHelpContent}
       width="375px"
     >
+      {/* @ts-ignore */}
       {render}
     </ModalPane>
   );

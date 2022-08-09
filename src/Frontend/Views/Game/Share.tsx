@@ -136,13 +136,13 @@ export function Share<T>(props: ShareProps<T>) {
       <OnTop>
         <AddressChooserContainer>
           <p>view as...</p>
-          {knownAccounts.map((addr, i) => (
+          {knownAccounts.map((addr: Account | undefined, i) => (
             <AddressOption
               onClick={selectAccount(i)}
               key={i}
               selected={addr === currentAccount}
             >
-              {addr || "anonymous"}
+              {addr?.address || "anonymous"}
             </AddressOption>
           ))}
         </AddressChooserContainer>

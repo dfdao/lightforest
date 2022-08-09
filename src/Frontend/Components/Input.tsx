@@ -22,6 +22,7 @@ export {
 // This wraps the customElement in a React wrapper to make it behave exactly like a React component
 export const Checkbox = createComponent<
   DarkForestCheckbox,
+  // @ts-ignore
   {
     onChange: (e: Event & React.ChangeEvent<DarkForestCheckbox>) => void;
   }
@@ -32,6 +33,7 @@ export const Checkbox = createComponent<
 // This wraps the customElement in a React wrapper to make it behave exactly like a React component
 export const ColorInput = createComponent<
   DarkForestColorInput,
+  // @ts-ignore
   {
     onChange: (e: Event & React.ChangeEvent<DarkForestColorInput>) => void;
   }
@@ -43,6 +45,7 @@ export const ColorInput = createComponent<
 // This wraps the customElement in a React wrapper to make it behave exactly like a React component
 export const NumberInput = createComponent<
   DarkForestNumberInput,
+  // @ts-ignore
   {
     onChange: (e: Event & React.ChangeEvent<DarkForestNumberInput>) => void;
   }
@@ -54,6 +57,7 @@ export const NumberInput = createComponent<
 // This wraps the customElement in a React wrapper to make it behave exactly like a React component
 export const TextInput = createComponent<
   DarkForestTextInput,
+  // @ts-ignore
   {
     onChange: (e: Event & React.ChangeEvent<DarkForestTextInput>) => void;
     onBlur: (e: Event) => void;
