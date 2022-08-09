@@ -31,7 +31,6 @@
     "delay": "^5.0.0",
     "email-validator": "^2.0.4",
     "emoji-picker-react": "^3.4.8",
-    "esbuild-loader": "^2.19.0",
     "ethers": "^5.5.1",
     "events": "^3.0.0",
     "fastq": "^1.10.0",
