@@ -11,7 +11,7 @@ import dfstyles from "../../Styles/dfstyles";
 import { useLiveMatches, useTwitters } from "../../Utils/AppHooks";
 import { formatDuration, formatStartTime } from "../../Utils/TimeUtils";
 import { GenericErrorBoundary } from "../GenericErrorBoundary";
-import { MinimalButton } from "../Portal/PortalMainView";
+import { MinimalButton } from "../Portal/PortalUtils";
 import { Table } from "../Table";
 
 const errorMessage = "Error Loading Leaderboard";
@@ -42,7 +42,9 @@ export function LiveMatches({
 
 // pass in either an address, or a twitter handle. this function will render the appropriate
 // component
-function playerToEntry(playerAddress: string) {
+const PlayerToEntry: React.FC<{ playerAddress: string }> = ({
+  playerAddress,
+}) => {
   const twitters = useTwitters();
   const playerTwitter = twitters[playerAddress];
   return (
@@ -75,7 +77,7 @@ function playerToEntry(playerAddress: string) {
       </a>
     </span>
   );
-}
+};
 
 type Row = {
   address: string;
@@ -84,8 +86,6 @@ type Row = {
 };
 
 function LeaderboardTable({ rows }: { rows: Row[] }) {
-  if (rows.length == 0) return <Subber>No players finished</Subber>;
-
   const [durations, setDurations] = useState<number[]>([]);
   const [startTimes, setStartTimes] = useState<number[]>([]);
   useEffect(() => {
@@ -97,7 +97,9 @@ function LeaderboardTable({ rows }: { rows: Row[] }) {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [rows]);
+
+  if (rows.length == 0) return <Subber>No players finished</Subber>;
 
   return (
     <TableContainer>
@@ -113,7 +115,11 @@ function LeaderboardTable({ rows }: { rows: Row[] }) {
         rows={rows}
         columns={[
           (row: Row, i) => {
-            return <Cell>{playerToEntry(row.address)}</Cell>;
+            return (
+              <Cell>
+                <PlayerToEntry playerAddress={row.address} />
+              </Cell>
+            );
           },
           (row: Row, i) => {
             return (

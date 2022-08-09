@@ -72,7 +72,7 @@ export function MapDetails({
           setLiveMatchError(e);
         });
     }
-  }, [configHash]);
+  }, [configHash, numSpawnPlanets]);
 
   return (
     <div

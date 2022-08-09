@@ -66,6 +66,7 @@
     "test": "exit 0",
     "lint": "eslint .",
     "format": "prettier --write .",
+    "prepare": "husky install",
     "start": "webpack-dev-server --mode development --hot",
     "build": "webpack --mode production",
     "clean": "del-cli dist node_modules declarations public/contracts tsconfig.ref.tsbuildinfo",
@@ -86,6 +87,16 @@
   "engines": {
     "node": ">=16"
   },
+  "lint-staged": {
+    "**/*.{ts,tsx,css,md}": [
+      "prettier --ignore-path .prettierignore --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "devDependencies": {
     "@babel/core": "^7.17.5",
     "@babel/preset-env": "^7.16.11",
@@ -105,6 +116,8 @@
     "@types/styled-components": "^5.1.15",
     "@types/uuid": "^8.3.0",
     "@types/webpack-env": "^1.16.3",
+    "@typescript-eslint/eslint-plugin": "^5.33.0",
+    "@typescript-eslint/parser": "^5.33.0",
     "babel-loader": "^8.2.3",
     "babel-plugin-styled-components": "^2.0.5",
     "copy-webpack-plugin": "^9.0.1",
@@ -112,10 +125,14 @@
     "del-cli": "^4.0.1",
     "dotenv": "^10.0.0",
     "eslint": "^7.30.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "fork-ts-checker-webpack-plugin": "^7.2.1",
     "html-webpack-plugin": "^5.5.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
     "netlify-cli": "^3.8.5",
-    "prettier": "^2.3.0",
+    "prettier": "^2.7.1",
     "raw-loader": "^4.0.2",
     "resolve-package-path": "^4.0.3",
     "source-map-loader": "^3.0.0",

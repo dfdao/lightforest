@@ -1,165 +1,157 @@
-import { EthAddress, ModalName } from "@dfdao/types";
-import { IconType } from "@dfdao/ui";
-import React, { useEffect, useState } from "react";
-import { Redirect, Route, Switch, useHistory } from "react-router-dom";
+import React, { useState, useMemo, useEffect } from "react";
 import styled from "styled-components";
-import { loadAccountData } from "../../../Backend/Network/GraphApi/AccountApi";
-import { loadRecentMaps } from "../../../Backend/Network/GraphApi/MapsApi";
-import { Btn } from "../../Components/Btn";
-import Button from "../../Components/Button";
-import { Dropdown, DropdownItem } from "../../Components/Dropdown";
-import { Icon } from "../../Components/Icons";
-import { Modal } from "../../Components/Modal";
-import { PortalHistoryView } from "./PortalHistoryView";
-import dfstyles from "../../Styles/dfstyles";
-import { useTwitters } from "../../Utils/AppHooks";
-import { competitiveConfig } from "../../Utils/constants";
-import { ModalPane } from "../Game/ModalPane";
 import { Account } from "./Account";
-import { AccountInfoView } from "./AccountInfoView";
-import { MapInfoView } from "./MapInfoView";
-import { PortalCommunityView } from "./PortalCommunityView";
-import { MatchmakingView } from "./MatchmakingView";
-import { PortalHomeView } from "./PortalHomeView";
-import { truncateAddress, truncateString } from "./PortalUtils";
+import { getConfigName } from "@dfdao/procedural";
+import { EthAddress } from "@dfdao/types";
+import _ from "lodash";
+import { Link } from "react-router-dom";
+import { MythicLabelText } from "../../Components/Labels/MythicLabel";
+import { LoadingSpinner } from "../../Components/LoadingSpinner";
+import { LobbyButton } from "../../Components/LobbyButton";
+import { Minimap } from "../../Components/Minimap";
+import { TextPreview } from "../../Components/TextPreview";
+import {
+  generateMinimapConfig,
+  MinimapConfig,
+} from "../../Panes/Lobby/MinimapUtils";
+import { LobbyInitializers } from "../../Panes/Lobby/Reducer";
+import { useConfigFromHash } from "../../Utils/AppHooks";
+import { competitiveConfig } from "../../Utils/constants";
 
-export function PortalMainView() {
-  const [input, setInput] = useState<string>("");
-  const [openSearch, setOpenSearch] = useState<boolean>(false);
-  const [results, setResults] = useState<DropdownItem[]>([]);
-  const [helpOpen, setHelpOpen] = useState<boolean>(false);
-  const history = useHistory();
-  const twitters = useTwitters() as Object;
+import { MapDetails } from "./MapDetails";
+
+const NONE = "no map found";
+
+function MapOverview({
+  configHash,
+  config,
+  lobbyAddress,
+}: {
+  configHash: string | undefined;
+  config: LobbyInitializers | undefined;
+  lobbyAddress: EthAddress | undefined;
+}) {
+  const [minimapConfig, setMinimapConfig] = useState<
+    MinimapConfig | undefined
+  >();
+  const [mapName, setMapName] = useState<string>(
+    configHash ? getConfigName(configHash) : NONE
+  );
+
+  const onMapChange = useMemo(() => {
+    return _.debounce(
+      (config: MinimapConfig) => configHash && setMinimapConfig(config),
+      500
+    );
+  }, [setMinimapConfig, configHash]);
 
   useEffect(() => {
-    async function handleSearch() {
-      if (input.length == 0) {
-        setResults([{ label: "No results found.", action: () => {} }]);
-        return;
-      }
-      let results: DropdownItem[] = [];
-      const lower = input.trim().toLowerCase();
-      // check twitters
-      const foundTwitter = Object.entries(twitters).find((t) => t[1] == lower);
-      if (foundTwitter) {
-        results.push({
-          label: `Twitter -${foundTwitter[0]}`,
-          action: () => history.push(`/portal/account/${foundTwitter[0]}`),
-        });
-      }
-      // check config hashes
-      const configHashes = await loadRecentMaps(1, lower, undefined);
-      if (configHashes && configHashes.length > 0) {
-        results.push({
-          label: `Map - ${truncateString(configHashes[0].configHash, 8)}`,
-          action: () =>
-            history.push(`/portal/map/${configHashes[0].configHash}`),
-        });
-      }
-      // check accounts
-      const accounts = await loadAccountData(lower as EthAddress);
-      if (accounts) {
-        results.push({
-          label: `Address - ${truncateAddress(lower as EthAddress)}`,
-          action: () => history.push(`/portal/account/${lower}`),
-        });
-      }
-      if (results.length > 0) {
-        setResults(results);
-      } else {
-        setResults([{ label: "No results found.", action: () => {} }]);
-      }
+    if (config) {
+      const name = configHash ? getConfigName(configHash) : NONE;
+      setMapName(name);
+      onMapChange(generateMinimapConfig(config, 4));
+    } else {
+      setMinimapConfig(undefined);
+      setMapName(NONE);
     }
-    handleSearch();
-  }, [input]);
+  }, [config, onMapChange, setMapName, configHash]);
 
-  function PortalHelp() {
-    if (!helpOpen) return <></>;
-
-    // FIXME: What is this?
-    return (
-      <Modal title="Help">
-        <HelpWrapper>
-          <HelpInner>
-            <HelpClose
-              onClick={() => {
-                setHelpOpen(false);
-              }}
-            >
-              <Icon type={IconType.X} />
-            </HelpClose>
-            <span>Hello</span>
-          </HelpInner>
-        </HelpWrapper>
-      </Modal>
-    );
+  const { innerHeight } = window;
+  let mapSize = "500px";
+  if (innerHeight < 700) {
+    mapSize = "300px";
   }
 
   return (
-    <>
-      <PortalHelp />
-      <MainContainer>
-        <TopBar>
-          <TitleContainer>
-            <Title onClick={() => history.push("/portal/home")}>Home</Title>
-          </TitleContainer>
+    <OverviewContainer>
+      <div style={{ textAlign: "center" }}>
+        {configHash == competitiveConfig && (
+          <MythicLabelText text={`Galactic League Official Map`} />
+        )}
+        <MapTitle>{mapName}</MapTitle>
+        <TextPreview
+          text={configHash}
+          focusedWidth={"200px"}
+          unFocusedWidth={"200px"}
+        />
+      </div>
 
-          <TitleContainer>
-            <InputContainer style={{ width: "100%" }}>
-              <PortalInput
-                placeholder={"Search for a map hash, twitter, or address"}
-                // TODO: fix type
-                onChange={(e: any) => setInput(e.target.value)}
-                onFocus={() => setOpenSearch(true)}
-                onBlur={() => setOpenSearch(false)}
-                style={{ width: "100%" }}
-              />
-              <Dropdown items={results} open={input.length > 0 && openSearch} />
-            </InputContainer>
-          </TitleContainer>
-          <Account />
-        </TopBar>
-        <Switch>
-          <Redirect
-            path="/portal/map"
-            to={`/portal/map/${competitiveConfig}`}
-            exact={true}
-          />
-
-          <Route
-            path={"/portal/home"}
-            exact={true}
-            component={PortalHomeView}
-          />
-          <Route path={"/portal/map/:configHash"} component={MapInfoView} />
-          <Route
-            path={"/portal/account/:account"}
-            component={AccountInfoView}
-          />
-          <Route path={"/portal/history"} component={PortalHistoryView} />
-          <Route path={"/portal/community"} component={PortalCommunityView} />
-          <Route path={"/portal/matchmaking"} component={MatchmakingView} />
-
-          <Route
-            path="/portal/*"
-            component={() => (
-              <TitleContainer style={{ justifyContent: "center" }}>
-                Page Not Found
-              </TitleContainer>
-            )}
-          />
-        </Switch>
-      </MainContainer>
-    </>
+      {!minimapConfig ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "500px",
+            height: "500px",
+          }}
+        >
+          <LoadingSpinner initialText="Loading..." />
+        </div>
+      ) : (
+        <Minimap
+          style={{ width: mapSize, height: mapSize }}
+          minimapConfig={minimapConfig}
+          setRefreshing={() => {
+            // do nothing
+          }}
+        />
+      )}
+      <div
+        style={{
+          display: "flex",
+          gap: "16px",
+          justifyContent: "center",
+          width: "100%",
+        }}
+      >
+        <Link
+          style={{ minWidth: "250px" }}
+          target="blank"
+          to={`/play/${lobbyAddress}?create=true`}
+        >
+          <LobbyButton primary>Create Match</LobbyButton>
+        </Link>
+      </div>
+    </OverviewContainer>
   );
 }
 
-const InputContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  z-index: 1;
-`;
+function MapInfoView({}) {
+  const configHash =
+    "0x568297442f966cc66f2be7ced683e35ea2ca1e68b4f26dd5424158244da40bcc";
+  const { config, lobbyAddress, error } = useConfigFromHash(configHash);
+
+  return (
+    <MapInfoContainer>
+      {error ? (
+        <div>Map Not Found</div>
+      ) : (
+        config && (
+          <>
+            <MapOverview
+              configHash={configHash}
+              config={config}
+              lobbyAddress={lobbyAddress}
+            />
+            <MapDetails configHash={configHash} config={config} />
+          </>
+        )
+      )}
+    </MapInfoContainer>
+  );
+}
+
+export function PortalMainView() {
+  return (
+    <MainContainer>
+      <TopBar>
+        <Account />
+      </TopBar>
+      <MapInfoView />
+    </MainContainer>
+  );
+}
 
 const MainContainer = styled.div`
   display: flex;
@@ -174,75 +166,40 @@ const TopBar = styled.div`
   height: 56px;
   max-height: 56px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   width: 100%;
   padding: 16px;
 `;
 
-const Title = styled.p`
-  font-weight: 600;
-  font-size: 1.5em;
-  cursor: pointer;
+const MapInfoContainer = styled.div`
+  display: flex;
+  flex: 1 1;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+  justify-content: space-evenly;
+  padding: 10px;
+  overflow: hidden;
 `;
 
-const TitleContainer = styled.div`
+const OverviewContainer = styled.div`
+  flex: 1 1 50%;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 `;
 
-export const MinimalButton = styled.button`
-  border-radius: 3px;
-  padding: 8px;
-  background: #252525;
-  color: #fff;
+const Title = styled.div`
+  display: flex;
+  text-align: center;
+  font-size: 3em;
+  white-space: nowrap;
+  justify-content: center;
+`;
+
+const MapTitle = styled(Title)`
   text-transform: uppercase;
-`;
-
-const PortalInput = styled.input`
-  min-width: 350px;
-  background: #252525;
-  color: #fff;
-  padding: 8px;
-  border-radius: 4px;
-  border: 1px solid ${dfstyles.colors.borderDarker};
-  z-index: 1;
-`;
-
-const HelpWrapper = styled.div`
-  position: fixed;
-  left: 0;
-  top: 0;
-  background-color: rgba(0, 0, 0, 0.65);
-  height: 100vh;
-  width: 100vw;
-  z-index: 999;
-  display: flex;
-`;
-
-const HelpInner = styled.div`
-  margin: auto;
-  position: relative;
-  width: 75%;
-  height: 75%;
-  // text-align: center;
-  display: flex;
-  // align-items: center;
-  // justify-content: space-around;
-  background: ${dfstyles.colors.background};
-  border-radius: ${dfstyles.borderRadius};
-  border: 1px solid ${dfstyles.colors.borderDark} !important;
-  color: ${dfstyles.colors.text};
-  padding: 50px;
-`;
-
-const HelpClose = styled.button`
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  color: white;
-  background: none;
-  border: 0;
+  letter-spacing: 0.06em;
 `;

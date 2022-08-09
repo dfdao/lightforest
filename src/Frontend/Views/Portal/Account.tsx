@@ -1,12 +1,11 @@
-import React from 'react';
-import styled from 'styled-components';
-import { logOut } from '../../../Backend/Network/AccountManager';
-import { Gnosis, Icon, IconType, Twitter } from '../../Components/Icons';
-import { WithdrawSilverButton } from '../../Panes/Game/TooltipPanes';
+import React from "react";
+import styled from "styled-components";
+import { logOut } from "../../../Backend/Network/AccountManager";
+import { Gnosis, Twitter } from "../../Components/Icons";
 
-import dfstyles from '../../Styles/dfstyles';
-import { useEthConnection, useTwitters } from '../../Utils/AppHooks';
-import { truncateAddress } from './PortalUtils';
+import dfstyles from "../../Styles/dfstyles";
+import { useEthConnection, useTwitters } from "../../Utils/AppHooks";
+import { truncateAddress } from "./PortalUtils";
 
 export function Account() {
   const connection = useEthConnection();
@@ -19,25 +18,25 @@ export function Account() {
   return (
     <PaneContainer>
       <IconContainer>
-        {' '}
+        {" "}
         <button onClick={logOut}>Logout</button>
       </IconContainer>
       <a
-        style={{ display: 'flex', alignItems: 'center' }}
-        target='_blank'
+        style={{ display: "flex", alignItems: "center" }}
+        target="_blank"
         href={`https://blockscout.com/xdai/optimism/address/${address}`}
       >
         <GnoButton>
-          <Gnosis width='24px' height='24px' />
+          <Gnosis width="24px" height="24px" />
         </GnoButton>
       </a>
       {twitter && (
         <a
-          style={{ display: 'flex', alignItems: 'center' }}
-          target='_blank'
+          style={{ display: "flex", alignItems: "center" }}
+          target="_blank"
           href={`https://twitter.com/${twitter}`}
         >
-          <Twitter width='24px' height='24px' />
+          <Twitter width="24px" height="24px" />
         </a>
       )}
 

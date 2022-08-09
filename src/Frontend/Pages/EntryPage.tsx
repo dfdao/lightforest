@@ -1,5 +1,4 @@
-import { CONTRACT_ADDRESS, FAUCET_ADDRESS } from "@dfdao/contracts";
-import { DFArenaFaucet } from "@dfdao/contracts/typechain";
+import { CONTRACT_ADDRESS } from "@dfdao/contracts";
 import {
   EthConnection,
   ThrottledConcurrentQueue,
@@ -15,14 +14,12 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import { active } from "sortablejs";
 import {
   Account,
   getAccounts,
   addAccount,
   setActive,
   getActive,
-  resetActive,
   logOut,
 } from "../../Backend/Network/AccountManager";
 import { getEthConnection } from "../../Backend/Network/Blockchain";
@@ -38,18 +35,13 @@ import {
 } from "../Components/GameLandingPageComponents";
 import { MythicLabelText } from "../Components/Labels/MythicLabel";
 import { TextPreview } from "../Components/TextPreview";
-import {
-  AccountProvider,
-  EthConnectionProvider,
-  TwitterProvider,
-} from "../Utils/AppHooks";
+import { EthConnectionProvider, TwitterProvider } from "../Utils/AppHooks";
 import { Incompatibility, unsupportedFeatures } from "../Utils/BrowserChecks";
 import { TerminalTextStyle } from "../Utils/TerminalTypes";
 import { PortalMainView } from "../Views/Portal/PortalMainView";
 import { Terminal, TerminalHandle } from "../Views/Terminal";
 import { GameLandingPage } from "./Game/GameLandingPage";
 import LoadingPage from "./LoadingPage";
-import { CreateLobby } from "./Lobby/CreateLobby";
 import { NotFoundPage } from "./NotFoundPage";
 
 const defaultAddress = address(CONTRACT_ADDRESS);
@@ -420,19 +412,12 @@ export function EntryPage() {
               />
               <Route path="/play/:contract" component={GameLandingPage} />
               <Redirect
-                path="/portal"
-                to={`/portal/home`}
-                push={true}
-                exact={true}
-              />
-              <Route path="/portal" component={PortalMainView} />
-              <Redirect
                 path="/arena"
                 to={`/arena/${defaultAddress}`}
                 push={true}
                 exact={true}
               />
-              <Route path="/arena/:contract" component={CreateLobby} />
+              <Route path="/" exact component={PortalMainView} />
               <Route path="*" component={NotFoundPage} />
             </Switch>
           </Router>
