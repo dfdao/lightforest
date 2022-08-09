@@ -1048,62 +1048,62 @@
     enabled "2.0.x"
     kuler "^2.0.0"
 
-"@dfdao/constants@6.7.30", "@dfdao/constants@^6.7.30":
-  version "6.7.30"
-  resolved "https://registry.yarnpkg.com/@dfdao/constants/-/constants-6.7.30.tgz#802efd6af03d71a6c2e8b4c86a5cd085751d4d98"
-  integrity sha512-PKj9TlRzFz51tgepJSVumbtrjEOiHaaS8GqFhJIVspd0pLRowlG5mARSvMzRFWiehuYpt/YdtaUqry8JM+UWIA==
+"@dfdao/constants@6.7.31", "@dfdao/constants@^6.7.31":
+  version "6.7.31"
+  resolved "https://registry.yarnpkg.com/@dfdao/constants/-/constants-6.7.31.tgz#fff5eb8c1a3454935d1bc15fefd3cc4fcfe84281"
+  integrity sha512-Ys8Agal2RvTrEf3F7ZeId4BEfWnHB4hQcqOSL/xuRESFjfjdh2F3JXfsxYs23eMDvcjn5uuwp/25m7Mwtah1Jw==
   dependencies:
-    "@dfdao/types" "6.7.31"
+    "@dfdao/types" "6.7.32"
     big-integer "^1.6.48"
 
-"@dfdao/contracts@6.7.30", "@dfdao/contracts@^6.7.30":
-  version "6.7.30"
-  resolved "https://registry.yarnpkg.com/@dfdao/contracts/-/contracts-6.7.30.tgz#ac82812bf8593426303d1f52e8a3f3f8e19af0d3"
-  integrity sha512-X4quAFBNc2qBnB674I/n6ERT3sbrM5glGK+Cdzzx+I9C6I8rLxdcnolXesadHT+EJxFPqAAgOfURQNN1vHG8nA==
+"@dfdao/contracts@6.7.31", "@dfdao/contracts@^6.7.31":
+  version "6.7.31"
+  resolved "https://registry.yarnpkg.com/@dfdao/contracts/-/contracts-6.7.31.tgz#247c9ffa20b29ebaca19752f8de819e9bfe9fff5"
+  integrity sha512-aRWAVMbpLw3MPUlKEhY2srhud2R7L81gOqsJB7gMf71M9CsI3TrFEIJHbOPgTlm7G7MEGJQwJF+hH5XAorlNOQ==
   dependencies:
     "@ethersproject/providers" "^5.5.1"
     ethers "^5.5.1"
 
-"@dfdao/events@6.7.30", "@dfdao/events@^6.7.30":
-  version "6.7.30"
-  resolved "https://registry.yarnpkg.com/@dfdao/events/-/events-6.7.30.tgz#3e1c8f5a9f070597fa14f6b54fda13da1a1766eb"
-  integrity sha512-9IBp1z1Hy/oh2mFJmE97UXYFcdIR35kb+z16162JXOUxcI02DoF4tCTRdoaE/zmxvBzhdYAAlUWzsE7/oMoijg==
+"@dfdao/events@6.7.31", "@dfdao/events@^6.7.31":
+  version "6.7.31"
+  resolved "https://registry.yarnpkg.com/@dfdao/events/-/events-6.7.31.tgz#fb21af2ff3a744d0cd140c7cbb35bf3227d3c235"
+  integrity sha512-2UCJ5js10PrZFPR5du/4tru6PIJRopO4TXGNo8RduTvy8/w2THowJnwEsrv9bLrUzbVC4CoroOV60e1LQJ9o/Q==
 
-"@dfdao/gamelogic@6.7.30", "@dfdao/gamelogic@^6.7.30":
-  version "6.7.30"
-  resolved "https://registry.yarnpkg.com/@dfdao/gamelogic/-/gamelogic-6.7.30.tgz#f54e9e8a25be83b982f10f3a34e964f736329bb8"
-  integrity sha512-BlYKEX8B26/TKc1fIQbZU0EshVgmIJMYTJj1l/enyz9y7WnNU/OLt11Pj2dUxFADqkYRFPPKo6WaIDSY1pi9cg==
+"@dfdao/gamelogic@6.7.31", "@dfdao/gamelogic@^6.7.31":
+  version "6.7.31"
+  resolved "https://registry.yarnpkg.com/@dfdao/gamelogic/-/gamelogic-6.7.31.tgz#74be87024ae89f35e8001772601063d55534e39e"
+  integrity sha512-KeJLbF+/LC0n+dImolw5JSYjIEIlj9ZoixzXbbe3onmcInefOMg+cTGJyV9pO3GMRGAwmTlUEEVXniJS/Pjyxw==
   dependencies:
-    "@dfdao/constants" "6.7.30"
-    "@dfdao/serde" "6.7.30"
-    "@dfdao/types" "6.7.31"
+    "@dfdao/constants" "6.7.31"
+    "@dfdao/serde" "6.7.31"
+    "@dfdao/types" "6.7.32"
 
-"@dfdao/hashing@6.7.30", "@dfdao/hashing@^6.7.30":
-  version "6.7.30"
-  resolved "https://registry.yarnpkg.com/@dfdao/hashing/-/hashing-6.7.30.tgz#bc36d9f7f6ad37ebdaea3f0ae245d740d3a42838"
-  integrity sha512-eH6UKO61M95XN+l+hXXo8WnkOBfDXfdLgp905dzIF3BKbV3vvKxSJk0HgF9Mon6blbM2ECx+o213ueYYB1XkjQ==
+"@dfdao/hashing@6.7.31", "@dfdao/hashing@^6.7.31":
+  version "6.7.31"
+  resolved "https://registry.yarnpkg.com/@dfdao/hashing/-/hashing-6.7.31.tgz#61ce6b821a62e24164812f330b8f9a767a00e464"
+  integrity sha512-aGPH7HLIJsPolzRHbQqC+Mv8Bxd7A/OjF4ZN1hH8wFf8A3Za4mZtbquzpoHkhFZCTysRvY8KJTtLQ0LLNO/mqA==
   dependencies:
-    "@dfdao/types" "6.7.31"
+    "@dfdao/types" "6.7.32"
     big-integer "^1.6.48"
 
-"@dfdao/hexgen@6.7.30", "@dfdao/hexgen@^6.7.30":
-  version "6.7.30"
-  resolved "https://registry.yarnpkg.com/@dfdao/hexgen/-/hexgen-6.7.30.tgz#383c4f6d09d9b26f5147d1a2d84c66a8d448fe46"
-  integrity sha512-LKD3le+rahFZqa3xA9CNqrvr4swiYB7avMlaSTV4gVxim7kwWWS0w2CB6XA0RA5gqn6NIKPrc6mQON7NOhPn0Q==
+"@dfdao/hexgen@6.7.31", "@dfdao/hexgen@^6.7.31":
+  version "6.7.31"
+  resolved "https://registry.yarnpkg.com/@dfdao/hexgen/-/hexgen-6.7.31.tgz#473c92afc3b6594e9d2abb12089ba50be0717410"
+  integrity sha512-6Fg1wQiQ3W8xPIu1DNcdBsunMi/4nId0i6G/uKe7XLotMYPvcCpjHV+7PQgNsPF5fAU0pIXYCTa3beuOuHHRjA==
   dependencies:
-    "@dfdao/types" "6.7.31"
+    "@dfdao/types" "6.7.32"
     big-integer "^1.6.48"
 
-"@dfdao/network@^6.7.30":
-  version "6.7.30"
-  resolved "https://registry.yarnpkg.com/@dfdao/network/-/network-6.7.30.tgz#c2eefc242291acb6fe3aec2b2aba270eba8d70dd"
-  integrity sha512-FQgWxJvR/2Mls0bZXv11abXKq/R38hV0Yb3DOWQWGP8c8dMpOujD3draJEiX7Tj8FSft7bN3WihMmfWFaUapDw==
+"@dfdao/network@^6.7.31":
+  version "6.7.31"
+  resolved "https://registry.yarnpkg.com/@dfdao/network/-/network-6.7.31.tgz#4e8fec813d653037d76409d789fcbad84aebd2d7"
+  integrity sha512-hW663kZ1DO7PS0QOsS0Mv6H37b6NX5F4EuVd28xsFhyGVNHvmdFQhTqUc6/t4b6h66RffaqzjkQC6lZC26dxLw==
   dependencies:
-    "@dfdao/constants" "6.7.30"
-    "@dfdao/contracts" "6.7.30"
-    "@dfdao/events" "6.7.30"
-    "@dfdao/serde" "6.7.30"
-    "@dfdao/types" "6.7.31"
+    "@dfdao/constants" "6.7.31"
+    "@dfdao/contracts" "6.7.31"
+    "@dfdao/events" "6.7.31"
+    "@dfdao/serde" "6.7.31"
+    "@dfdao/types" "6.7.32"
     async-mutex "^0.3.2"
     ethers "^5.5.1"
     json-stable-stringify "^1.0.1"
@@ -1115,73 +1115,62 @@
     p-timeout "^4.0.0"
     uuid "^8.3.2"
 
-"@dfdao/procedural@6.7.30", "@dfdao/procedural@^6.7.30":
-  version "6.7.30"
-  resolved "https://registry.yarnpkg.com/@dfdao/procedural/-/procedural-6.7.30.tgz#24a76edcace54181d98d60524b5b0db6c9c7d640"
-  integrity sha512-GiTHBPQVV6/nAe5YnknESQON7UBibmexBhcKtGY+hCjhwq4k/kyk64TA+lAKxFH8sdBl2dCnEFDDR1AZ02SD8Q==
+"@dfdao/procedural@6.7.31", "@dfdao/procedural@^6.7.31":
+  version "6.7.31"
+  resolved "https://registry.yarnpkg.com/@dfdao/procedural/-/procedural-6.7.31.tgz#920b35994ef4ac9c5564cf5993638b7edd5de0ce"
+  integrity sha512-Pi7F6wi2jxS8VKHQyyVyhat2hZ1cKf9CIR7m8zFVFqanUv1/ogKsyJNTv3S7EJCJsuVEV7KWcMO7ViLqu/arIA==
   dependencies:
-    "@dfdao/constants" "6.7.30"
-    "@dfdao/gamelogic" "6.7.30"
-    "@dfdao/hashing" "6.7.30"
-    "@dfdao/serde" "6.7.30"
-    "@dfdao/types" "6.7.31"
+    "@dfdao/constants" "6.7.31"
+    "@dfdao/gamelogic" "6.7.31"
+    "@dfdao/hashing" "6.7.31"
+    "@dfdao/serde" "6.7.31"
+    "@dfdao/types" "6.7.32"
     big-integer "^1.6.48"
 
-"@dfdao/renderer@^6.7.30":
-  version "6.7.30"
-  resolved "https://registry.yarnpkg.com/@dfdao/renderer/-/renderer-6.7.30.tgz#fa0700c63648be505bfbcc530b93f39728f7c98b"
-  integrity sha512-km1sA748OTBVHc49ZpYzH8udBYiZc8Syn3dMnnDOyURrNGNXxotH4nFlXASg8/4EJpQ+fP9YHiPXVw8ZOktDlw==
+"@dfdao/renderer@^6.7.31":
+  version "6.7.31"
+  resolved "https://registry.yarnpkg.com/@dfdao/renderer/-/renderer-6.7.31.tgz#e14fa591f3218e99fd3333ff0ab1d089c2079f4b"
+  integrity sha512-ZR2WC6pRjxFAqpPsXblYFh/SWOZ3yzXJlW4vr4re0OguFQZIGiH2QTjORtHXKnkyVrUmiruc1nHjibjUuufdGQ==
   dependencies:
-    "@dfdao/constants" "6.7.30"
-    "@dfdao/gamelogic" "6.7.30"
-    "@dfdao/hashing" "6.7.30"
-    "@dfdao/procedural" "6.7.30"
-    "@dfdao/serde" "6.7.30"
-    "@dfdao/types" "6.7.31"
+    "@dfdao/constants" "6.7.31"
+    "@dfdao/gamelogic" "6.7.31"
+    "@dfdao/hashing" "6.7.31"
+    "@dfdao/procedural" "6.7.31"
+    "@dfdao/serde" "6.7.31"
+    "@dfdao/types" "6.7.32"
     "@types/gl-matrix" "^3.2.0"
     "@types/webgl2" "^0.0.5"
     auto-bind "^4.0.0"
     gl-matrix "^3.3.0"
 
-"@dfdao/serde@6.7.30", "@dfdao/serde@^6.7.30":
-  version "6.7.30"
-  resolved "https://registry.yarnpkg.com/@dfdao/serde/-/serde-6.7.30.tgz#255c8a69a8298e099bc8eed1c5a22c40fa4dcb8b"
-  integrity sha512-Mn3H5eh3Ns9IFIltavyhmPhMrW+3nmxm0BOBpSOeKfcU9tpZr5MLJAaZoZ81DZbtD5k0UgHn3depgQxTA+9FLQ==
+"@dfdao/serde@6.7.31", "@dfdao/serde@^6.7.31":
+  version "6.7.31"
+  resolved "https://registry.yarnpkg.com/@dfdao/serde/-/serde-6.7.31.tgz#d6ba898f0f88c6508c5f907028c380b44d81d6b1"
+  integrity sha512-QwaF0rMUjiY5uYL4vC1sZ4iUFXywPqTomQDr36chgFKGn2emsbzpGJXHFDrU85ts50C2ksJzBi/ZOgBpvahgUg==
   dependencies:
-    "@dfdao/constants" "6.7.30"
-    "@dfdao/contracts" "6.7.30"
-    "@dfdao/hexgen" "6.7.30"
-    "@dfdao/types" "6.7.31"
+    "@dfdao/constants" "6.7.31"
+    "@dfdao/contracts" "6.7.31"
+    "@dfdao/hexgen" "6.7.31"
+    "@dfdao/types" "6.7.32"
     big-integer "^1.6.48"
     ethers "^5.5.1"
 
-"@dfdao/settings@^6.7.30":
-  version "6.7.30"
-  resolved "https://registry.yarnpkg.com/@dfdao/settings/-/settings-6.7.30.tgz#42db3c7590961a0e61ec991d44d6b0cc2ebeafd3"
-  integrity sha512-tnUi4/1EV+/NcSyGknjKAIgEcSUC0nd2uaxXXxU51AEOd3PNQX6Nvec4OXHxgqNGNTb1oyms82ce6svhEOPedA==
+"@dfdao/settings@^6.7.31":
+  version "6.7.31"
+  resolved "https://registry.yarnpkg.com/@dfdao/settings/-/settings-6.7.31.tgz#fe7a03fed65623864c57257d0443598019b1d4be"
+  integrity sha512-JrR/up8l8uR/cNgzHWcyy+zOQDiAoCBMXzvF9xpX50O2eVilqVfO7I8HgvWN/AM6KVwxz6QoPcONciwbMYtYRA==
   dependencies:
     decoders "^1.25.5"
 
-"@dfdao/snarks@^6.7.30":
-  version "6.7.30"
-  resolved "https://registry.yarnpkg.com/@dfdao/snarks/-/snarks-6.7.30.tgz#d62805812734d2f41c408c26012aa92553829375"
-  integrity sha512-IYFziNvSShjD1qH4MuFNaBrfpvzJo0Sy6FyYW3jmiGY4Kc95EhsTAkR4bj1C/qLWgmszfPrA2h72SEzrijB6ag==
-
-"@dfdao/types@6.7.30":
-  version "6.7.30"
-  resolved "https://registry.yarnpkg.com/@dfdao/types/-/types-6.7.30.tgz#ad87aac79b1725e3011610dd0f499f64903f6291"
-  integrity sha512-Iu2k7j9v9UsDdX+n173BXv88Un+iZgtNHJdhX3FnnCDDOUq8i69kc4nSdBvJokc2ye8sjsdpp3xvrXv/IzsIXw==
-  dependencies:
-    "@types/gl-matrix" "^3.2.0"
-    big-integer "^1.6.48"
-    ethers "^5.5.1"
-    gl-matrix "^3.3.0"
-    type-fest "^2.12.1"
-
-"@dfdao/types@6.7.31", "@dfdao/types@^6.7.31":
+"@dfdao/snarks@^6.7.31":
   version "6.7.31"
-  resolved "https://registry.yarnpkg.com/@dfdao/types/-/types-6.7.31.tgz#0fa2b31cca9e40ee722a46f94b7208610786250c"
-  integrity sha512-/05Dv/UTKKB4qL8U89E7zMxuYxbeGrbBjiTRoRZwZh5HUZrCO2m2RXm3U0YubOK/TVUjj49W2qyvQ/WPM2tq7w==
+  resolved "https://registry.yarnpkg.com/@dfdao/snarks/-/snarks-6.7.31.tgz#1f17c1df90c28eebb82c2f10907643a1fad3b9ec"
+  integrity sha512-dFNKcL0piNajEU5+m21MBulXvnj8OtC5+L58zllKKPuDItGLE3I/GGcLmEbQaXmGdqMaRlDuDQWRp4TH1k0xAw==
+
+"@dfdao/types@6.7.32", "@dfdao/types@^6.7.32":
+  version "6.7.32"
+  resolved "https://registry.yarnpkg.com/@dfdao/types/-/types-6.7.32.tgz#03aa9f2455cd02d11cb45125b46e9448a8a15ce9"
+  integrity sha512-+tB1RFA/xopdN5omT99WkmUJfDBSFSvMlaH4ft71zm9tyoB1n5Xh5cvriFLuvc6rwtKru4aJ7flpakaNU6Oh+w==
   dependencies:
     "@types/gl-matrix" "^3.2.0"
     big-integer "^1.6.48"
@@ -1189,24 +1178,24 @@
     gl-matrix "^3.3.0"
     type-fest "^2.12.1"
 
-"@dfdao/ui@^6.7.30":
-  version "6.7.30"
-  resolved "https://registry.yarnpkg.com/@dfdao/ui/-/ui-6.7.30.tgz#53bd0a132c199d5ce0066984de08b1407f94b218"
-  integrity sha512-pmgm5NxArFU814kmsH1k64rSZhMMFsMCrmYh9LXybxmLmweurf8e7hFMVK7fhZ22jLzIFJhG+o89NdhuubkkRg==
+"@dfdao/ui@^6.7.31":
+  version "6.7.31"
+  resolved "https://registry.yarnpkg.com/@dfdao/ui/-/ui-6.7.31.tgz#49662a800d380507b8a11e6af74a3185e1eba988"
+  integrity sha512-Gr+j3nZzfhMwf9wfafdygaD0S5s325WAKVoBCY+81XeO46Q2dcloeN2J5W7gSaVTlkjsePAQlodXKnYC/ppGUw==
   dependencies:
-    "@dfdao/constants" "6.7.30"
-    "@dfdao/types" "6.7.30"
+    "@dfdao/constants" "6.7.31"
+    "@dfdao/types" "6.7.32"
     "@spectrum-web-components/slider" "^0.12.3"
     "@spectrum-web-components/theme" "^0.9.3"
     color "^3.0.2"
     lit "^2.1.2"
 
-"@dfdao/whitelist@^6.7.30":
-  version "6.7.30"
-  resolved "https://registry.yarnpkg.com/@dfdao/whitelist/-/whitelist-6.7.30.tgz#d24efbb784a6b40a9af9bd13c4bc8402cbfca55f"
-  integrity sha512-YKP8kVgb863Ja74lbjpzzrkxH+ei2pIHovXYx2D7OuCx9zZusxUCb9n09/yBxAsz/+Gg65gg7olkT/iNtQc9kg==
+"@dfdao/whitelist@^6.7.31":
+  version "6.7.31"
+  resolved "https://registry.yarnpkg.com/@dfdao/whitelist/-/whitelist-6.7.31.tgz#3ea8e9ade8fc67506f5be84a531117bb5f5deec8"
+  integrity sha512-gTQFaZk6irgdFzR+VbD72JI12fcwclLKU75Fys6b2vK348Gcf/87PMtmNF7EBYKGiVNnEW9HrsLw3V0SW18Jvg==
   dependencies:
-    "@dfdao/hashing" "6.7.30"
+    "@dfdao/hashing" "6.7.31"
     "@types/lodash" "^4.14.160"
     big-integer "^1.6.48"
     ethers "^5.5.1"
