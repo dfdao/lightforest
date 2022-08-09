@@ -41,7 +41,7 @@ function MapOverview({
       (config: MinimapConfig) => configHash && setMinimapConfig(config),
       500
     );
-  }, [setMinimapConfig]);
+  }, [setMinimapConfig, configHash]);
 
   useEffect(() => {
     if (config) {
@@ -52,9 +52,9 @@ function MapOverview({
       setMinimapConfig(undefined);
       setMapName(NONE);
     }
-  }, [config, onMapChange, setMapName]);
+  }, [config, onMapChange, setMapName, configHash]);
 
-  const { innerHeight: height } = window;
+  const { innerHeight } = window;
   let mapSize = "500px";
   if (innerHeight < 700) {
     mapSize = "300px";
@@ -90,7 +90,9 @@ function MapOverview({
         <Minimap
           style={{ width: mapSize, height: mapSize }}
           minimapConfig={minimapConfig}
-          setRefreshing={() => {}}
+          setRefreshing={() => {
+            // do nothing
+          }}
         />
       )}
       <div

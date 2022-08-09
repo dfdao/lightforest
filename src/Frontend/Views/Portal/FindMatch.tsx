@@ -9,7 +9,6 @@ import { formatStartTime } from "../../Utils/TimeUtils";
 import { compPlayerToEntry } from "../Leaderboards/ArenaLeaderboard";
 import { GenericErrorBoundary } from "../GenericErrorBoundary";
 import { getConfigName } from "@dfdao/procedural";
-import { Btn } from "../../Components/Btn";
 import { Row } from "../../Components/Row";
 import _ from "lodash";
 import Button from "../../Components/Button";

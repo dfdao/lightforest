@@ -1,5 +1,5 @@
 {
-  "plugins": ["react-hooks", "@typescript-eslint"],
+  "plugins": ["react-hooks", "@typescript-eslint", "import"],
   "extends": [
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended"
@@ -14,6 +14,7 @@
     "node": true
   },
   "rules": {
+    "import/no-unused-modules": [1, {"unusedExports": true}],
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": [
       "warn",

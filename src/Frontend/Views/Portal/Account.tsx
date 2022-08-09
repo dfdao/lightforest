@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { logOut } from "../../../Backend/Network/AccountManager";
-import { Gnosis, Icon, IconType, Twitter } from "../../Components/Icons";
+import { Gnosis, Twitter } from "../../Components/Icons";
 
 import dfstyles from "../../Styles/dfstyles";
 import { useEthConnection, useTwitters } from "../../Utils/AppHooks";
