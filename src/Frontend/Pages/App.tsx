@@ -1,18 +1,22 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 import { Theme } from "../Components/Theme";
 import { LandingPageBackground } from "../Renderers/LandingPageCanvas";
 import dfstyles from "../Styles/dfstyles";
+import { MapInfoView } from "../Views/Portal/MapInfoView";
 import { EntryPage } from "./EntryPage";
 import { EventsPage } from "./EventsPage";
 import { GifMaker } from "./GifMaker";
-import LandingPage from "./LandingPage";
 import { ShareArtifact } from "./ShareArtifact";
 import { SharePlanet } from "./SharePlanet";
 import { TestArtifactImages } from "./TestArtifactImages";
 import { TxConfirmPopup } from "./TxConfirmPopup";
-import UnsubscribePage from "./UnsubscribePage";
 import { ValhallaPage } from "./ValhallaPage";
 
 const isProd = process.env.NODE_ENV === "production";
@@ -25,7 +29,8 @@ function App() {
       <Theme color="dark" scale="medium">
         <Router>
           <Switch>
-            <Route path="/" exact component={LandingPage} />
+            <Redirect exact from="/" to="/portal/home/" />
+            <Route path="/" exact component={MapInfoView} />
             <Route path="/planet/:locationId" component={SharePlanet} />
             <Route path="/events" component={EventsPage} />
             <Route path="/artifact/:artifactId" component={ShareArtifact} />
@@ -33,7 +38,6 @@ function App() {
               path="/wallet/:contract/:addr/:actionId/:balance/:method"
               component={TxConfirmPopup}
             />
-            <Route path="/unsubscribe" component={UnsubscribePage} />
             <Route path="/valhalla" component={ValhallaPage} />
             {!isProd && <Route path="/images" component={TestArtifactImages} />}
             {!isProd && <Route path="/gifs" component={GifMaker} />}

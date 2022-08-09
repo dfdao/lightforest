@@ -6,6 +6,7 @@ import { Link, RouteComponentProps } from "react-router-dom";
 import styled from "styled-components";
 import { MythicLabelText } from "../../Components/Labels/MythicLabel";
 import { LoadingSpinner } from "../../Components/LoadingSpinner";
+import { LobbyButton } from "../../Components/LobbyButton";
 import { Minimap } from "../../Components/Minimap";
 import { TextPreview } from "../../Components/TextPreview";
 import {
@@ -17,7 +18,6 @@ import { useConfigFromHash } from "../../Utils/AppHooks";
 import { competitiveConfig } from "../../Utils/constants";
 
 import { MapDetails } from "./MapDetails";
-import { ArenaPortalButton } from "./PortalHomeView";
 
 const NONE = "No map found";
 function MapOverview({
@@ -106,14 +106,14 @@ function MapOverview({
           target="blank"
           to={`/arena/${lobbyAddress}/settings`}
         >
-          <ArenaPortalButton secondary>Remix Map</ArenaPortalButton>
+          <LobbyButton>Remix Map</LobbyButton>
         </Link>
         <Link
           style={{ minWidth: "250px" }}
           target="blank"
           to={`/play/${lobbyAddress}?create=true`}
         >
-          <ArenaPortalButton>Create Match</ArenaPortalButton>
+          <LobbyButton primary>Create Match</LobbyButton>
         </Link>
       </div>
     </OverviewContainer>
