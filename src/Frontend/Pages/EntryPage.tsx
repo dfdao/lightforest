@@ -49,7 +49,6 @@ import { PortalMainView } from "../Views/Portal/PortalMainView";
 import { Terminal, TerminalHandle } from "../Views/Terminal";
 import { GameLandingPage } from "./Game/GameLandingPage";
 import LoadingPage from "./LoadingPage";
-import { CreateLobby } from "./Lobby/CreateLobby";
 import { NotFoundPage } from "./NotFoundPage";
 
 const defaultAddress = address(CONTRACT_ADDRESS);
@@ -432,7 +431,6 @@ export function EntryPage() {
                 push={true}
                 exact={true}
               />
-              <Route path="/arena/:contract" component={CreateLobby} />
               <Route path="*" component={NotFoundPage} />
             </Switch>
           </Router>

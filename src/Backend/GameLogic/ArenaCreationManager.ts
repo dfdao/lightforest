@@ -57,7 +57,7 @@ export class ArenaCreationManager {
   private arenaAddress: EthAddress | undefined;
   private whitelistedAddresses: EthAddress[];
   private createdPlanets: CreatedPlanet[];
-  private created: boolean = false;
+  private created = false;
 
   private constructor(
     parentAddress: EthAddress,

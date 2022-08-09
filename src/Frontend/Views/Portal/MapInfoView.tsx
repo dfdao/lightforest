@@ -104,13 +104,6 @@ function MapOverview({
         <Link
           style={{ minWidth: "250px" }}
           target="blank"
-          to={`/arena/${lobbyAddress}/settings`}
-        >
-          <LobbyButton>Remix Map</LobbyButton>
-        </Link>
-        <Link
-          style={{ minWidth: "250px" }}
-          target="blank"
           to={`/play/${lobbyAddress}?create=true`}
         >
           <LobbyButton primary>Create Match</LobbyButton>
