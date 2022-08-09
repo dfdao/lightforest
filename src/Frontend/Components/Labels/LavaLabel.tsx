@@ -1,7 +1,7 @@
-import { Biome, BiomeNames } from '@darkforest_eth/types';
-import React from 'react';
-import styled, { keyframes } from 'styled-components';
-import { BiomeTextColors } from '../../Styles/Colors';
+import { Biome, BiomeNames } from "@dfdao/types";
+import React from "react";
+import styled, { keyframes } from "styled-components";
+import { BiomeTextColors } from "../../Styles/Colors";
 
 const Wrap = styled.span`
   position: relative;
@@ -42,9 +42,9 @@ export function LavaLabelRaw() {
     <Wrap>
       <Static>{BiomeNames[Biome.LAVA]}</Static>
       <Anim>
-        {BiomeNames[Biome.LAVA].split('').map((c, i) => (
+        {BiomeNames[Biome.LAVA].split("").map((c, i) => (
           <AnimDelay i={i} key={i}>
-            {c === ' ' ? <>&nbsp;</> : c}
+            {c === " " ? <>&nbsp;</> : c}
           </AnimDelay>
         ))}
       </Anim>

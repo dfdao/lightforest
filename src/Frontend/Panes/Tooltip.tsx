@@ -1,12 +1,12 @@
-import { RECOMMENDED_MODAL_WIDTH } from '@darkforest_eth/constants';
-import { TooltipName } from '@darkforest_eth/types';
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import ReactDOM from 'react-dom';
-import styled from 'styled-components';
-import dfstyles from '../Styles/dfstyles';
-import { useOverlayContainer } from '../Utils/AppHooks';
-import { DFZIndex } from '../Utils/constants';
-import { TooltipContent } from './Game/TooltipPanes';
+import { RECOMMENDED_MODAL_WIDTH } from "@dfdao/constants";
+import { TooltipName } from "@dfdao/types";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import ReactDOM from "react-dom";
+import styled from "styled-components";
+import dfstyles from "../Styles/dfstyles";
+import { useOverlayContainer } from "../Utils/AppHooks";
+import { DFZIndex } from "../Utils/constants";
+import { TooltipContent } from "./Game/TooltipPanes";
 
 /**
  * Each {@link TooltipName} has a corresponding tooltip element.
@@ -54,10 +54,10 @@ export function TooltipTrigger(props: TooltipTriggerProps) {
       setMouseCoords({ x: e.clientX, y: e.clientY });
     };
 
-    window.addEventListener('mousemove', doMouseMove);
+    window.addEventListener("mousemove", doMouseMove);
 
     return () => {
-      window.removeEventListener('mousemove', doMouseMove);
+      window.removeEventListener("mousemove", doMouseMove);
     };
   });
 
@@ -90,24 +90,31 @@ export function PortalTooltipTrigger(props: TooltipTriggerProps) {
       setMouseCoords({ x: e.clientX, y: e.clientY });
     };
 
-    window.addEventListener('mousemove', doMouseMove);
+    window.addEventListener("mousemove", doMouseMove);
 
     return () => {
-      window.removeEventListener('mousemove', doMouseMove);
+      window.removeEventListener("mousemove", doMouseMove);
     };
   });
 
   return (
     <>
       <StyledTooltipTrigger
-        style={{ ...props.style}}
+        style={{ ...props.style }}
         onMouseEnter={() => setHovering(true)}
         onMouseLeave={() => setHovering(false)}
       >
         {props.children}
       </StyledTooltipTrigger>
 
-      {hovering && <Tooltip {...props} top={mouseCoords.y} left={mouseCoords.x} style = {{zIndex: 9999, position: 'fixed'}}/> }
+      {hovering && (
+        <Tooltip
+          {...props}
+          top={mouseCoords.y}
+          left={mouseCoords.x}
+          style={{ zIndex: 9999, position: "fixed" }}
+        />
+      )}
     </>
   );
 }
@@ -119,7 +126,7 @@ export function PortalTooltipTrigger(props: TooltipTriggerProps) {
  * of which tooltip has been hovered over, and rendering the corresponding content.
  */
 export function Tooltip(props: TooltipProps) {
-  const elRef = useRef<HTMLDivElement>(document.createElement('div'));
+  const elRef = useRef<HTMLDivElement>(document.createElement("div"));
 
   const [height, setHeight] = useState<number>(20);
   const [width, setWidth] = useState<number>(20);
@@ -170,7 +177,7 @@ export function Tooltip(props: TooltipProps) {
 
 const StyledTooltipTrigger = styled.span`
   border-radius: 2px;
-  display: ${(props) => props?.style?.display || 'inline'};
+  display: ${(props) => props?.style?.display || "inline"};
 `;
 
 const StyledTooltip = styled.div`

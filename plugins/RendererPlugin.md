@@ -20,7 +20,7 @@ Renderers have two main methods:
 
 - Flush: Flush is called every frame in the game. When called, the entities in the queue should be rendered onto the game canvas and the queue cleared.
 
-For the game to recognize if the class is a renderer, it has to follow one of the renderer interfaces that can be found in `@darkforest_eth/types`
+For the game to recognize if the class is a renderer, it has to follow one of the renderer interfaces that can be found in `@dfdao/types`
 
 For instance `MineRendererType` is an interface for mine renderers. Mine renderers are used to draw Asteroid Fields which is a type of planet (not to be confused with Asteroids).
 
@@ -70,10 +70,10 @@ When you replace a renderer in the game, the renderer is then put on our renderi
 
 We will run through the creation of a renderer that will replace the renderer for Asteroid Fields.
 
-To create a renderer it has to follow one of the renderer interfaces that can be found in ​​`@darkforest_eth/types`. For the Asteroid Fields, we will be using the `MineRendererType`.
+To create a renderer it has to follow one of the renderer interfaces that can be found in ​​`@dfdao/types`. For the Asteroid Fields, we will be using the `MineRendererType`.
 
 ```javascript
-import { RendererType } from 'https://cdn.skypack.dev/@darkforest_eth/types';
+import { RendererType } from "https://cdn.skypack.dev/@dfdao/types";
 
 class GenericMineRenderer {
   constructor() {
@@ -99,7 +99,7 @@ After:
 If you noticed in the queue function, the coordinate of the planet and the size of planet is relative to the game world. However when drawn on the canvas, the size and location of planet change based on the position of the players camera. We provide developers a way to easily transform between coordinate systems via the viewport class. You can get the viewport from the global ui class. `ui.getViewport()`. An example of the use of the viewport can be seen in the code of the `queueMine` function below.
 
 ```javascript
-import { RendererType } from 'https://cdn.skypack.dev/@darkforest_eth/types';
+import { RendererType } from "https://cdn.skypack.dev/@dfdao/types";
 
 class GenericMineRenderer {
   constructor() {
@@ -155,28 +155,28 @@ The code below contains all of the objects that we will explore to demonstrate W
 ## Fragment and Vertex Shaders
 
 ```javascript
-import { glsl } from 'https://cdn.skypack.dev/@darkforest_eth/renderer';
+import { glsl } from "https://cdn.skypack.dev/@dfdao/renderer";
 import {
   RendererProgram,
   AttribeType,
   UniformType,
-} from 'https://cdn.skypack.dev/@darkforest_eth/types';
+} from "https://cdn.skypack.dev/@dfdao/types";
 const program = {
   uniforms: {
-    matrix: { name: 'u_matrix', type: UniformType.Mat4 },
+    matrix: { name: "u_matrix", type: UniformType.Mat4 },
   },
   attribs: {
     position: {
       dim: 4,
       type: AttribType.Float,
       normalize: false,
-      name: 'a_position', //the name of the attribute variable
+      name: "a_position", //the name of the attribute variable
     },
     energyInfo: {
       dim: 2,
       type: AttribType.Float,
       normalize: false,
-      name: 'a_energy',
+      name: "a_energy",
     },
   },
   vertexShader: glsl`
@@ -244,9 +244,9 @@ The fragment shader is called for every pixel in the square. The `outColor` is t
 ## Renderer Code
 
 ```javascript
-import { EngineUtils, GenericRenderer, glsl } from 'https://cdn.skypack.dev/@darkforest_eth/renderer';
+import { EngineUtils, GenericRenderer, glsl } from 'https://cdn.skypack.dev/@dfdao/renderer';
 import { AttribType, RendererType, UniformType,
-} from 'https://cdn.skypack.dev/@darkforest_eth/types';
+} from 'https://cdn.skypack.dev/@dfdao/types';
 class GenericMineRenderer extends GenericRenderer {
     constructor(gl, vp) {
         super(gl, program);
@@ -355,12 +355,12 @@ import {
   EngineUtils,
   GenericRenderer,
   glsl,
-} from 'https://cdn.skypack.dev/@darkforest_eth/renderer';
+} from "https://cdn.skypack.dev/@dfdao/renderer";
 import {
   AttribType,
   RendererType,
   UniformType,
-} from 'https://cdn.skypack.dev/@darkforest_eth/types';
+} from "https://cdn.skypack.dev/@dfdao/types";
 
 class GenericMineRenderer extends GenericRenderer {
   constructor(gl, vp) {
@@ -384,7 +384,17 @@ class GenericMineRenderer extends GenericRenderer {
     const { x1, y1 } = { x1: x - r, y1: y - r };
     const { x2, y2 } = { x2: x + r, y2: y + r };
     //creating an array of all the vertices for the triangle 14
-    EngineUtils.makeDoubleQuadBuffered(this.quadBuffer, x1, y1, x2, y2, -1, -1, 1, 1);
+    EngineUtils.makeDoubleQuadBuffered(
+      this.quadBuffer,
+      x1,
+      y1,
+      x2,
+      y2,
+      -1,
+      -1,
+      1,
+      1
+    );
     //passing in the vertices to the vertex shader
     posA.setVertex(this.quadBuffer, this.verts);
     //passing in the energy information. 6 times because we passed in 6 vertices.
@@ -401,20 +411,20 @@ class GenericMineRenderer extends GenericRenderer {
 }
 const program = {
   uniforms: {
-    matrix: { name: 'u_matrix', type: UniformType.Mat4 },
+    matrix: { name: "u_matrix", type: UniformType.Mat4 },
   },
   attribs: {
     position: {
       dim: 4,
       type: AttribType.Float,
       normalize: false,
-      name: 'a_position', //the name of the attribute variable
+      name: "a_position", //the name of the attribute variable
     },
     energyInfo: {
       dim: 2,
       type: AttribType.Float,
       normalize: false,
-      name: 'a_energy',
+      name: "a_energy",
     },
   },
   vertexShader: glsl`
@@ -470,7 +480,7 @@ export default class ExamplePlugin {
   }
   async render(div) {}
   destroy() {
-    console.log('destroying renderer plugin');
+    console.log("destroying renderer plugin");
     ui.disableCustomRenderer(this.mineRenderer);
   }
 }

@@ -1,10 +1,10 @@
-import { TooltipName, Upgrade } from '@darkforest_eth/types';
-import React from 'react';
-import styled from 'styled-components';
-import { CenterRow, Spacer } from '../../Components/CoreUI';
-import { Icon, IconType } from '../../Components/Icons';
-import dfstyles from '../../Styles/dfstyles';
-import { TooltipTrigger } from '../Tooltip';
+import { TooltipName, Upgrade } from "@dfdao/types";
+import React from "react";
+import styled from "styled-components";
+import { CenterRow, Spacer } from "../../Components/CoreUI";
+import { Icon, IconType } from "../../Components/Icons";
+import dfstyles from "../../Styles/dfstyles";
+import { TooltipTrigger } from "../Tooltip";
 
 type IconConfig = {
   iconType: IconType;
@@ -15,27 +15,27 @@ type IconConfig = {
 const icons: readonly IconConfig[] = [
   {
     iconType: IconType.Defense,
-    key: 'defMultiplier',
+    key: "defMultiplier",
     tooltip: TooltipName.DefenseMultiplier,
   },
   {
     iconType: IconType.Energy,
-    key: 'energyCapMultiplier',
+    key: "energyCapMultiplier",
     tooltip: TooltipName.EnergyCapMultiplier,
   },
   {
     iconType: IconType.EnergyGrowth,
-    key: 'energyGroMultiplier',
+    key: "energyGroMultiplier",
     tooltip: TooltipName.EnergyGrowthMultiplier,
   },
   {
     iconType: IconType.Range,
-    key: 'rangeMultiplier',
+    key: "rangeMultiplier",
     tooltip: TooltipName.RangeMultiplier,
   },
   {
     iconType: IconType.Speed,
-    key: 'speedMultiplier',
+    key: "speedMultiplier",
     tooltip: TooltipName.SpeedMultiplier,
   },
 ] as const;
@@ -61,7 +61,9 @@ export function SortBy({
                 setSortBy(key);
               }
             }}
-            iconColor={key === sortBy ? dfstyles.colors.dfgreen : dfstyles.colors.subtext}
+            iconColor={
+              key === sortBy ? dfstyles.colors.dfgreen : dfstyles.colors.subtext
+            }
           >
             <Icon type={iconType} />
           </SortByIconContainer>

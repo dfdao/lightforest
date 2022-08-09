@@ -1,26 +1,26 @@
-import { Monomitter } from '@darkforest_eth/events';
-import { weiToEth } from '@darkforest_eth/network';
-import { EthAddress, ModalName, TooltipName } from '@darkforest_eth/types';
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { CaptureZonesGeneratedEvent } from '../../../Backend/GameLogic/CaptureZoneGenerator';
-import { Hook } from '../../../_types/global/GlobalTypes';
-import { AlignCenterHorizontally } from '../../Components/CoreUI';
-import { AccountLabel } from '../../Components/Labels/Labels';
-import { Gold, Red, Sub, Text, White } from '../../Components/Text';
-import { TooltipTrigger } from '../../Panes/Tooltip';
-import { usePlayer, useUIManager } from '../../Utils/AppHooks';
-import { DFZIndex } from '../../Utils/constants';
-import { useEmitterSubscribe, useEmitterValue } from '../../Utils/EmitterHooks';
-import { ModalToggleButton } from '../ModalIcon';
-import { NetworkHealth } from './NetworkHealth';
-import { Paused } from './Paused';
-import { Gameover } from './Gameover';
-import { Timer } from '../Timer';
-import { Play } from './Play';
-import { TargetPlanetVictory } from '../TargetPlanetVictory';
-import { getConfigName } from '@darkforest_eth/procedural';
-import Button from '../../Components/Button';
+import { Monomitter } from "@dfdao/events";
+import { weiToEth } from "@dfdao/network";
+import { EthAddress, ModalName, TooltipName } from "@dfdao/types";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { CaptureZonesGeneratedEvent } from "../../../Backend/GameLogic/CaptureZoneGenerator";
+import { Hook } from "../../../_types/global/GlobalTypes";
+import { AlignCenterHorizontally } from "../../Components/CoreUI";
+import { AccountLabel } from "../../Components/Labels/Labels";
+import { Gold, Red, Sub, Text, White } from "../../Components/Text";
+import { TooltipTrigger } from "../../Panes/Tooltip";
+import { usePlayer, useUIManager } from "../../Utils/AppHooks";
+import { DFZIndex } from "../../Utils/constants";
+import { useEmitterSubscribe, useEmitterValue } from "../../Utils/EmitterHooks";
+import { ModalToggleButton } from "../ModalIcon";
+import { NetworkHealth } from "./NetworkHealth";
+import { Paused } from "./Paused";
+import { Gameover } from "./Gameover";
+import { Timer } from "../Timer";
+import { Play } from "./Play";
+import { TargetPlanetVictory } from "../TargetPlanetVictory";
+import { getConfigName } from "@dfdao/procedural";
+import Button from "../../Components/Button";
 
 const TopBarContainer = styled.div`
   z-index: ${DFZIndex.MenuBar};
@@ -62,7 +62,7 @@ function SpaceJunk({ account }: { account: EthAddress | undefined }) {
     <Numbers>
       <Sub>
         <TooltipTrigger name={TooltipName.SpaceJunk}>
-          junk:{' '}
+          junk:{" "}
           <Text>
             {spaceJunk} / {spaceJunkLimit}
           </Text>
@@ -83,17 +83,18 @@ function CaptureZoneExplanation() {
 
   return (
     <>
-      <White>Capture Zones:</White> Energy fluctations are creating highly valuable zones of space.{' '}
+      <White>Capture Zones:</White> Energy fluctations are creating highly
+      valuable zones of space.{" "}
       <Gold>
-        Invading and holding planets in these areas give you score! The zones are marked as gold
-        rings on your map.
+        Invading and holding planets in these areas give you score! The zones
+        are marked as gold rings on your map.
       </Gold>
       <br />
       <br />
       In order to capture a planet in a zone, you must:
       <ol>
-        {numberedItem(1, 'Own a planet in the capture zone.')}
-        {numberedItem(2, 'Start the invasion by clicking the Invade button.')}
+        {numberedItem(1, "Own a planet in the capture zone.")}
+        {numberedItem(2, "Start the invasion by clicking the Invade button.")}
         {numberedItem(
           3,
           `Hold the planet for ${uiManager.contractConstants.CAPTURE_ZONE_HOLD_BLOCKS_REQUIRED}
@@ -101,16 +102,16 @@ function CaptureZoneExplanation() {
         )}
         {numberedItem(
           4,
-          'Capture the planet by clicking the Capture button (Capturing does not require you to be in the zone, only Invading).'
+          "Capture the planet by clicking the Capture button (Capturing does not require you to be in the zone, only Invading)."
         )}
       </ol>
       <br />
       <Red>
-        Planets can only be Captured once. However, after an Invasion has started, anyone can
-        capture it.
-      </Red>{' '}
-      If you see an opponent start their Invasion, you can take the planet from them and Capture it
-      for yourself!
+        Planets can only be Captured once. However, after an Invasion has
+        started, anyone can capture it.
+      </Red>{" "}
+      If you see an opponent start their Invasion, you can take the planet from
+      them and Capture it for yourself!
     </>
   );
 }
@@ -123,7 +124,10 @@ function CaptureZones({
   nextChangeBlock: number;
 }) {
   const uiManager = useUIManager();
-  const currentBlockNumber = useEmitterValue(uiManager.getEthConnection().blockNumber$, undefined);
+  const currentBlockNumber = useEmitterValue(
+    uiManager.getEthConnection().blockNumber$,
+    undefined
+  );
   const [nextGenerationBlock, setNextGenerationBlock] = useState(
     Math.max(
       uiManager.contractConstants.GAME_START_BLOCK +
@@ -142,8 +146,12 @@ function CaptureZones({
 
   return (
     <Numbers>
-      <TooltipTrigger name={TooltipName.Empty} extraContent={<CaptureZoneExplanation />}>
-        Capture Zones change in {nextGenerationBlock - (currentBlockNumber || 0)} blocks.
+      <TooltipTrigger
+        name={TooltipName.Empty}
+        extraContent={<CaptureZoneExplanation />}
+      >
+        Capture Zones change in{" "}
+        {nextGenerationBlock - (currentBlockNumber || 0)} blocks.
       </TooltipTrigger>
     </Numbers>
   );
@@ -158,7 +166,7 @@ function BoardPlacement({ account }: { account: EthAddress | undefined }) {
   if (!player.value) {
     content = <Sub>n/a</Sub>;
   } else {
-    let formattedScore = 'n/a';
+    let formattedScore = "n/a";
     if (player.value.score !== undefined && player.value.score !== null) {
       formattedScore = player.value.score.toLocaleString();
     }
@@ -175,12 +183,19 @@ function BoardPlacement({ account }: { account: EthAddress | undefined }) {
   return <Numbers>{content}</Numbers>;
 }
 
-export function TopBar({ twitterVerifyHook }: { twitterVerifyHook: Hook<boolean> }) {
+export function TopBar({
+  twitterVerifyHook,
+}: {
+  twitterVerifyHook: Hook<boolean>;
+}) {
   const uiManager = useUIManager();
   const player = usePlayer(uiManager);
   const account = player.value?.address;
   const twitter = player.value?.twitter;
-  const balance = useEmitterValue(uiManager.getMyBalance$(), uiManager.getMyBalanceBn());
+  const balance = useEmitterValue(
+    uiManager.getMyBalance$(),
+    uiManager.getMyBalanceBn()
+  );
 
   let captureZones = null;
   if (uiManager.captureZonesEnabled) {
@@ -188,18 +203,22 @@ export function TopBar({ twitterVerifyHook }: { twitterVerifyHook: Hook<boolean>
     if (captureZoneGenerator) {
       const emitter = captureZoneGenerator.generated$;
       const nextChangeBlock = captureZoneGenerator.getNextChangeBlock();
-      captureZones = <CaptureZones emitter={emitter} nextChangeBlock={nextChangeBlock} />;
+      captureZones = (
+        <CaptureZones emitter={emitter} nextChangeBlock={nextChangeBlock} />
+      );
     }
   }
 
   return (
     <TopBarContainer>
-      <AlignCenterHorizontally style={{ width: '100%', justifyContent: 'space-around' }}>
+      <AlignCenterHorizontally
+        style={{ width: "100%", justifyContent: "space-around" }}
+      >
         <TooltipTrigger
           name={TooltipName.Empty}
           extraContent={<Text>Your burner wallet address.</Text>}
         >
-          <AccountLabel includeAddressIfHasTwitter={true} width={'75px'} />
+          <AccountLabel includeAddressIfHasTwitter={true} width={"75px"} />
         </TooltipTrigger>
         <TooltipTrigger
           name={TooltipName.Empty}
@@ -211,44 +230,54 @@ export function TopBar({ twitterVerifyHook }: { twitterVerifyHook: Hook<boolean>
           <>
             <TooltipTrigger
               name={TooltipName.Empty}
-              extraContent={<Text>Connect your burner wallet to your twitter account.</Text>}
+              extraContent={
+                <Text>Connect your burner wallet to your twitter account.</Text>
+              }
             >
               <ModalToggleButton
-                size='small'
+                size="small"
                 modal={ModalName.TwitterVerify}
                 hook={twitterVerifyHook}
                 style={
                   {
-                    width: !twitter ? '100px' : undefined,
+                    width: !twitter ? "100px" : undefined,
                   } as CSSStyleDeclaration & React.CSSProperties
                 }
-                text={!twitter ? 'Connect' : undefined}
+                text={!twitter ? "Connect" : undefined}
               />
             </TooltipTrigger>
           </>
         )}
         <TooltipTrigger
           name={TooltipName.Empty}
-          extraContent={<Text>This is the map configuration. Click to copy the hash.</Text>}
+          extraContent={
+            <Text>This is the map configuration. Click to copy the hash.</Text>
+          }
         >
           <Button
             onClick={() => {
-              navigator.clipboard.writeText(uiManager.contractConstants.CONFIG_HASH).then(
-                () => {
-                  console.log('Async: Copying to clipboard was successful!');
-                },
-                (err) => {
-                  console.error('Async: Could not copy text: ', err);
-                }
-              );
+              navigator.clipboard
+                .writeText(uiManager.contractConstants.CONFIG_HASH)
+                .then(
+                  () => {
+                    console.log("Async: Copying to clipboard was successful!");
+                  },
+                  (err) => {
+                    console.error("Async: Could not copy text: ", err);
+                  }
+                );
             }}
           >
             {getConfigName(uiManager.contractConstants.CONFIG_HASH)}
           </Button>
         </TooltipTrigger>
-      </AlignCenterHorizontally>{' '}
+      </AlignCenterHorizontally>{" "}
       <AlignCenterHorizontally
-        style={{ justifyContent: 'space-evenly', width: '100%', marginTop: '7px' }}
+        style={{
+          justifyContent: "space-evenly",
+          width: "100%",
+          marginTop: "7px",
+        }}
       >
         {uiManager.getSpaceJunkEnabled() && <SpaceJunk account={account} />}
         {uiManager.contractConstants.TARGET_PLANETS ? (

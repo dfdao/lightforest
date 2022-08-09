@@ -1,7 +1,7 @@
-import { ArtifactFileColor } from '@darkforest_eth/gamelogic';
-import React, { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
-import { GifRenderer } from '../Renderers/GifRenderer';
+import { ArtifactFileColor } from "@dfdao/gamelogic";
+import React, { useEffect, useRef, useState } from "react";
+import styled from "styled-components";
+import { GifRenderer } from "../Renderers/GifRenderer";
 
 const IS_THUMB = true;
 const GIF_DIM = IS_THUMB ? 90 : 350;
@@ -36,9 +36,9 @@ export function GifMaker() {
   }, [canvasRef]);
 
   useEffect(() => {
-    const script = document.createElement('script');
+    const script = document.createElement("script");
 
-    script.src = '/public/CCapture.all.min.js';
+    script.src = "/public/CCapture.all.min.js";
     script.async = true;
 
     document.body.appendChild(script);

@@ -1,14 +1,14 @@
-import type { Abstract, LocationId, Rectangle } from '@darkforest_eth/types';
+import type { Abstract, LocationId, Rectangle } from "@dfdao/types";
 
 /**
  * one of "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
  */
-export type BucketId = Abstract<string, 'BucketId'>;
+export type BucketId = Abstract<string, "BucketId">;
 
 /**
  * Don't worry about the values here. Never base code off the values here. PLEASE.
  */
-export type ChunkId = Abstract<string, 'ChunkId'>;
+export type ChunkId = Abstract<string, "ChunkId">;
 
 /**
  * Chunks represent map data in some rectangle. This type represents a chunk when it is at rest in

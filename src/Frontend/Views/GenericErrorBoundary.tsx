@@ -1,8 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Red } from '../Components/Text';
+import React from "react";
+import styled from "styled-components";
+import { Red } from "../Components/Text";
 
 interface GenericErrorBoundaryProps {
+  children: React.ReactNode;
   errorMessage: string;
 }
 
@@ -32,7 +33,6 @@ export class GenericErrorBoundary extends React.Component<
         </ErrorBoundaryContent>
       );
     }
-
     return this.props.children;
   }
 }

@@ -1,5 +1,5 @@
-import { DFAnimation, DFStatefulAnimation, PlanetLevel } from '@darkforest_eth/types';
-import anime from 'animejs';
+import { DFAnimation, DFStatefulAnimation, PlanetLevel } from "@dfdao/types";
+import anime from "animejs";
 
 export function sinusoidalAnimation(rps: number): DFAnimation {
   const startTime = Date.now() + Math.random() * 1000;
@@ -10,7 +10,10 @@ export function sinusoidalAnimation(rps: number): DFAnimation {
   });
 }
 
-export function easeInAnimation(durationMs: number, delayMs?: number): DFAnimation {
+export function easeInAnimation(
+  durationMs: number,
+  delayMs?: number
+): DFAnimation {
   const progress = {
     percent: 0,
   };
@@ -21,7 +24,7 @@ export function easeInAnimation(durationMs: number, delayMs?: number): DFAnimati
         targets: progress, // this library will take a value in the `progress` object
         percent: 1, // .. and animate it between 0 and 1
         duration: durationMs,
-        easing: 'easeInOutCubic', // .. using this easing function
+        easing: "easeInOutCubic", // .. using this easing function
         update: () => {},
       });
     },
@@ -42,7 +45,7 @@ export function emojiEaseOutAnimation(durationMs: number, emoji: string) {
     targets: progress, // this library will take a value in the `progress` object
     percent: 1, // .. and animate it between 0 and 1
     duration: durationMs,
-    easing: 'easeInOutCubic', // .. using this easing function
+    easing: "easeInOutCubic", // .. using this easing function
     update: () => {},
   });
 

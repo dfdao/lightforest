@@ -1,22 +1,25 @@
-import { getConfigName } from '@darkforest_eth/procedural';
-import { EthAddress } from '@darkforest_eth/types';
-import _ from 'lodash';
-import React, { useEffect, useState, useMemo } from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import styled from 'styled-components';
-import { MythicLabelText } from '../../Components/Labels/MythicLabel';
-import { LoadingSpinner } from '../../Components/LoadingSpinner';
-import { Minimap } from '../../Components/Minimap';
-import { TextPreview } from '../../Components/TextPreview';
-import { generateMinimapConfig, MinimapConfig } from '../../Panes/Lobby/MinimapUtils';
-import { LobbyInitializers } from '../../Panes/Lobby/Reducer';
-import { useConfigFromHash } from '../../Utils/AppHooks';
-import { competitiveConfig } from '../../Utils/constants';
+import { getConfigName } from "@dfdao/procedural";
+import { EthAddress } from "@dfdao/types";
+import _ from "lodash";
+import React, { useEffect, useState, useMemo } from "react";
+import { Link, RouteComponentProps } from "react-router-dom";
+import styled from "styled-components";
+import { MythicLabelText } from "../../Components/Labels/MythicLabel";
+import { LoadingSpinner } from "../../Components/LoadingSpinner";
+import { Minimap } from "../../Components/Minimap";
+import { TextPreview } from "../../Components/TextPreview";
+import {
+  generateMinimapConfig,
+  MinimapConfig,
+} from "../../Panes/Lobby/MinimapUtils";
+import { LobbyInitializers } from "../../Panes/Lobby/Reducer";
+import { useConfigFromHash } from "../../Utils/AppHooks";
+import { competitiveConfig } from "../../Utils/constants";
 
-import { MapDetails } from './MapDetails';
-import { ArenaPortalButton } from './PortalHomeView';
+import { MapDetails } from "./MapDetails";
+import { ArenaPortalButton } from "./PortalHomeView";
 
-const NONE = 'No map found';
+const NONE = "No map found";
 function MapOverview({
   configHash,
   config,
@@ -26,11 +29,18 @@ function MapOverview({
   config: LobbyInitializers | undefined;
   lobbyAddress: EthAddress | undefined;
 }) {
-  const [minimapConfig, setMinimapConfig] = useState<MinimapConfig | undefined>();
-  const [mapName, setMapName] = useState<string>(configHash ? getConfigName(configHash) : NONE);
+  const [minimapConfig, setMinimapConfig] = useState<
+    MinimapConfig | undefined
+  >();
+  const [mapName, setMapName] = useState<string>(
+    configHash ? getConfigName(configHash) : NONE
+  );
 
   const onMapChange = useMemo(() => {
-    return _.debounce((config: MinimapConfig) => configHash && setMinimapConfig(config), 500);
+    return _.debounce(
+      (config: MinimapConfig) => configHash && setMinimapConfig(config),
+      500
+    );
   }, [setMinimapConfig]);
 
   useEffect(() => {
@@ -45,30 +55,36 @@ function MapOverview({
   }, [config, onMapChange, setMapName]);
 
   const { innerHeight: height } = window;
-  let mapSize = '500px';
+  let mapSize = "500px";
   if (innerHeight < 700) {
-    mapSize = '300px';
+    mapSize = "300px";
   }
 
   return (
     <OverviewContainer>
-      <div style={{ textAlign: 'center' }}>
-        {configHash == competitiveConfig &&  <MythicLabelText text={`Galactic League Official Map`} />}
+      <div style={{ textAlign: "center" }}>
+        {configHash == competitiveConfig && (
+          <MythicLabelText text={`Galactic League Official Map`} />
+        )}
         <MapTitle>{mapName}</MapTitle>
-        <TextPreview text={configHash} focusedWidth={'200px'} unFocusedWidth={'200px'} />
+        <TextPreview
+          text={configHash}
+          focusedWidth={"200px"}
+          unFocusedWidth={"200px"}
+        />
       </div>
 
       {!minimapConfig ? (
         <div
           style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '500px',
-            height: '500px',
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "500px",
+            height: "500px",
           }}
         >
-          <LoadingSpinner initialText='Loading...' />
+          <LoadingSpinner initialText="Loading..." />
         </div>
       ) : (
         <Minimap
@@ -77,11 +93,26 @@ function MapOverview({
           setRefreshing={() => {}}
         />
       )}
-      <div style = {{display: 'flex', gap: '16px', justifyContent: 'center', width: '100%'}}>
-        <Link style={{ minWidth: '250px' }} target='blank' to={`/arena/${lobbyAddress}/settings`}>
+      <div
+        style={{
+          display: "flex",
+          gap: "16px",
+          justifyContent: "center",
+          width: "100%",
+        }}
+      >
+        <Link
+          style={{ minWidth: "250px" }}
+          target="blank"
+          to={`/arena/${lobbyAddress}/settings`}
+        >
           <ArenaPortalButton secondary>Remix Map</ArenaPortalButton>
         </Link>
-        <Link style={{ minWidth: '250px' }} target='blank' to={`/play/${lobbyAddress}?create=true`}>
+        <Link
+          style={{ minWidth: "250px" }}
+          target="blank"
+          to={`/play/${lobbyAddress}?create=true`}
+        >
           <ArenaPortalButton>Create Match</ArenaPortalButton>
         </Link>
       </div>
@@ -89,9 +120,11 @@ function MapOverview({
   );
 }
 
-export function MapInfoView({ match }: RouteComponentProps<{ configHash: string }>) {
+export function MapInfoView({
+  match,
+}: RouteComponentProps<{ configHash: string }>) {
   const configHash = match.params.configHash || undefined;
-  const {config, lobbyAddress, error} = useConfigFromHash(configHash);
+  const { config, lobbyAddress, error } = useConfigFromHash(configHash);
 
   return (
     <MapInfoContainer>
@@ -100,7 +133,11 @@ export function MapInfoView({ match }: RouteComponentProps<{ configHash: string 
       ) : (
         config && (
           <>
-            <MapOverview configHash={configHash} config={config} lobbyAddress={lobbyAddress} />
+            <MapOverview
+              configHash={configHash}
+              config={config}
+              lobbyAddress={lobbyAddress}
+            />
             <MapDetails configHash={configHash} config={config} />
           </>
         )

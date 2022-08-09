@@ -1,7 +1,7 @@
-import { ModalId } from '@darkforest_eth/types';
-import * as React from 'react';
-import ReactDOM from 'react-dom';
-import { ModalPane } from '../Views/Game/ModalPane';
+import { ModalId } from "@dfdao/types";
+import * as React from "react";
+import ReactDOM from "react-dom";
+import { ModalPane } from "../Views/Game/ModalPane";
 
 /**
  * Allows you to instantiate a modal, and render it into the desired element.
@@ -25,7 +25,13 @@ export function RemoteModal({
   width?: string;
 }>) {
   return ReactDOM.createPortal(
-    <ModalPane id={id} title={title} visible={visible} onClose={onClose} width={width}>
+    <ModalPane
+      id={id}
+      title={title}
+      visible={visible}
+      onClose={onClose}
+      width={width}
+    >
       {children}
     </ModalPane>,
     container

@@ -1,5 +1,5 @@
-import { isLocatable } from '@darkforest_eth/gamelogic';
-import { EthConnection } from '@darkforest_eth/network';
+import { isLocatable } from "@dfdao/gamelogic";
+import { EthConnection } from "@dfdao/network";
 import {
   ArtifactId,
   Biome,
@@ -9,17 +9,17 @@ import {
   Planet,
   SpaceType,
   WorldLocation,
-} from '@darkforest_eth/types';
-import { ContractConstants } from '../../_types/darkforest/api/ContractsAPITypes';
-import { AddressTwitterMap } from '../../_types/darkforest/api/UtilityServerAPITypes';
-import { arrive, updatePlanetToTime } from '../GameLogic/ArrivalUtils';
-import { ContractsAPI, makeContractsAPI } from '../GameLogic/ContractsAPI';
-import { getAllTwitters } from '../Network/UtilityServerAPI';
-import PersistentChunkStore from './PersistentChunkStore';
+} from "@dfdao/types";
+import { ContractConstants } from "../../_types/darkforest/api/ContractsAPITypes";
+import { AddressTwitterMap } from "../../_types/darkforest/api/UtilityServerAPITypes";
+import { arrive, updatePlanetToTime } from "../GameLogic/ArrivalUtils";
+import { ContractsAPI, makeContractsAPI } from "../GameLogic/ContractsAPI";
+import { getAllTwitters } from "../Network/UtilityServerAPI";
+import PersistentChunkStore from "./PersistentChunkStore";
 
 export const enum SinglePlanetDataStoreEvent {
-  REFRESHED_PLANET = 'REFRESHED_PLANET',
-  REFRESHED_ARTIFACT = 'REFRESHED_ARTIFACT',
+  REFRESHED_PLANET = "REFRESHED_PLANET",
+  REFRESHED_ARTIFACT = "REFRESHED_ARTIFACT",
 }
 
 interface ReaderDataStoreConfig {
@@ -71,11 +71,15 @@ class ReaderDataStore {
     viewer: EthAddress | undefined;
     contractAddress: EthAddress;
   }): Promise<ReaderDataStore> {
-    const contractsAPI = await makeContractsAPI({ connection, contractAddress });
+    const contractsAPI = await makeContractsAPI({
+      connection,
+      contractAddress,
+    });
     const addressTwitterMap = await getAllTwitters();
     const contractConstants = await contractsAPI.getConstants();
     const persistentChunkStore =
-      viewer && (await PersistentChunkStore.create({ account: viewer, contractAddress }));
+      viewer &&
+      (await PersistentChunkStore.create({ account: viewer, contractAddress }));
 
     const singlePlanetStore = new ReaderDataStore({
       contractAddress,
@@ -128,7 +132,9 @@ class ReaderDataStore {
     }
   }
 
-  public async loadPlanetFromContract(planetId: LocationId): Promise<Planet | LocatablePlanet> {
+  public async loadPlanetFromContract(
+    planetId: LocationId
+  ): Promise<Planet | LocatablePlanet> {
     const planet = await this.contractsAPI.getPlanetById(planetId);
     const contractConstants = await this.contractsAPI.getConstants();
 
@@ -143,7 +149,15 @@ class ReaderDataStore {
 
     for (const arrival of arrivals) {
       if (nowInSeconds < arrival.arrivalTime) break;
-      arrive(planet, [], arrival, undefined, contractConstants, undefined, undefined);
+      arrive(
+        planet,
+        [],
+        arrival,
+        undefined,
+        contractConstants,
+        undefined,
+        undefined
+      );
     }
 
     updatePlanetToTime(planet, [], Date.now(), contractConstants);

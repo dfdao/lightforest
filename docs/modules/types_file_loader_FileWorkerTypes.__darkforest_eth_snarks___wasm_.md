@@ -1,6 +1,6 @@
-# Namespace: "@darkforest_eth/snarks/\*.wasm"
+# Namespace: "@dfdao/snarks/\*.wasm"
 
-[\_types/file-loader/FileWorkerTypes](types_file_loader_FileWorkerTypes.md)."@darkforest_eth/snarks/\*.wasm"
+[\_types/file-loader/FileWorkerTypes](types_file_loader_FileWorkerTypes.md)."@dfdao/snarks/\*.wasm"
 
 ## Table of contents
 

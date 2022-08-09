@@ -1,8 +1,8 @@
-import { WorldCoords } from '@darkforest_eth/types';
-import React, { useEffect, useRef } from 'react';
-import styled from 'styled-components';
-import { removeAlphabet } from '../Panes/Lobby/LobbiesUtils';
-import { MinimapConfig } from '../Panes/Lobby/MinimapUtils';
+import { WorldCoords } from "@dfdao/types";
+import React, { useEffect, useRef } from "react";
+import styled from "styled-components";
+import { removeAlphabet } from "../Panes/Lobby/LobbiesUtils";
+import { MinimapConfig } from "../Panes/Lobby/MinimapUtils";
 
 export const MinimapEditor: React.FC<{
   style?: { width: string; height: string };
@@ -12,7 +12,7 @@ export const MinimapEditor: React.FC<{
   mirrorAxes: { x: boolean; y: boolean };
   disabled: boolean;
 }> = ({
-  style = { width: '400px', height: '400px' },
+  style = { width: "400px", height: "400px" },
   onHover,
   onClick,
   minimapConfig,
@@ -23,7 +23,8 @@ export const MinimapEditor: React.FC<{
 
   if (!minimapConfig) return <div>Loading...</div>;
 
-  const scaleFactor = minimapConfig.worldRadius / (parseInt(removeAlphabet(style.height)) / 2);
+  const scaleFactor =
+    minimapConfig.worldRadius / (parseInt(removeAlphabet(style.height)) / 2);
 
   const getAdjustedPointer = (
     canvas: React.MutableRefObject<HTMLCanvasElement | null>,
@@ -48,14 +49,18 @@ export const MinimapEditor: React.FC<{
     e: React.MouseEvent<HTMLCanvasElement, MouseEvent>,
     mirror: { x: boolean; y: boolean }
   ) => {
-    const ctx = canvasPlanetLayer.current!.getContext('2d');
+    const ctx = canvasPlanetLayer.current!.getContext("2d");
     if (!ctx) return;
     const adjustedPointer = getAdjustedPointer(canvas!, e.clientX, e.clientY);
     if (!adjustedPointer) return;
     let normalizedPlanetCoords: WorldCoords = {
-      x: Math.floor((adjustedPointer.x - parseInt(removeAlphabet(style.width)) / 2) * scaleFactor),
+      x: Math.floor(
+        (adjustedPointer.x - parseInt(removeAlphabet(style.width)) / 2) *
+          scaleFactor
+      ),
       y: Math.floor(
-        (adjustedPointer.y - parseInt(removeAlphabet(style.height)) / 2) * -scaleFactor
+        (adjustedPointer.y - parseInt(removeAlphabet(style.height)) / 2) *
+          -scaleFactor
       ),
     };
     if (mirror.x || mirror.y) {
@@ -78,14 +83,20 @@ export const MinimapEditor: React.FC<{
       onMouseMove={(e) => {
         if (disabled) return;
         if (!onHover) return;
-        const adjustedPointer = getAdjustedPointer(canvasPlanetLayer, e.clientX, e.clientY);
+        const adjustedPointer = getAdjustedPointer(
+          canvasPlanetLayer,
+          e.clientX,
+          e.clientY
+        );
         if (adjustedPointer) {
           const normalizedPointer = {
             x: Math.floor(
-              (adjustedPointer.x - parseInt(removeAlphabet(style.width)) / 2) * scaleFactor
+              (adjustedPointer.x - parseInt(removeAlphabet(style.width)) / 2) *
+                scaleFactor
             ),
             y: Math.floor(
-              (adjustedPointer.y - parseInt(removeAlphabet(style.height)) / 2) * -scaleFactor
+              (adjustedPointer.y - parseInt(removeAlphabet(style.height)) / 2) *
+                -scaleFactor
             ),
           };
           onHover(normalizedPointer);
@@ -101,7 +112,7 @@ export const MinimapEditor: React.FC<{
 
 const CanvasLayer = styled.canvas<{ index: number; showCrosshair: boolean }>`
   z-index: ${(props) => props.index};
-  cursor: ${(props) => (props.showCrosshair ? 'crosshair' : 'default')};
+  cursor: ${(props) => (props.showCrosshair ? "crosshair" : "default")};
   grid-area: 1/1;
   z-index: 2;
   position: relative;

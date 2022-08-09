@@ -1,16 +1,22 @@
-import { RECOMMENDED_MODAL_WIDTH } from '@darkforest_eth/constants';
-import { Diagnostics, ModalName, Setting } from '@darkforest_eth/types';
-import React, { useEffect, useState } from 'react';
-import { Wrapper } from '../../../Backend/Utils/Wrapper';
-import { EmSpacer, Separator, SpreadApart } from '../../Components/CoreUI';
-import { DisplayGasPrices } from '../../Components/DisplayGasPrices';
-import { TextPreview } from '../../Components/TextPreview';
-import { useUIManager } from '../../Utils/AppHooks';
-import { BooleanSetting } from '../../Utils/SettingsHooks';
-import { ModalPane } from '../../Views/Game/ModalPane';
-import { TabbedView } from '../../Views/TabbedView';
+import { RECOMMENDED_MODAL_WIDTH } from "@dfdao/constants";
+import { Diagnostics, ModalName, Setting } from "@dfdao/types";
+import React, { useEffect, useState } from "react";
+import { Wrapper } from "../../../Backend/Utils/Wrapper";
+import { EmSpacer, Separator, SpreadApart } from "../../Components/CoreUI";
+import { DisplayGasPrices } from "../../Components/DisplayGasPrices";
+import { TextPreview } from "../../Components/TextPreview";
+import { useUIManager } from "../../Utils/AppHooks";
+import { BooleanSetting } from "../../Utils/SettingsHooks";
+import { ModalPane } from "../../Views/Game/ModalPane";
+import { TabbedView } from "../../Views/TabbedView";
 
-export function DiagnosticsPane({ visible, onClose }: { visible: boolean; onClose: () => void }) {
+export function DiagnosticsPane({
+  visible,
+  onClose,
+}: {
+  visible: boolean;
+  onClose: () => void;
+}) {
   const uiManager = useUIManager();
   const [currentDiagnostics, setCurrentDiagnostics] = useState(
     new Wrapper(uiManager.getDiagnostics())
@@ -27,7 +33,7 @@ export function DiagnosticsPane({ visible, onClose }: { visible: boolean; onClos
   return (
     <ModalPane
       id={ModalName.Diagnostics}
-      title={'Diagnostics'}
+      title={"Diagnostics"}
       visible={visible}
       onClose={onClose}
       width={RECOMMENDED_MODAL_WIDTH}
@@ -37,10 +43,14 @@ export function DiagnosticsPane({ visible, onClose }: { visible: boolean; onClos
   );
 }
 
-function DiagnosticsTabs({ diagnostics }: { diagnostics: Wrapper<Diagnostics> }) {
+function DiagnosticsTabs({
+  diagnostics,
+}: {
+  diagnostics: Wrapper<Diagnostics>;
+}) {
   return (
     <TabbedView
-      tabTitles={['rendering', 'networking']}
+      tabTitles={["rendering", "networking"]}
       tabContents={(i) => {
         switch (i) {
           case 0:
@@ -115,7 +125,7 @@ function RenderingTab({ diagnostics }: { diagnostics: Wrapper<Diagnostics> }) {
       <BooleanSetting
         uiManager={uiManager}
         setting={Setting.DrawChunkBorders}
-        settingDescription='draw chunk borders'
+        settingDescription="draw chunk borders"
       />
     </>
   );
@@ -131,8 +141,8 @@ function NetworkingTab({ diagnostics }: { diagnostics: Wrapper<Diagnostics> }) {
         <span>
           <TextPreview
             text={diagnostics.value.rpcUrl}
-            unFocusedWidth={'100px'}
-            focusedWidth={'100px'}
+            unFocusedWidth={"100px"}
+            focusedWidth={"100px"}
           />
         </span>
       </SpreadApart>

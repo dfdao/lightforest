@@ -1,24 +1,33 @@
-import { formatNumber, isSpaceShip } from '@darkforest_eth/gamelogic';
-import { isUnconfirmedMoveTx, isUnconfirmedReleaseTx } from '@darkforest_eth/serde';
-import { Artifact, artifactNameFromArtifact, Planet, TooltipName } from '@darkforest_eth/types';
-import React, { useCallback } from 'react';
-import styled from 'styled-components';
-import { Wrapper } from '../../../Backend/Utils/Wrapper';
-import { StatIdx } from '../../../_types/global/GlobalTypes';
-import { Btn } from '../../Components/Btn';
-import { Icon, IconType } from '../../Components/Icons';
-import { LoadingSpinner } from '../../Components/LoadingSpinner';
-import { MaybeShortcutButton } from '../../Components/MaybeShortcutButton';
-import { Row } from '../../Components/Row';
-import { Slider } from '../../Components/Slider';
-import { LongDash, Subber } from '../../Components/Text';
-import { TooltipTrigger } from '../../Panes/Tooltip';
-import dfstyles from '../../Styles/dfstyles';
-import { useAddress, usePlanetInactiveArtifacts, useUIManager } from '../../Utils/AppHooks';
-import { useEmitterValue } from '../../Utils/EmitterHooks';
-import { useOnUp } from '../../Utils/KeyEmitters';
-import { TOGGLE_ABANDON, TOGGLE_SEND } from '../../Utils/ShortcutConstants';
-import { SelectArtifactRow } from './ArtifactRow';
+import { formatNumber, isSpaceShip } from "@dfdao/gamelogic";
+import { isUnconfirmedMoveTx, isUnconfirmedReleaseTx } from "@dfdao/serde";
+import {
+  Artifact,
+  artifactNameFromArtifact,
+  Planet,
+  TooltipName,
+} from "@dfdao/types";
+import React, { useCallback } from "react";
+import styled from "styled-components";
+import { Wrapper } from "../../../Backend/Utils/Wrapper";
+import { StatIdx } from "../../../_types/global/GlobalTypes";
+import { Btn } from "../../Components/Btn";
+import { Icon, IconType } from "../../Components/Icons";
+import { LoadingSpinner } from "../../Components/LoadingSpinner";
+import { MaybeShortcutButton } from "../../Components/MaybeShortcutButton";
+import { Row } from "../../Components/Row";
+import { Slider } from "../../Components/Slider";
+import { LongDash, Subber } from "../../Components/Text";
+import { TooltipTrigger } from "../../Panes/Tooltip";
+import dfstyles from "../../Styles/dfstyles";
+import {
+  useAddress,
+  usePlanetInactiveArtifacts,
+  useUIManager,
+} from "../../Utils/AppHooks";
+import { useEmitterValue } from "../../Utils/EmitterHooks";
+import { useOnUp } from "../../Utils/KeyEmitters";
+import { TOGGLE_ABANDON, TOGGLE_SEND } from "../../Utils/ShortcutConstants";
+import { SelectArtifactRow } from "./ArtifactRow";
 
 const StyledSendResources = styled.div`
   display: flex;
@@ -49,7 +58,13 @@ const StyledShowPercent = styled.div`
     }
   }
 `;
-function ShowPercent({ value, setValue }: { value: number; setValue: (x: number) => void }) {
+function ShowPercent({
+  value,
+  setValue,
+}: {
+  value: number;
+  setValue: (x: number) => void;
+}) {
   return (
     <StyledShowPercent>
       <span>{value}%</span>
@@ -84,7 +99,7 @@ function ResourceBar({
 }) {
   const getResource = useCallback(
     (val: number) => {
-      if (!selected) return '';
+      if (!selected) return "";
       const resource = isSilver ? selected.silver : selected.energy;
       return formatNumber((val / 100) * resource);
     },
@@ -97,13 +112,13 @@ function ResourceBar({
         <ResourceRowDetails>
           <Icon type={isSilver ? IconType.Silver : IconType.Energy} />
           {getResource(value)}
-          <Subber>{isSilver ? 'silver' : 'energy'}</Subber>
+          <Subber>{isSilver ? "silver" : "energy"}</Subber>
         </ResourceRowDetails>
         <ShowPercent value={value} setValue={setValue} />
       </Row>
       <Slider
-        variant='filled'
-        labelVisibility='none'
+        variant="filled"
+        labelVisibility="none"
         min={0}
         max={100}
         value={value}
@@ -137,7 +152,7 @@ function AbandonButton({
   /* Explicitly avoid binding to `onShortcutPressed` so we can support sending on subpanes */
   return (
     <MaybeShortcutButton
-      size='stretch'
+      size="stretch"
       active={abandoning}
       onClick={toggleAbandoning}
       shortcutKey={TOGGLE_ABANDON}
@@ -145,7 +160,7 @@ function AbandonButton({
       disabled={planet.isHomePlanet || disabled}
     >
       <TooltipTrigger name={TooltipName.Abandon}>
-        {abandoning ? 'Abandoning' : `Abandon Planet (-${junk}) space junk`}
+        {abandoning ? "Abandoning" : `Abandon Planet (-${junk}) space junk`}
       </TooltipTrigger>
     </MaybeShortcutButton>
   );
@@ -164,7 +179,7 @@ function SendRow({
   abandoning?: boolean;
   disabled?: boolean;
 }) {
-  let content = 'Send';
+  let content = "Send";
   if (artifact) {
     const artifactName = artifactNameFromArtifact(artifact);
     if (isSpaceShip(artifact.artifactType)) {
@@ -176,12 +191,12 @@ function SendRow({
     }
   }
   if (abandoning) {
-    content += ' and Abandon';
+    content += " and Abandon";
   }
   /* Explicitly avoid binding to `onShortcutPressed` so we can support sending on subpanes */
   return (
     <MaybeShortcutButton
-      size='stretch'
+      size="stretch"
       onClick={toggleSending}
       active={sending}
       shortcutKey={TOGGLE_SEND}
@@ -218,7 +233,7 @@ export function SendResources({
   const disableSliders = isSendingShip || isAbandoning;
 
   const updateEnergySending = useCallback(
-    (energyPercent) => {
+    (energyPercent: number) => {
       if (!locationId) return;
       uiManager.setForcesSending(locationId, energyPercent);
     },
@@ -226,7 +241,7 @@ export function SendResources({
   );
 
   const updateSilverSending = useCallback(
-    (silverPercent) => {
+    (silverPercent: number) => {
       if (!locationId) return;
       uiManager.setSilverSending(locationId, silverPercent);
     },
@@ -234,7 +249,7 @@ export function SendResources({
   );
 
   const updateArtifactSending = useCallback(
-    (sendArtifact) => {
+    (sendArtifact: Artifact | undefined) => {
       if (!locationId) return;
       uiManager.setArtifactSending(locationId, sendArtifact);
     },
@@ -244,43 +259,47 @@ export function SendResources({
   // this variable is an array of 10 elements. each element is a key. whenever the user presses a
   // key, we set the amount of energy that we're sending to be proportional to how late in the array
   // that key is
-  const energyShortcuts = '1234567890'.split('');
+  const energyShortcuts = "1234567890".split("");
 
   // same as above, except for silver
-  const silverShortcuts = '!@#$%^&*()'.split('');
+  const silverShortcuts = "!@#$%^&*()".split("");
 
   // for each of the above keys, we set up a listener that is triggered whenever that key is
   // pressed, and sets the corresponding resource sending amount
   for (let i = 0; i < energyShortcuts.length; i++) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    useOnUp(energyShortcuts[i], () => updateEnergySending((i + 1) * 10), [updateEnergySending]);
+    useOnUp(energyShortcuts[i], () => updateEnergySending((i + 1) * 10), [
+      updateEnergySending,
+    ]);
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    useOnUp(silverShortcuts[i], () => updateSilverSending((i + 1) * 10), [updateSilverSending]);
+    useOnUp(silverShortcuts[i], () => updateSilverSending((i + 1) * 10), [
+      updateSilverSending,
+    ]);
   }
 
   useOnUp(
-    '-',
+    "-",
     () => {
       updateEnergySending(uiManager.getForcesSending(locationId) - 10);
     },
     [uiManager, locationId, updateEnergySending]
   );
   useOnUp(
-    '=',
+    "=",
     () => {
       updateEnergySending(uiManager.getForcesSending(locationId) + 10);
     },
     [uiManager, locationId, updateEnergySending]
   );
   useOnUp(
-    '_',
+    "_",
     () => {
       updateSilverSending(uiManager.getSilverSending(locationId) - 10);
     },
     [uiManager, locationId, updateSilverSending]
   );
   useOnUp(
-    '+',
+    "+",
     () => {
       updateSilverSending(uiManager.getSilverSending(locationId) + 10);
     },
@@ -295,8 +314,8 @@ export function SendResources({
   let abandonRow;
   if (p.value && p.value.transactions?.hasTransaction(isUnconfirmedReleaseTx)) {
     abandonRow = (
-      <Btn size='stretch' disabled>
-        <LoadingSpinner initialText='Abandoning...' />
+      <Btn size="stretch" disabled>
+        <LoadingSpinner initialText="Abandoning..." />
       </Btn>
     );
   } else if (p.value && !p.value.destroyed) {
@@ -313,8 +332,10 @@ export function SendResources({
   let sendRow;
   if (p.value && p.value.transactions?.hasTransaction(isUnconfirmedMoveTx)) {
     sendRow = (
-      <Btn size='stretch' disabled>
-        <LoadingSpinner initialText={isSendingShip ? 'Moving...' : 'Sending...'} />
+      <Btn size="stretch" disabled>
+        <LoadingSpinner
+          initialText={isSendingShip ? "Moving..." : "Sending..."}
+        />
       </Btn>
     );
   } else {

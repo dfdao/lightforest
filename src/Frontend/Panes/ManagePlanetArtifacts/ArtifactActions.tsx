@@ -5,29 +5,35 @@ import {
   durationUntilArtifactAvailable,
   isActivated,
   isLocatable,
-} from '@darkforest_eth/gamelogic';
+} from "@dfdao/gamelogic";
 import {
   isUnconfirmedActivateArtifactTx,
   isUnconfirmedDeactivateArtifactTx,
   isUnconfirmedDepositArtifactTx,
   isUnconfirmedWithdrawArtifactTx,
-} from '@darkforest_eth/serde';
-import { Artifact, ArtifactId, ArtifactType, LocationId, TooltipName } from '@darkforest_eth/types';
-import React, { useCallback } from 'react';
-import { Btn } from '../../Components/Btn';
-import { Spacer } from '../../Components/CoreUI';
-import { ArtifactRarityLabelAnim } from '../../Components/Labels/ArtifactLabels';
-import { LoadingSpinner } from '../../Components/LoadingSpinner';
-import { Sub } from '../../Components/Text';
-import { formatDuration } from '../../Components/TimeUntil';
+} from "@dfdao/serde";
+import {
+  Artifact,
+  ArtifactId,
+  ArtifactType,
+  LocationId,
+  TooltipName,
+} from "@dfdao/types";
+import React, { useCallback } from "react";
+import { Btn } from "../../Components/Btn";
+import { Spacer } from "../../Components/CoreUI";
+import { ArtifactRarityLabelAnim } from "../../Components/Labels/ArtifactLabels";
+import { LoadingSpinner } from "../../Components/LoadingSpinner";
+import { Sub } from "../../Components/Text";
+import { formatDuration } from "../../Components/TimeUntil";
 import {
   useAddress,
   useArtifact,
   usePlanet,
   usePlanetArtifacts,
   useUIManager,
-} from '../../Utils/AppHooks';
-import { TooltipTrigger, TooltipTriggerProps } from '../Tooltip';
+} from "../../Utils/AppHooks";
+import { TooltipTrigger, TooltipTriggerProps } from "../Tooltip";
 
 export function ArtifactActions({
   artifactId,
@@ -59,7 +65,10 @@ export function ArtifactActions({
     (artifact: Artifact) => {
       artifact &&
         depositPlanetWrapper.value &&
-        uiManager.depositArtifact(depositPlanetWrapper.value.locationId, artifact?.id);
+        uiManager.depositArtifact(
+          depositPlanetWrapper.value.locationId,
+          artifact?.id
+        );
     },
     [uiManager, depositPlanetWrapper.value]
   );
@@ -74,7 +83,11 @@ export function ArtifactActions({
           targetPlanetId = targetPlanet?.locationId;
         }
 
-        uiManager.activateArtifact(onPlanet.locationId, artifact.id, targetPlanetId);
+        uiManager.activateArtifact(
+          onPlanet.locationId,
+          artifact.id,
+          targetPlanetId
+        );
       }
     },
     [onPlanet, uiManager]
@@ -82,7 +95,8 @@ export function ArtifactActions({
 
   const deactivate = useCallback(
     (artifact: Artifact) => {
-      onPlanet && uiManager.deactivateArtifact(onPlanet.locationId, artifact.id);
+      onPlanet &&
+        uiManager.deactivateArtifact(onPlanet.locationId, artifact.id);
     },
     [onPlanet, uiManager]
   );
@@ -91,15 +105,25 @@ export function ArtifactActions({
 
   const actions: TooltipTriggerProps[] = [];
 
-  const withdrawing = artifact.transactions?.hasTransaction(isUnconfirmedWithdrawArtifactTx);
-  const depositing = artifact.transactions?.hasTransaction(isUnconfirmedDepositArtifactTx);
-  const activating = artifact.transactions?.hasTransaction(isUnconfirmedActivateArtifactTx);
-  const deactivating = artifact.transactions?.hasTransaction(isUnconfirmedDeactivateArtifactTx);
+  const withdrawing = artifact.transactions?.hasTransaction(
+    isUnconfirmedWithdrawArtifactTx
+  );
+  const depositing = artifact.transactions?.hasTransaction(
+    isUnconfirmedDepositArtifactTx
+  );
+  const activating = artifact.transactions?.hasTransaction(
+    isUnconfirmedActivateArtifactTx
+  );
+  const deactivating = artifact.transactions?.hasTransaction(
+    isUnconfirmedDeactivateArtifactTx
+  );
 
   const canHandleDeposit =
-    depositPlanetWrapper.value && depositPlanetWrapper.value.planetLevel > artifact.rarity;
+    depositPlanetWrapper.value &&
+    depositPlanetWrapper.value.planetLevel > artifact.rarity;
   const canHandleWithdraw =
-    onPlanetWrapper.value && onPlanetWrapper.value.planetLevel > artifact.rarity;
+    onPlanetWrapper.value &&
+    onPlanetWrapper.value.planetLevel > artifact.rarity;
 
   const wait = durationUntilArtifactAvailable(artifact);
 
@@ -109,7 +133,9 @@ export function ArtifactActions({
       extraContent: !canHandleDeposit && (
         <>
           . <ArtifactRarityLabelAnim rarity={artifact.rarity} />
-          {` artifacts can only be deposited on level ${artifact.rarity + 1}+ spacetime rips`}
+          {` artifacts can only be deposited on level ${
+            artifact.rarity + 1
+          }+ spacetime rips`}
         </>
       ),
       children: (
@@ -120,12 +146,19 @@ export function ArtifactActions({
             canHandleDeposit && deposit(artifact);
           }}
         >
-          {depositing ? <LoadingSpinner initialText={'Depositing...'} /> : 'Deposit'}
+          {depositing ? (
+            <LoadingSpinner initialText={"Depositing..."} />
+          ) : (
+            "Deposit"
+          )}
         </Btn>
       ),
     });
   }
-  if (isActivated(artifact) && artifact.artifactType !== ArtifactType.BlackDomain) {
+  if (
+    isActivated(artifact) &&
+    artifact.artifactType !== ArtifactType.BlackDomain
+  ) {
     actions.unshift({
       name: TooltipName.DeactivateArtifact,
       children: (
@@ -136,7 +169,11 @@ export function ArtifactActions({
             deactivate(artifact);
           }}
         >
-          {deactivating ? <LoadingSpinner initialText={'Deactivating...'} /> : 'Deactivate'}
+          {deactivating ? (
+            <LoadingSpinner initialText={"Deactivating..."} />
+          ) : (
+            "Deactivate"
+          )}
         </Btn>
       ),
     });
@@ -147,7 +184,9 @@ export function ArtifactActions({
       extraContent: !canHandleWithdraw && (
         <>
           . <ArtifactRarityLabelAnim rarity={artifact.rarity} />
-          {` artifacts can only be withdrawn from level ${artifact.rarity + 1}+ spacetime rips`}
+          {` artifacts can only be withdrawn from level ${
+            artifact.rarity + 1
+          }+ spacetime rips`}
         </>
       ),
       children: (
@@ -158,7 +197,11 @@ export function ArtifactActions({
             canHandleWithdraw && withdraw(artifact);
           }}
         >
-          {withdrawing ? <LoadingSpinner initialText={'Withdrawing...'} /> : 'Withdraw'}
+          {withdrawing ? (
+            <LoadingSpinner initialText={"Withdrawing..."} />
+          ) : (
+            "Withdraw"
+          )}
         </Btn>
       ),
     });
@@ -175,7 +218,11 @@ export function ArtifactActions({
             activate(artifact);
           }}
         >
-          {activating ? <LoadingSpinner initialText={'Activating...'} /> : 'Activate'}
+          {activating ? (
+            <LoadingSpinner initialText={"Activating..."} />
+          ) : (
+            "Activate"
+          )}
         </Btn>
       ),
     });

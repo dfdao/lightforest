@@ -1,5 +1,5 @@
-import { ModalId } from '@darkforest_eth/types';
-import { IconType } from '@darkforest_eth/ui';
+import { ModalId } from "@dfdao/types";
+import { IconType } from "@dfdao/ui";
 import React, {
   CSSProperties,
   useCallback,
@@ -7,21 +7,31 @@ import React, {
   useLayoutEffect,
   useMemo,
   useState,
-} from 'react';
-import styled from 'styled-components';
-import { Btn } from '../../Components/Btn';
-import { EmSpacer, Spacer, Title, Truncate } from '../../Components/CoreUI';
-import { PaneProps } from '../../Components/GameWindowComponents';
-import { Icon } from '../../Components/Icons';
-import { MaybeShortcutButton } from '../../Components/MaybeShortcutButton';
-import { DarkForestModal, Modal, PositionChangedEvent } from '../../Components/Modal';
-import dfstyles from '../../Styles/dfstyles';
-import { useUIManager } from '../../Utils/AppHooks';
-import { useEmitterValue } from '../../Utils/EmitterHooks';
-import { MODAL_BACK_SHORTCUT } from '../../Utils/ShortcutConstants';
-import { DFErrorBoundary } from '../DFErrorBoundary';
+} from "react";
+import styled from "styled-components";
+import { Btn } from "../../Components/Btn";
+import { EmSpacer, Spacer, Title, Truncate } from "../../Components/CoreUI";
+import { PaneProps } from "../../Components/GameWindowComponents";
+import { Icon } from "../../Components/Icons";
+import { MaybeShortcutButton } from "../../Components/MaybeShortcutButton";
+import {
+  DarkForestModal,
+  Modal,
+  PositionChangedEvent,
+} from "../../Components/Modal";
+import dfstyles from "../../Styles/dfstyles";
+import { useUIManager } from "../../Utils/AppHooks";
+import { useEmitterValue } from "../../Utils/EmitterHooks";
+import { MODAL_BACK_SHORTCUT } from "../../Utils/ShortcutConstants";
+import { DFErrorBoundary } from "../DFErrorBoundary";
 
-function InformationSection({ children, hide }: { children: React.ReactNode; hide: () => void }) {
+function InformationSection({
+  children,
+  hide,
+}: {
+  children: React.ReactNode;
+  hide: () => void;
+}) {
   return (
     <InfoSectionContent>
       {children}
@@ -98,15 +108,24 @@ export function ModalPane({
   const activeModalId = useEmitterValue(modalManager.activeModalId$, undefined);
   const isActive = id === activeModalId;
   const [frames, setFrames] = useState<ModalFrame[]>([]);
-  const [renderedFrame, setRenderedFrame] = useState<undefined | React.ReactElement>();
-  const [renderedFrameHelp, setRenderedFrameHelp] = useState<undefined | React.ReactElement>();
-  const [minimized, setMinimized] = useState(modalPosition?.state === 'minimized');
-  const [modalIndex, setModalIndex] = useState<number>(() => modalManager.getIndex());
+  const [renderedFrame, setRenderedFrame] = useState<
+    undefined | React.ReactElement
+  >();
+  const [renderedFrameHelp, setRenderedFrameHelp] = useState<
+    undefined | React.ReactElement
+  >();
+  const [minimized, setMinimized] = useState(
+    modalPosition?.state === "minimized"
+  );
+  const [modalIndex, setModalIndex] = useState<number>(() =>
+    modalManager.getIndex()
+  );
   const push = useCallback(() => {
     modalManager.activeModalId$.publish(id);
     setModalIndex(modalManager.getIndex());
   }, [modalManager, id]);
-  const [showingInformationSection, setShowingInformationSection] = useState(false);
+  const [showingInformationSection, setShowingInformationSection] =
+    useState(false);
   const onMouseDown = useCallback(
     (e: Event & React.MouseEvent<DarkForestModal>) => {
       push();
@@ -167,7 +186,7 @@ export function ModalPane({
         modalManager.setModalPosition(id, {
           x: evt.coords.x,
           y: evt.coords.y,
-          state: minimized ? 'minimized' : 'open',
+          state: minimized ? "minimized" : "open",
           modalId: id,
         });
       }
@@ -178,7 +197,7 @@ export function ModalPane({
   useEffect(() => {
     if (!id) return;
     if (!visible) {
-      modalManager.setModalState(id, 'closed');
+      modalManager.setModalState(id, "closed");
     }
   }, [visible, modalManager, id]);
 
@@ -193,7 +212,9 @@ export function ModalPane({
     content = <DFErrorBoundary>{renderedFrame}</DFErrorBoundary>;
   } else {
     content = (
-      <DFErrorBoundary>{typeof children === 'function' ? children(api) : children}</DFErrorBoundary>
+      <DFErrorBoundary>
+        {typeof children === "function" ? (children as any)(api) : children}
+      </DFErrorBoundary>
     );
   }
 
@@ -202,7 +223,8 @@ export function ModalPane({
     return <>{args.title}</>;
   }
 
-  const modalTitleElement = typeof title === 'string' ? title : title(frames.length > 0);
+  const modalTitleElement =
+    typeof title === "string" ? title : title(frames.length > 0);
   const allSubModalTitleElements = [];
 
   if (frames.length > 0) {
@@ -225,8 +247,8 @@ export function ModalPane({
       >
         {frames.length > 0 && (
           <MaybeShortcutButton
-            slot='title'
-            size='small'
+            slot="title"
+            size="small"
             onClick={() => api.pop()}
             onShortcutPressed={() => api.pop()}
             shortcutKey={MODAL_BACK_SHORTCUT}
@@ -235,8 +257,12 @@ export function ModalPane({
             back
           </MaybeShortcutButton>
         )}
-        <Title slot='title'>
-          <Truncate maxWidth={allSubModalTitleElements.length !== 0 ? '50px' : undefined}>
+        <Title slot="title">
+          <Truncate
+            maxWidth={
+              allSubModalTitleElements.length !== 0 ? "50px" : undefined
+            }
+          >
             {modalTitleElement}
           </Truncate>
           {allSubModalTitleElements.length !== 0 && <EmSpacer width={0.5} />}
@@ -244,27 +270,40 @@ export function ModalPane({
         </Title>
 
         {/* render the 'close' and 'help me' buttons, depending on whether or not they're relevant */}
-        <div slot='title' style={{ marginLeft: '8px', flexShrink: 0 }}>
+        <div slot="title" style={{ marginLeft: "8px", flexShrink: 0 }}>
           {helpContent !== undefined && !minimized && (
             <>
-              <Btn size='small' onClick={() => setShowingInformationSection((showing) => !showing)}>
-                <ModalIcon><Icon type={IconType.Help} /></ModalIcon>
+              <Btn
+                size="small"
+                onClick={() =>
+                  setShowingInformationSection((showing) => !showing)
+                }
+              >
+                <ModalIcon>
+                  <Icon type={IconType.Help} />
+                </ModalIcon>
               </Btn>
               <Spacer width={4} />
             </>
           )}
           <Btn
-            size='small'
+            size="small"
             onClick={() => setMinimized((minimized: boolean) => !minimized)}
-            style={{ fontFamily: 'serif' } as CSSStyleDeclaration & CSSProperties}
+            style={
+              { fontFamily: "serif" } as CSSStyleDeclaration & CSSProperties
+            }
           >
-            <ModalIcon><Icon type = {minimized ? IconType.Maximize : IconType.Minimize}/></ModalIcon>
+            <ModalIcon>
+              <Icon type={minimized ? IconType.Maximize : IconType.Minimize} />
+            </ModalIcon>
           </Btn>
           {!hideClose && (
             <>
               <Spacer width={4} />
-              <Btn size='small' onClick={() => onClose()}>
-                <ModalIcon><Icon type={IconType.X} /></ModalIcon>
+              <Btn size="small" onClick={() => onClose()}>
+                <ModalIcon>
+                  <Icon type={IconType.X} />
+                </ModalIcon>
               </Btn>
             </>
           )}
@@ -279,6 +318,6 @@ export function ModalPane({
 const ModalIcon = styled.span`
   display: flex;
   align-items: center;
-  justify-content:center;
+  justify-content: center;
   padding: 5px 0px;
-`
+`;

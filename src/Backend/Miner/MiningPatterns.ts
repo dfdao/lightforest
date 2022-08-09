@@ -1,4 +1,4 @@
-import { Rectangle, WorldCoords } from '@darkforest_eth/types';
+import { Rectangle, WorldCoords } from "@dfdao/types";
 
 export const enum MiningPatternType {
   Home,
@@ -44,16 +44,25 @@ export class SpiralPattern implements MiningPattern {
 
     if (currX === homeX && currY === homeY) {
       nextBottomLeft.y = homeY + this.chunkSideLength;
-    } else if (currY - currX > homeY - homeX && currY + currX >= homeX + homeY) {
+    } else if (
+      currY - currX > homeY - homeX &&
+      currY + currX >= homeX + homeY
+    ) {
       if (currY + currX === homeX + homeY) {
         // break the circle
         nextBottomLeft.y = currY + this.chunkSideLength;
       } else {
         nextBottomLeft.x = currX + this.chunkSideLength;
       }
-    } else if (currX + currY > homeX + homeY && currY - currX <= homeY - homeX) {
+    } else if (
+      currX + currY > homeX + homeY &&
+      currY - currX <= homeY - homeX
+    ) {
       nextBottomLeft.y = currY - this.chunkSideLength;
-    } else if (currX + currY <= homeX + homeY && currY - currX < homeY - homeX) {
+    } else if (
+      currX + currY <= homeX + homeY &&
+      currY - currX < homeY - homeX
+    ) {
       nextBottomLeft.x = currX - this.chunkSideLength;
     } else {
       // if (currX + currY < homeX + homeY && currY - currX >= homeY - homeX)
@@ -93,16 +102,25 @@ export class SwissCheesePattern implements MiningPattern {
 
     if (currX === homeX && currY === homeY) {
       nextBottomLeft.y = homeY + this.chunkSideLength * 2;
-    } else if (currY - currX > homeY - homeX && currY + currX >= homeX + homeY) {
+    } else if (
+      currY - currX > homeY - homeX &&
+      currY + currX >= homeX + homeY
+    ) {
       if (currY + currX === homeX + homeY) {
         // break the circle
         nextBottomLeft.y = currY + this.chunkSideLength * 2;
       } else {
         nextBottomLeft.x = currX + this.chunkSideLength * 2;
       }
-    } else if (currX + currY > homeX + homeY && currY - currX <= homeY - homeX) {
+    } else if (
+      currX + currY > homeX + homeY &&
+      currY - currX <= homeY - homeX
+    ) {
       nextBottomLeft.y = currY - this.chunkSideLength * 2;
-    } else if (currX + currY <= homeX + homeY && currY - currX < homeY - homeX) {
+    } else if (
+      currX + currY <= homeX + homeY &&
+      currY - currX < homeY - homeX
+    ) {
       nextBottomLeft.x = currX - this.chunkSideLength * 2;
     } else {
       // if (currX + currY < homeX + homeY && currY - currX >= homeY - homeX)
@@ -184,7 +202,11 @@ export class TowardsCenterPattern implements MiningPattern {
           nextBottomLeft.x = currX + this.chunkSideLength;
         }
       }
-    } else if (absCurrX < absHomeX && currY === this.tipY && absCurrX - absTipX < this.maxWidth) {
+    } else if (
+      absCurrX < absHomeX &&
+      currY === this.tipY &&
+      absCurrX - absTipX < this.maxWidth
+    ) {
       if (currX < 0) {
         nextBottomLeft.x = currX - this.chunkSideLength;
       } else if (currX > 0) {
@@ -211,7 +233,11 @@ export class TowardsCenterPattern implements MiningPattern {
           nextBottomLeft.y = currY + this.chunkSideLength;
         }
       }
-    } else if (currX === this.tipX && absCurrY < absHomeY && absCurrY - absTipY < this.maxWidth) {
+    } else if (
+      currX === this.tipX &&
+      absCurrY < absHomeY &&
+      absCurrY - absTipY < this.maxWidth
+    ) {
       if (currY < 0) {
         nextBottomLeft.y = currY - this.chunkSideLength;
       } else if (currY > 0) {
@@ -283,7 +309,9 @@ export class TowardsCenterPatternV2 implements MiningPattern {
     const currY = chunk.bottomLeft.y;
 
     if (this.yDominant) {
-      const centerOfRowX = Math.floor(homeX + (currY - homeY) / this.slopeToCenter);
+      const centerOfRowX = Math.floor(
+        homeX + (currY - homeY) / this.slopeToCenter
+      );
       if (currX < centerOfRowX + this.chunkSideLength * (this.rowRadius - 1)) {
         return {
           bottomLeft: { x: currX + this.chunkSideLength, y: currY },
@@ -295,8 +323,13 @@ export class TowardsCenterPatternV2 implements MiningPattern {
         );
         return {
           bottomLeft: {
-            x: this.toChunk(nextCenterOfRowX - (this.rowRadius - 1) * this.chunkSideLength),
-            y: currY < 0 ? currY + this.chunkSideLength : currY - this.chunkSideLength,
+            x: this.toChunk(
+              nextCenterOfRowX - (this.rowRadius - 1) * this.chunkSideLength
+            ),
+            y:
+              currY < 0
+                ? currY + this.chunkSideLength
+                : currY - this.chunkSideLength,
           },
           sideLength: this.chunkSideLength,
         };
@@ -304,18 +337,27 @@ export class TowardsCenterPatternV2 implements MiningPattern {
     }
 
     // We are now in the X dominant case
-    const centerOfRowY = Math.floor(homeY + (currX - homeX) * this.slopeToCenter);
+    const centerOfRowY = Math.floor(
+      homeY + (currX - homeX) * this.slopeToCenter
+    );
     if (currY < centerOfRowY + this.chunkSideLength * (this.rowRadius - 1)) {
       return {
         bottomLeft: { x: currX, y: currY + this.chunkSideLength },
         sideLength: this.chunkSideLength,
       };
     } else {
-      const nextCenterOfRowY = Math.floor(centerOfRowY + this.chunkSideLength * this.slopeToCenter);
+      const nextCenterOfRowY = Math.floor(
+        centerOfRowY + this.chunkSideLength * this.slopeToCenter
+      );
       return {
         bottomLeft: {
-          x: currX < 0 ? currX + this.chunkSideLength : currX - this.chunkSideLength,
-          y: this.toChunk(nextCenterOfRowY - (this.rowRadius - 1) * this.chunkSideLength),
+          x:
+            currX < 0
+              ? currX + this.chunkSideLength
+              : currX - this.chunkSideLength,
+          y: this.toChunk(
+            nextCenterOfRowY - (this.rowRadius - 1) * this.chunkSideLength
+          ),
         },
         sideLength: this.chunkSideLength,
       };

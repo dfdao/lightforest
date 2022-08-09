@@ -1,15 +1,15 @@
-import { Setting } from '@darkforest_eth/types';
-import _ from 'lodash';
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import { Setting } from "@dfdao/types";
+import _ from "lodash";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 import NotificationManager, {
   NotificationInfo,
   NotificationManagerEvent,
   NotificationType,
-} from '../../Game/NotificationManager';
-import dfstyles, { snips } from '../../Styles/dfstyles';
-import { useUIManager } from '../../Utils/AppHooks';
-import { DFZIndex } from '../../Utils/constants';
+} from "../../Game/NotificationManager";
+import dfstyles, { snips } from "../../Styles/dfstyles";
+import { useUIManager } from "../../Utils/AppHooks";
+import { DFZIndex } from "../../Utils/constants";
 
 /**
  * React component which represents a single notification. Can be hovered over for more info, or
@@ -57,7 +57,11 @@ export function NotificationsPane() {
     const addNotif = (notif: NotificationInfo) => {
       const notifMove = uiManager.getBooleanSetting(Setting.MoveNotifications);
 
-      if (!notifMove && notif.type === NotificationType.Tx && notif.txData?.methodName === 'move')
+      if (
+        !notifMove &&
+        notif.type === NotificationType.Tx &&
+        notif.txData?.methodName === "move"
+      )
         return;
 
       setNotifs((arr) => {
@@ -81,7 +85,10 @@ export function NotificationsPane() {
     notifManager.on(NotificationManagerEvent.Notify, addNotif);
 
     return () => {
-      notifManager.removeListener(NotificationManagerEvent.ClearNotification, clearNotif);
+      notifManager.removeListener(
+        NotificationManagerEvent.ClearNotification,
+        clearNotif
+      );
       notifManager.removeListener(NotificationManagerEvent.Notify, addNotif);
     };
   }, [uiManager]);
@@ -111,8 +118,8 @@ export function NotificationsPane() {
   );
 }
 
-const NOTIF_SIZE = '4em';
-const MARGIN = '8px';
+const NOTIF_SIZE = "4em";
+const MARGIN = "8px";
 
 const StyledNotification = styled.div`
   margin: ${MARGIN};

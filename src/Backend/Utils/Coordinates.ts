@@ -1,9 +1,12 @@
-import { CanvasCoords, WorldCoords } from '@darkforest_eth/types';
+import { CanvasCoords, WorldCoords } from "@dfdao/types";
 
-export const coordsEqual = (a: WorldCoords, b: WorldCoords): boolean => a.x === b.x && a.y === b.y;
+export const coordsEqual = (a: WorldCoords, b: WorldCoords): boolean =>
+  a.x === b.x && a.y === b.y;
 
-export const distL2 = (a: CanvasCoords | WorldCoords, b: CanvasCoords | WorldCoords): number =>
-  (a.x - b.x) ** 2 + (a.y - b.y) ** 2;
+export const distL2 = (
+  a: CanvasCoords | WorldCoords,
+  b: CanvasCoords | WorldCoords
+): number => (a.x - b.x) ** 2 + (a.y - b.y) ** 2;
 
 export const vectorLength = (a: CanvasCoords | WorldCoords): number =>
   Math.sqrt(a.x ** 2 + a.y ** 2);

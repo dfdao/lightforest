@@ -1,6 +1,6 @@
-import { formatNumber } from '@darkforest_eth/gamelogic';
-import { locationIdToDecStr } from '@darkforest_eth/serde';
-import { Initializers } from '@darkforest_eth/settings';
+import { formatNumber } from "@dfdao/gamelogic";
+import { locationIdToDecStr } from "@dfdao/serde";
+import { Initializers } from "@dfdao/settings";
 import {
   ArtifactRarity,
   ArtifactType,
@@ -12,29 +12,34 @@ import {
   SpaceType,
   Upgrade,
   UpgradeBranchName,
-} from '@darkforest_eth/types';
-import * as bigInt from 'big-integer';
-import { BigInteger } from 'big-integer';
-import { BigNumber, ethers, utils } from 'ethers';
-import { roundEndTimestamp, roundStartTimestamp } from '../../Frontend/Utils/constants';
-import { StatIdx } from '../../_types/global/GlobalTypes';
+} from "@dfdao/types";
+import * as bigInt from "big-integer";
+import { BigInteger } from "big-integer";
+import { BigNumber, ethers, utils } from "ethers";
+import {
+  roundEndTimestamp,
+  roundStartTimestamp,
+} from "../../Frontend/Utils/constants";
+import { StatIdx } from "../../_types/global/GlobalTypes";
 
 export const ONE_DAY = 24 * 60 * 60 * 1000;
 
 type NestedBigIntArray = (BigInteger | string | NestedBigIntArray)[];
 type NestedStringArray = (string | NestedStringArray)[];
 
-export const hexifyBigIntNestedArray = (arr: NestedBigIntArray): NestedStringArray => {
+export const hexifyBigIntNestedArray = (
+  arr: NestedBigIntArray
+): NestedStringArray => {
   return arr.map((value) => {
     if (Array.isArray(value)) {
       return hexifyBigIntNestedArray(value);
     } else {
-      if (typeof value === 'string') {
+      if (typeof value === "string") {
         const valueBI = bigInt(value as string);
-        return '0x' + valueBI.toString(16);
+        return "0x" + valueBI.toString(16);
       } else {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return '0x' + (value as any).toString(16);
+        return "0x" + (value as any).toString(16);
       }
     }
   });
@@ -54,12 +59,16 @@ export const getUpgradeStat = (upgrade: Upgrade, stat: StatIdx): number => {
 
 // color utils
 
-export const hslStr: (h: number, s: number, l: number) => string = (h, s, l) => {
+export const hslStr: (h: number, s: number, l: number) => string = (
+  h,
+  s,
+  l
+) => {
   return `hsl(${h % 360},${s}%,${l}%)`;
 };
 function hashToHue(hash: string): number {
   let seed = bigInt(hash, 16).and(0xffffff).toString(16);
-  seed = '0x' + '0'.repeat(6 - seed.length) + seed;
+  seed = "0x" + "0".repeat(6 - seed.length) + seed;
 
   const baseHue = parseInt(seed) % 360;
   return baseHue;
@@ -74,20 +83,23 @@ function hashToHue(hash: string): number {
 // };
 
 export const getRandomActionId = () => {
-  const hex = '0123456789abcdef';
+  const hex = "0123456789abcdef";
 
-  let ret = '';
+  let ret = "";
   for (let i = 0; i < 10; i += 1) {
     ret += hex[Math.floor(hex.length * Math.random())];
   }
   return ret;
 };
 
-export const getFormatProp = (planet: Planet | undefined, prop: string): string => {
-  if (!planet) return '0';
+export const getFormatProp = (
+  planet: Planet | undefined,
+  prop: string
+): string => {
+  if (!planet) return "0";
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const myPlanet = planet as any;
-  if (prop === 'silverGrowth') return formatNumber(myPlanet[prop] * 60);
+  if (prop === "silverGrowth") return formatNumber(myPlanet[prop] * 60);
   else return formatNumber(myPlanet[prop]);
 };
 
@@ -97,7 +109,7 @@ export const getPlanetRank = (planet: Planet | undefined): number => {
 };
 
 export const getPlanetShortHash = (planet: Planet | undefined): string => {
-  if (!planet) return '00000';
+  if (!planet) return "00000";
   else return planet.locationId.substring(4, 9);
 };
 
@@ -114,7 +126,7 @@ export const isFullRank = (planet: Planet | undefined): boolean => {
 };
 
 export const upgradeName = (branchName: UpgradeBranchName) => {
-  return ['Defense', 'Range', 'Speed'][branchName];
+  return ["Defense", "Range", "Speed"][branchName];
 };
 
 export const getPlanetMaxRank = (planet: Planet | undefined): number => {
@@ -130,10 +142,10 @@ export const titleCase = (title: string): string =>
     .split(/ /g)
     .map((word, i) => {
       // don't capitalize articles unless it's the first word
-      if (i !== 0 && ['of', 'the'].includes(word)) return word;
+      if (i !== 0 && ["of", "the"].includes(word)) return word;
       return `${word.substring(0, 1).toUpperCase()}${word.substring(1)}`;
     })
-    .join(' ');
+    .join(" ");
 
 export const isRoundOngoing = (): boolean => {
   const roundStart = new Date(roundStartTimestamp).getTime();
@@ -151,22 +163,26 @@ function artifactRarityFromPlanetLevel(planetLevel: number): ArtifactRarity {
   else return ArtifactRarity.Mythic;
 }
 
-
 export function getDeterministicArtifact(planet: LocatablePlanet) {
-
   const abiCoder = ethers.utils.defaultAbiCoder;
 
   const artifactSeed = ethers.utils.keccak256(
-    abiCoder.encode(['uint'], [BigInt('0x'+planet.locationId)])
+    abiCoder.encode(["uint"], [BigInt("0x" + planet.locationId)])
   );
 
-  const seedHash = ethers.utils.keccak256(abiCoder.encode(['uint'], [BigInt(artifactSeed)]));
+  const seedHash = ethers.utils.keccak256(
+    abiCoder.encode(["uint"], [BigInt(artifactSeed)])
+  );
 
   const seed = BigNumber.from(artifactSeed);
-  const lastByteOfSeed = seed.mod(BigNumber.from('0xff')).toNumber();
+  const lastByteOfSeed = seed.mod(BigNumber.from("0xff")).toNumber();
   const bigLastByte = BigNumber.from(lastByteOfSeed);
 
-  const secondLastByteOfSeed = ((seed.sub(bigLastByte)).div(BigNumber.from(256))).mod(BigNumber.from('0xff')).toNumber();
+  const secondLastByteOfSeed = seed
+    .sub(bigLastByte)
+    .div(BigNumber.from(256))
+    .mod(BigNumber.from("0xff"))
+    .toNumber();
 
   const perlin = planet.perlin;
   const biome = planet.biome;

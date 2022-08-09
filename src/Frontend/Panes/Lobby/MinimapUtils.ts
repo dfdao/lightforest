@@ -1,11 +1,11 @@
-import { SpaceType } from '@darkforest_eth/types';
-import { hsl } from 'color';
+import { SpaceType } from "@dfdao/types";
+import { hsl } from "color";
 import {
   CreatedPlanet,
   ArenaCreationManager,
-} from '../../../Backend/GameLogic/ArenaCreationManager';
-import { LobbyPlanet } from './LobbiesUtils';
-import { LobbyInitializers } from './Reducer';
+} from "../../../Backend/GameLogic/ArenaCreationManager";
+import { LobbyPlanet } from "./LobbiesUtils";
+import { LobbyInitializers } from "./Reducer";
 
 export type MinimapConfig = {
   worldRadius: number;
@@ -22,7 +22,7 @@ export type MinimapConfig = {
   createdPlanets: CreatedPlanet[];
 };
 
-export type PlanetType = 'staged' | 'target' | 'spawn' | 'created' | undefined;
+export type PlanetType = "staged" | "target" | "spawn" | "created" | undefined;
 export type DrawMessage = {
   radius: number;
   dot: number;

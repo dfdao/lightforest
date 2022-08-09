@@ -1,31 +1,36 @@
-import { CONTRACT_ADDRESS } from '@darkforest_eth/contracts';
-import { address } from '@darkforest_eth/serde';
-import { EthAddress } from '@darkforest_eth/types';
-import React, { useEffect, useState } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
-import { loadConfigFromAddress } from '../../../Backend/Network/GraphApi/ConfigApi';
-import { LobbyInitializers } from '../../Panes/Lobby/Reducer';
-import { useEthConnection } from '../../Utils/AppHooks';
-import { stockConfig } from '../../Utils/StockConfigs';
-import { CadetWormhole } from '../../Views/CadetWormhole';
-import LoadingPage from '../LoadingPage';
-import { LobbyConfigPage } from './LobbyConfigPage';
-import { ArenaCreationManager } from '../../../Backend/GameLogic/ArenaCreationManager';
+import { CONTRACT_ADDRESS } from "@dfdao/contracts";
+import { address } from "@dfdao/serde";
+import { EthAddress } from "@dfdao/types";
+import React, { useEffect, useState } from "react";
+import { RouteComponentProps } from "react-router-dom";
+import { loadConfigFromAddress } from "../../../Backend/Network/GraphApi/ConfigApi";
+import { LobbyInitializers } from "../../Panes/Lobby/Reducer";
+import { useEthConnection } from "../../Utils/AppHooks";
+import { stockConfig } from "../../Utils/StockConfigs";
+import { CadetWormhole } from "../../Views/CadetWormhole";
+import LoadingPage from "../LoadingPage";
+import { LobbyConfigPage } from "./LobbyConfigPage";
+import { ArenaCreationManager } from "../../../Backend/GameLogic/ArenaCreationManager";
 
 type ErrorState =
-  | { type: 'invalidAddress' }
-  | { type: 'contractLoad' }
-  | { type: 'invalidContract' };
+  | { type: "invalidAddress" }
+  | { type: "contractLoad" }
+  | { type: "invalidContract" };
 
-export function CreateLobby({ match }: RouteComponentProps<{ contract: string }>) {
+export function CreateLobby({
+  match,
+}: RouteComponentProps<{ contract: string }>) {
   const [arenaCreationManager, setArenaCreationManager] = useState<
     ArenaCreationManager | undefined
   >();
-  const [startingConfig, setStartingConfig] = useState<LobbyInitializers | undefined>();
+  const [startingConfig, setStartingConfig] = useState<
+    LobbyInitializers | undefined
+  >();
   const contractAddress: EthAddress = address(CONTRACT_ADDRESS);
-  const configContractAddress = address(match.params.contract) || contractAddress;
+  const configContractAddress =
+    address(match.params.contract) || contractAddress;
   const [errorState, setErrorState] = useState<ErrorState | undefined>(
-    contractAddress ? undefined : { type: 'invalidAddress' }
+    contractAddress ? undefined : { type: "invalidAddress" }
   );
 
   const connection = useEthConnection();
@@ -37,7 +42,7 @@ export function CreateLobby({ match }: RouteComponentProps<{ contract: string }>
         .then((creationManager) => setArenaCreationManager(creationManager))
         .catch((e) => {
           console.log(e);
-          setErrorState({ type: 'contractLoad' });
+          setErrorState({ type: "contractLoad" });
         });
     }
     if (configContractAddress && !startingConfig) {
@@ -52,11 +57,11 @@ export function CreateLobby({ match }: RouteComponentProps<{ contract: string }>
 
   if (errorState) {
     switch (errorState.type) {
-      case 'contractLoad':
-        return <CadetWormhole imgUrl='/public/img/wrong-text.png' />;
-      case 'invalidAddress':
-      case 'invalidContract':
-        return <CadetWormhole imgUrl='/public/img/no-contract-text.png' />;
+      case "contractLoad":
+        return <CadetWormhole imgUrl="/public/img/wrong-text.png" />;
+      case "invalidAddress":
+      case "invalidContract":
+        return <CadetWormhole imgUrl="/public/img/no-contract-text.png" />;
       default:
         // https://www.typescriptlang.org/docs/handbook/2/narrowing.html#exhaustiveness-checking
         const _exhaustive: never = errorState;

@@ -1,23 +1,29 @@
-import { LocationId } from '@darkforest_eth/types';
-import React, { useCallback } from 'react';
-import { BroadcastPane, BroadcastPaneHelpContent } from '../Panes/Game/BroadcastPane';
-import { HatPane } from '../Panes/Game/HatPane';
+import { LocationId } from "@dfdao/types";
+import React, { useCallback } from "react";
+import {
+  BroadcastPane,
+  BroadcastPaneHelpContent,
+} from "../Panes/Game/BroadcastPane";
+import { HatPane } from "../Panes/Game/HatPane";
 import {
   ManagePlanetArtifactsHelpContent,
   ManagePlanetArtifactsPane,
   PlanetInfoHelpContent,
-} from '../Panes/ManagePlanetArtifacts/ManagePlanetArtifactsPane';
-import { PlanetInfoPane } from '../Panes/Game/PlanetInfoPane';
-import { UpgradeDetailsPane, UpgradeDetailsPaneHelpContent } from '../Panes/Game/UpgradeDetailsPane';
+} from "../Panes/ManagePlanetArtifacts/ManagePlanetArtifactsPane";
+import { PlanetInfoPane } from "../Panes/Game/PlanetInfoPane";
+import {
+  UpgradeDetailsPane,
+  UpgradeDetailsPaneHelpContent,
+} from "../Panes/Game/UpgradeDetailsPane";
 import {
   TOGGLE_BROADCAST_PANE,
   TOGGLE_HAT_PANE,
   TOGGLE_PLANET_ARTIFACTS_PANE,
   TOGGLE_PLANET_INFO_PANE,
   TOGGLE_UPGRADES_PANE,
-} from '../Utils/ShortcutConstants';
-import { ModalHandle } from '../Views/Game/ModalPane';
-import { MaybeShortcutButton } from './MaybeShortcutButton';
+} from "../Utils/ShortcutConstants";
+import { ModalHandle } from "../Views/Game/ModalPane";
+import { MaybeShortcutButton } from "./MaybeShortcutButton";
 
 export function OpenPaneButton({
   modal,
@@ -42,7 +48,7 @@ export function OpenPaneButton({
 
   return (
     <MaybeShortcutButton
-      size='stretch'
+      size="stretch"
       onClick={open}
       onShortcutPressed={open}
       shortcutKey={shortcut}
@@ -63,7 +69,7 @@ export function OpenHatPaneButton({
   return (
     <OpenPaneButton
       modal={modal}
-      title='Hat'
+      title="Hat"
       shortcut={TOGGLE_HAT_PANE}
       element={() => <HatPane modal={modal} initialPlanetId={planetId} />}
     />
@@ -80,7 +86,7 @@ export function OpenBroadcastPaneButton({
   return (
     <OpenPaneButton
       modal={modal}
-      title='Broadcast'
+      title="Broadcast"
       shortcut={TOGGLE_BROADCAST_PANE}
       element={() => <BroadcastPane modal={modal} initialPlanetId={planetId} />}
       helpContent={BroadcastPaneHelpContent()}
@@ -98,9 +104,11 @@ export function OpenUpgradeDetailsPaneButton({
   return (
     <OpenPaneButton
       modal={modal}
-      title='Upgrade'
+      title="Upgrade"
       shortcut={TOGGLE_UPGRADES_PANE}
-      element={() => <UpgradeDetailsPane modal={modal} initialPlanetId={planetId} />}
+      element={() => (
+        <UpgradeDetailsPane modal={modal} initialPlanetId={planetId} />
+      )}
       helpContent={UpgradeDetailsPaneHelpContent()}
     />
   );
@@ -115,9 +123,11 @@ export function OpenManagePlanetArtifactsButton({
   return (
     <OpenPaneButton
       modal={modal}
-      title='Inventory'
+      title="Inventory"
       shortcut={TOGGLE_PLANET_ARTIFACTS_PANE}
-      element={() => <ManagePlanetArtifactsPane modal={modal} initialPlanetId={planetId} />}
+      element={() => (
+        <ManagePlanetArtifactsPane modal={modal} initialPlanetId={planetId} />
+      )}
       helpContent={ManagePlanetArtifactsHelpContent()}
     />
   );
@@ -133,7 +143,7 @@ export function OpenPlanetInfoButton({
   return (
     <OpenPaneButton
       modal={modal}
-      title='Info'
+      title="Info"
       shortcut={TOGGLE_PLANET_INFO_PANE}
       element={() => <PlanetInfoPane initialPlanetId={planetId} />}
       helpContent={PlanetInfoHelpContent()}

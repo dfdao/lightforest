@@ -1,12 +1,12 @@
-import { mimcHash, perlin } from '@darkforest_eth/hashing';
-import { locationIdFromBigInt } from '@darkforest_eth/serde';
-import { Chunk, PerlinConfig, Rectangle, WorldLocation } from '@darkforest_eth/types';
-import * as bigInt from 'big-integer';
-import { BigInteger } from 'big-integer';
-import { LOCATION_ID_UB } from '../../Frontend/Utils/constants';
-import { MinerWorkerMessage } from '../../_types/global/GlobalTypes';
-import { getPlanetLocations } from './permutation';
-import { planetLevelBelowLevel0Threshold } from './PlanetUtils';
+import { mimcHash, perlin } from "@dfdao/hashing";
+import { locationIdFromBigInt } from "@dfdao/serde";
+import { Chunk, PerlinConfig, Rectangle, WorldLocation } from "@dfdao/types";
+import * as bigInt from "big-integer";
+import { BigInteger } from "big-integer";
+import { LOCATION_ID_UB } from "../../Frontend/Utils/constants";
+import { MinerWorkerMessage } from "../../_types/global/GlobalTypes";
+import { getPlanetLocations } from "./permutation";
+import { planetLevelBelowLevel0Threshold } from "./PlanetUtils";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const ctx: Worker = self as any;
@@ -66,7 +66,12 @@ const exploreChunk = (
           const hash: BigInteger = planetHashFn(x, y);
           if (hash.lesser(LOCATION_ID_UB.divide(planetRarityBI))) {
             // if planet bytes 4-6 are too high for planet threshold, don't render on client.
-            if (!planetLevelBelowLevel0Threshold(locationIdFromBigInt(hash), planetLevelThresholds))
+            if (
+              !planetLevelBelowLevel0Threshold(
+                locationIdFromBigInt(hash),
+                planetLevelThresholds
+              )
+            )
               continue;
 
             planetLocations.push({
@@ -93,8 +98,10 @@ const exploreChunk = (
   ctx.postMessage(JSON.stringify([chunkData, jobId]));
 };
 
-ctx.addEventListener('message', (e: MessageEvent) => {
-  const exploreMessage: MinerWorkerMessage = JSON.parse(e.data) as MinerWorkerMessage;
+ctx.addEventListener("message", (e: MessageEvent) => {
+  const exploreMessage: MinerWorkerMessage = JSON.parse(
+    e.data
+  ) as MinerWorkerMessage;
 
   exploreChunk(
     exploreMessage.chunkFootprint,

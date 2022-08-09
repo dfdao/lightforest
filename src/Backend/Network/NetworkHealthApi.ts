@@ -1,4 +1,4 @@
-import { NetworkHealthSummary } from '@darkforest_eth/types';
+import { NetworkHealthSummary } from "@dfdao/types";
 
 /**
  * The Dark Forest webserver keeps track of network health, this function loads that information
@@ -10,9 +10,9 @@ export async function loadNetworkHealth(): Promise<NetworkHealthSummary> {
   }
 
   const result = await fetch(`${process.env.DF_WEBSERVER_URL}/network-health`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   }).then((x) => x.json());
 

@@ -1,16 +1,16 @@
-import { EMPTY_ADDRESS, MAX_PLANET_LEVEL } from '@darkforest_eth/constants';
-import { isLocatable } from '@darkforest_eth/gamelogic';
-import { bonusFromHex } from '@darkforest_eth/hexgen';
-import { getPlanetName } from '@darkforest_eth/procedural';
-import { Planet, PlanetType, TooltipName } from '@darkforest_eth/types';
-import React from 'react';
-import styled from 'styled-components';
-import { getPlanetRank } from '../../../Backend/Utils/Utils';
-import { StatIdx } from '../../../_types/global/GlobalTypes';
-import { Icon, IconType, RankIcon } from '../../Components/Icons';
-import { TooltipTrigger } from '../../Panes/Tooltip';
-import dfstyles from '../../Styles/dfstyles';
-import { useUIManager } from '../../Utils/AppHooks';
+import { EMPTY_ADDRESS, MAX_PLANET_LEVEL } from "@dfdao/constants";
+import { isLocatable } from "@dfdao/gamelogic";
+import { bonusFromHex } from "@dfdao/hexgen";
+import { getPlanetName } from "@dfdao/procedural";
+import { Planet, PlanetType, TooltipName } from "@dfdao/types";
+import React from "react";
+import styled from "styled-components";
+import { getPlanetRank } from "../../../Backend/Utils/Utils";
+import { StatIdx } from "../../../_types/global/GlobalTypes";
+import { Icon, IconType, RankIcon } from "../../Components/Icons";
+import { TooltipTrigger } from "../../Panes/Tooltip";
+import dfstyles from "../../Styles/dfstyles";
+import { useUIManager } from "../../Utils/AppHooks";
 
 const StyledPlanetIcons = styled.div`
   display: inline-flex;
@@ -67,15 +67,18 @@ export function PlanetIcons({ planet }: { planet: Planet | undefined }) {
                 <Icon type={IconType.Invadable} />
               </TooltipTrigger>
             )}
-          {planet.invader !== EMPTY_ADDRESS && planet.capturer === EMPTY_ADDRESS && (
-            <TooltipTrigger name={TooltipName.Capturable}>
-              <Icon type={IconType.Capturable} />
-            </TooltipTrigger>
-          )}
+          {planet.invader !== EMPTY_ADDRESS &&
+            planet.capturer === EMPTY_ADDRESS && (
+              <TooltipTrigger name={TooltipName.Capturable}>
+                <Icon type={IconType.Capturable} />
+              </TooltipTrigger>
+            )}
           {planet.capturer !== EMPTY_ADDRESS && (
             <TooltipTrigger
               name={TooltipName.Empty}
-              extraContent={<>This planet has been captured by {planet.capturer}</>}
+              extraContent={
+                <>This planet has been captured by {planet.capturer}</>
+              }
             >
               <Icon type={IconType.Capturable} />
             </TooltipTrigger>
@@ -155,7 +158,7 @@ export function PlanetIcons({ planet }: { planet: Planet | undefined }) {
           <RankIcon planet={planet} />
         </TooltipTrigger>
       )}
-      {getPlanetName(planet) === 'Clown Town' && (
+      {getPlanetName(planet) === "Clown Town" && (
         <TooltipTrigger name={TooltipName.Clowntown}>
           <ClownIcon />
         </TooltipTrigger>
@@ -173,8 +176,9 @@ export function PlanetIcons({ planet }: { planet: Planet | undefined }) {
           name={TooltipName.Empty}
           extraContent={
             <>
-              This planet is destroyed. It does not generate energy or silver, all incoming voyages
-              are void, and you cannot send or receive energy from it.
+              This planet is destroyed. It does not generate energy or silver,
+              all incoming voyages are void, and you cannot send or receive
+              energy from it.
             </>
           }
         >

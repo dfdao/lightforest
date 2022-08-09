@@ -1,6 +1,6 @@
-# Namespace: "@darkforest_eth/snarks/\*.zkey"
+# Namespace: "@dfdao/snarks/\*.zkey"
 
-[\_types/file-loader/FileWorkerTypes](types_file_loader_FileWorkerTypes.md)."@darkforest_eth/snarks/\*.zkey"
+[\_types/file-loader/FileWorkerTypes](types_file_loader_FileWorkerTypes.md)."@dfdao/snarks/\*.zkey"
 
 ## Table of contents
 

@@ -1,8 +1,8 @@
-import { monomitter, Monomitter } from '@darkforest_eth/events';
-import { CaptureZone, Chunk, LocationId } from '@darkforest_eth/types';
-import bigInt from 'big-integer';
-import { utils } from 'ethers';
-import GameManager, { GameManagerEvent } from './GameManager';
+import { monomitter, Monomitter } from "@dfdao/events";
+import { CaptureZone, Chunk, LocationId } from "@dfdao/types";
+import bigInt from "big-integer";
+import { utils } from "ethers";
+import GameManager, { GameManagerEvent } from "./GameManager";
 
 export type CaptureZonesGeneratedEvent = {
   changeBlock: number;
@@ -25,7 +25,11 @@ export class CaptureZoneGenerator {
 
   public readonly generated$: Monomitter<CaptureZonesGeneratedEvent>;
 
-  constructor(gameManager: GameManager, gameStartBlock: number, changeInterval: number) {
+  constructor(
+    gameManager: GameManager,
+    gameStartBlock: number,
+    changeInterval: number
+  ) {
     this.gameManager = gameManager;
     this.changeInterval = changeInterval;
     this.nextChangeBlock = gameStartBlock;
@@ -33,7 +37,10 @@ export class CaptureZoneGenerator {
     this.capturablePlanets = new Set();
     this.zones = new Set();
 
-    gameManager.on(GameManagerEvent.DiscoveredNewChunk, this.onNewChunk.bind(this));
+    gameManager.on(
+      GameManagerEvent.DiscoveredNewChunk,
+      this.onNewChunk.bind(this)
+    );
   }
 
   /**
@@ -43,7 +50,9 @@ export class CaptureZoneGenerator {
   async generate(blockNumber: number) {
     this.setNextGenerationBlock(blockNumber);
 
-    const newZones = await this._generate(this.nextChangeBlock - this.changeInterval);
+    const newZones = await this._generate(
+      this.nextChangeBlock - this.changeInterval
+    );
     this.zones = newZones;
     this.updateCapturablePlanets();
     this.generated$.publish({
@@ -54,7 +63,8 @@ export class CaptureZoneGenerator {
   }
 
   private setNextGenerationBlock(blockNumber: number) {
-    const totalGameBlocks = blockNumber - this.gameManager.getContractConstants().GAME_START_BLOCK;
+    const totalGameBlocks =
+      blockNumber - this.gameManager.getContractConstants().GAME_START_BLOCK;
     const numPastIntervals = Math.floor(totalGameBlocks / this.changeInterval);
     this.nextChangeBlock =
       this.gameManager.getContractConstants().GAME_START_BLOCK +
@@ -62,14 +72,20 @@ export class CaptureZoneGenerator {
   }
 
   private async _generate(blockNumber: number) {
-    const block = await this.gameManager.getEthConnection().getProvider().getBlock(blockNumber);
-    const worldRadius = await this.gameManager.getContractAPI().getWorldRadius();
+    const block = await this.gameManager
+      .getEthConnection()
+      .getProvider()
+      .getBlock(blockNumber);
+    const worldRadius = await this.gameManager
+      .getContractAPI()
+      .getWorldRadius();
 
     const captureZones = new Set<CaptureZone>();
     const ringSize = 5000;
     const ringCount = Math.floor(worldRadius / ringSize);
     const zonesPerRing =
-      this.gameManager.getContractConstants().CAPTURE_ZONES_PER_5000_WORLD_RADIUS;
+      this.gameManager.getContractConstants()
+        .CAPTURE_ZONES_PER_5000_WORLD_RADIUS;
 
     for (let ring = 0; ring < ringCount; ring++) {
       const nonceBase = ring * zonesPerRing;
@@ -77,11 +93,14 @@ export class CaptureZoneGenerator {
       for (let j = 0; j < zonesPerRing; j++) {
         const nonce = nonceBase + j;
         const blockAndNonceHash = utils.solidityKeccak256(
-          ['bytes32', 'uint256'],
+          ["bytes32", "uint256"],
           [block.hash, nonce]
         );
         // Chop off 0x and convert to BigInt
-        const seed = bigInt(blockAndNonceHash.substring(2, blockAndNonceHash.length), 16);
+        const seed = bigInt(
+          blockAndNonceHash.substring(2, blockAndNonceHash.length),
+          16
+        );
         // Last 3 hex characters
         const angleSeed = seed.mod(0xfff);
         // Max value of 0xfff is 4095
@@ -122,7 +141,10 @@ export class CaptureZoneGenerator {
     this.capturablePlanets = new Set<LocationId>();
 
     for (const zone of this.getZones()) {
-      const planetsInZone = this.gameObjects.getPlanetsInWorldCircle(zone.coords, zone.radius);
+      const planetsInZone = this.gameObjects.getPlanetsInWorldCircle(
+        zone.coords,
+        zone.radius
+      );
       for (const planet of planetsInZone) {
         this.capturablePlanets.add(planet.locationId);
       }
@@ -139,7 +161,9 @@ export class CaptureZoneGenerator {
         const { x: planetX, y: planetY } = worldLocation.coords;
         const { x: zoneX, y: zoneY } = zone.coords;
 
-        const distance = Math.sqrt((planetX - zoneX) ** 2 + (planetY - zoneY) ** 2);
+        const distance = Math.sqrt(
+          (planetX - zoneX) ** 2 + (planetY - zoneY) ** 2
+        );
         if (distance <= zone.radius) {
           this.capturablePlanets.add(worldLocation.hash);
         }

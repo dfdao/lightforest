@@ -3,13 +3,13 @@ import {
   SnarkJSProofAndSignals,
   WhitelistSnarkContractCallArgs,
   WhitelistSnarkInput,
-} from '@darkforest_eth/snarks';
-import whitelistCircuitPath from '@darkforest_eth/snarks/whitelist.wasm';
-import whitelistZkeyPath from '@darkforest_eth/snarks/whitelist.zkey';
-import { EthAddress } from '@darkforest_eth/types';
-import bigInt, { BigInteger } from 'big-integer';
-import { TerminalTextStyle } from '../../Frontend/Utils/TerminalTypes';
-import { TerminalHandle } from '../../Frontend/Views/Terminal';
+} from "@dfdao/snarks";
+import whitelistCircuitPath from "@dfdao/snarks/whitelist.wasm";
+import whitelistZkeyPath from "@dfdao/snarks/whitelist.zkey";
+import { EthAddress } from "@dfdao/types";
+import bigInt, { BigInteger } from "big-integer";
+import { TerminalTextStyle } from "../../Frontend/Utils/TerminalTypes";
+import { TerminalHandle } from "../../Frontend/Views/Terminal";
 
 /**
  * Helper method for generating whitelist SNARKS.
@@ -25,7 +25,7 @@ export const getWhitelistArgs = async (
   try {
     const start = Date.now();
     terminal?.current?.println(
-      'WHITELIST REGISTER: calculating witness and proof',
+      "WHITELIST REGISTER: calculating witness and proof",
       TerminalTextStyle.Sub
     );
     const input: WhitelistSnarkInput = {
@@ -39,7 +39,10 @@ export const getWhitelistArgs = async (
       whitelistZkeyPath
     );
     const { proof, publicSignals }: SnarkJSProofAndSignals = fullProveResponse;
-    const ret = buildContractCallArgs(proof, publicSignals) as WhitelistSnarkContractCallArgs;
+    const ret = buildContractCallArgs(
+      proof,
+      publicSignals
+    ) as WhitelistSnarkContractCallArgs;
     const end = Date.now();
     terminal?.current?.println(
       `WHITELIST REGISTER: calculated witness and proof in ${end - start}ms`,

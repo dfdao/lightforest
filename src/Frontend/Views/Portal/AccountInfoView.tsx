@@ -1,16 +1,16 @@
-import { address } from '@darkforest_eth/serde';
-import { EthAddress, RawAccount } from '@darkforest_eth/types';
-import { isAddress } from 'ethers/lib/utils';
-import _ from 'lodash';
-import React, { useEffect, useState } from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import styled from 'styled-components';
-import { loadAccountData } from '../../../Backend/Network/GraphApi/AccountApi';
-import { TwitterLink } from '../../Components/Labels/Labels';
-import { TextPreview } from '../../Components/TextPreview';
-import { LobbyInitializers } from '../../Panes/Lobby/Reducer';
-import { useTwitters } from '../../Utils/AppHooks';
-import { ArenaDisplay } from './ArenaDisplay';
+import { address } from "@dfdao/serde";
+import { EthAddress, RawAccount } from "@dfdao/types";
+import { isAddress } from "ethers/lib/utils";
+import _ from "lodash";
+import React, { useEffect, useState } from "react";
+import { Link, RouteComponentProps } from "react-router-dom";
+import styled from "styled-components";
+import { loadAccountData } from "../../../Backend/Network/GraphApi/AccountApi";
+import { TwitterLink } from "../../Components/Labels/Labels";
+import { TextPreview } from "../../Components/TextPreview";
+import { LobbyInitializers } from "../../Panes/Lobby/Reducer";
+import { useTwitters } from "../../Utils/AppHooks";
+import { ArenaDisplay } from "./ArenaDisplay";
 
 export interface uniqueArenas {
   configHash: string;
@@ -36,10 +36,18 @@ function PlayerOverview({
             {twitters[playerAddress] ? (
               <TwitterLink twitter={twitters[playerAddress]} />
             ) : (
-              <TextPreview text={playerAddress} focusedWidth={'250px'} unFocusedWidth={'250px'} />
+              <TextPreview
+                text={playerAddress}
+                focusedWidth={"250px"}
+                unFocusedWidth={"250px"}
+              />
             )}
           </Title>
-          <TextPreview text={playerAddress} focusedWidth={'200px'} unFocusedWidth={'200px'} />
+          <TextPreview
+            text={playerAddress}
+            focusedWidth={"200px"}
+            unFocusedWidth={"200px"}
+          />
           <Subber>
             {playerData.matches} Matches {playerData.wins} Wins
           </Subber>
@@ -50,9 +58,15 @@ function PlayerOverview({
   );
 }
 
-export function AccountInfoView({ match }: RouteComponentProps<{ account: string }>) {
-  const playerAddress = isAddress(match.params.account) ? address(match.params.account) : undefined;
-  const [playerData, setPlayerData] = useState<RawAccount | undefined>(undefined);
+export function AccountInfoView({
+  match,
+}: RouteComponentProps<{ account: string }>) {
+  const playerAddress = isAddress(match.params.account)
+    ? address(match.params.account)
+    : undefined;
+  const [playerData, setPlayerData] = useState<RawAccount | undefined>(
+    undefined
+  );
   const [error, setError] = useState<boolean>(false);
   useEffect(() => {
     if (playerAddress) {
@@ -80,7 +94,10 @@ export function AccountInfoView({ match }: RouteComponentProps<{ account: string
       ) : (
         playerData && (
           <>
-            <PlayerOverview playerAddress={playerAddress} playerData={playerData} />
+            <PlayerOverview
+              playerAddress={playerAddress}
+              playerData={playerData}
+            />
           </>
         )
       )}

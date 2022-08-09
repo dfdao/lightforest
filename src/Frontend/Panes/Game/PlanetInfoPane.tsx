@@ -1,25 +1,32 @@
-import { isLocatable } from '@darkforest_eth/gamelogic';
-import { LocationId, TooltipName } from '@darkforest_eth/types';
-import React from 'react';
-import { CenterBackgroundSubtext } from '../../Components/CoreUI';
-import { AccountLabel } from '../../Components/Labels/Labels';
-import { TextPreview } from '../../Components/TextPreview';
-import dfstyles from '../../Styles/dfstyles';
-import { usePlanet, useUIManager } from '../../Utils/AppHooks';
-import { useEmitterValue } from '../../Utils/EmitterHooks';
-import { TooltipTrigger } from '../Tooltip';
+import { isLocatable } from "@dfdao/gamelogic";
+import { LocationId, TooltipName } from "@dfdao/types";
+import React from "react";
+import { CenterBackgroundSubtext } from "../../Components/CoreUI";
+import { AccountLabel } from "../../Components/Labels/Labels";
+import { TextPreview } from "../../Components/TextPreview";
+import dfstyles from "../../Styles/dfstyles";
+import { usePlanet, useUIManager } from "../../Utils/AppHooks";
+import { useEmitterValue } from "../../Utils/EmitterHooks";
+import { TooltipTrigger } from "../Tooltip";
 
 /**
  * This pane contains misc info about the planet, which does not have a place in the main Planet Context Pane.
  */
-export function PlanetInfoPane({ initialPlanetId }: { initialPlanetId: LocationId | undefined }) {
+export function PlanetInfoPane({
+  initialPlanetId,
+}: {
+  initialPlanetId: LocationId | undefined;
+}) {
   const uiManager = useUIManager();
-  const planetId = useEmitterValue(uiManager.selectedPlanetId$, initialPlanetId);
+  const planetId = useEmitterValue(
+    uiManager.selectedPlanetId$,
+    initialPlanetId
+  );
   const planet = usePlanet(uiManager, planetId).value;
 
   if (!isLocatable(planet)) {
     return (
-      <CenterBackgroundSubtext width='100%' height='200px'>
+      <CenterBackgroundSubtext width="100%" height="200px">
         planet with <br /> unknown location
       </CenterBackgroundSubtext>
     );
@@ -30,8 +37,8 @@ export function PlanetInfoPane({ initialPlanetId }: { initialPlanetId: LocationI
           <TextPreview
             style={{ color: dfstyles.colors.subtext }}
             text={planet?.locationId}
-            focusedWidth={'150px'}
-            unFocusedWidth={'150px'}
+            focusedWidth={"150px"}
+            unFocusedWidth={"150px"}
           />
         </TooltipTrigger>
         <br />
@@ -39,8 +46,8 @@ export function PlanetInfoPane({ initialPlanetId }: { initialPlanetId: LocationI
           <TextPreview
             style={{ color: dfstyles.colors.subtext }}
             text={`(${planet.location.coords.x}, ${planet.location.coords.y})`}
-            focusedWidth={'150px'}
-            unFocusedWidth={'150px'}
+            focusedWidth={"150px"}
+            unFocusedWidth={"150px"}
           />
         </TooltipTrigger>
         <br />

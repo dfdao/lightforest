@@ -1,12 +1,12 @@
-declare module '@darkforest_eth/snarks/*.wasm' {
+declare module "@dfdao/snarks/*.wasm" {
   const path: string;
   export default path;
 }
-declare module '@darkforest_eth/snarks/*.zkey' {
+declare module "@dfdao/snarks/*.zkey" {
   const path: string;
   export default path;
 }
-declare module '@darkforest_eth/contracts/abis/*.json' {
+declare module "@dfdao/contracts/abis/*.json" {
   const path: string;
   export default path;
 }

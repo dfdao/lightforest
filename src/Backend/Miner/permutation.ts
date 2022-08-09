@@ -1,7 +1,7 @@
-import { fakeHash, perlin, seededRandom } from '@darkforest_eth/hashing';
-import { locationIdFromBigInt } from '@darkforest_eth/serde';
-import { Rectangle, WorldCoords, WorldLocation } from '@darkforest_eth/types';
-import { planetLevelBelowLevel0Threshold } from './PlanetUtils';
+import { fakeHash, perlin, seededRandom } from "@dfdao/hashing";
+import { locationIdFromBigInt } from "@dfdao/serde";
+import { Rectangle, WorldCoords, WorldLocation } from "@dfdao/types";
+import { planetLevelBelowLevel0Threshold } from "./PlanetUtils";
 
 type IdxWithRand = {
   idx: number;
@@ -39,14 +39,20 @@ const posMod = (m: number, n: number) => {
 const sigma = (x: number, y: number) => {
   const val = 256 * x + y;
   const idx = posMod(val, SIZE);
-  const ret: [number, number] = [Math.floor(lookup[idx] / 256), lookup[idx] % 256];
+  const ret: [number, number] = [
+    Math.floor(lookup[idx] / 256),
+    lookup[idx] % 256,
+  ];
   return ret;
 };
 
 const sigmaInv = (x: number, y: number) => {
   const val = 256 * x + y;
   const idx = posMod(val, SIZE);
-  const ret: [number, number] = [Math.floor(lookupInv[idx] / 256), lookupInv[idx] % 256];
+  const ret: [number, number] = [
+    Math.floor(lookupInv[idx] / 256),
+    lookupInv[idx] % 256,
+  ];
   return ret;
 };
 
@@ -67,9 +73,13 @@ export const getPlanetLocations =
     biomebaseKey: number,
     perlinLengthScale: number,
     perlinMirrorX: boolean,
-    perlinMirrorY: boolean,
+    perlinMirrorY: boolean
   ) =>
-  (chunkFootprint: Rectangle, planetRarity: number, planetLevelThresholds: number[]) => {
+  (
+    chunkFootprint: Rectangle,
+    planetRarity: number,
+    planetLevelThresholds: number[]
+  ) => {
     // assume that the chunkFootprint is entirely contained within a 256x256 grid square
     const { bottomLeft, sideLength } = chunkFootprint;
     const { x, y } = bottomLeft;
@@ -82,7 +92,11 @@ export const getPlanetLocations =
     }
     const preImages: [number, number][] = [];
     for (const postImage of postImages) {
-      preImages.push(sigmaInv(...cycInv(mPrime, nPrime)(...sigmaInv(postImage[0], postImage[1]))));
+      preImages.push(
+        sigmaInv(
+          ...cycInv(mPrime, nPrime)(...sigmaInv(postImage[0], postImage[1]))
+        )
+      );
     }
     const coords: WorldCoords[] = preImages.map((preImage) => ({
       x: m * 256 + preImage[0],
@@ -115,8 +129,8 @@ export const getPlanetLocations =
           floor: true,
         }),
       }))
-      .filter(
-        (planetData) => planetLevelBelowLevel0Threshold(planetData.hash, planetLevelThresholds)
+      .filter((planetData) =>
+        planetLevelBelowLevel0Threshold(planetData.hash, planetLevelThresholds)
       );
 
     return locs;

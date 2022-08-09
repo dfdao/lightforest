@@ -1,13 +1,13 @@
-import { monomitter, Monomitter } from '@darkforest_eth/events';
+import { monomitter, Monomitter } from "@dfdao/events";
 import {
   CursorState,
   ModalId,
   ModalManagerEvent,
   ModalPosition,
   WorldCoords,
-} from '@darkforest_eth/types';
-import { EventEmitter } from 'events';
-import type PersistentChunkStore from '../../Backend/Storage/PersistentChunkStore';
+} from "@dfdao/types";
+import { EventEmitter } from "events";
+import type PersistentChunkStore from "../../Backend/Storage/PersistentChunkStore";
 
 class ModalManager extends EventEmitter {
   static instance: ModalManager;
@@ -32,7 +32,9 @@ class ModalManager extends EventEmitter {
     this.modalPositions = modalPositions;
   }
 
-  public static async create(persistentChunkStore: PersistentChunkStore): Promise<ModalManager> {
+  public static async create(
+    persistentChunkStore: PersistentChunkStore
+  ): Promise<ModalManager> {
     const modalPositions = await persistentChunkStore.loadModalPositions();
     return new ModalManager(persistentChunkStore, modalPositions);
   }
@@ -61,7 +63,9 @@ class ModalManager extends EventEmitter {
     return this.modalPositions.get(modalId);
   }
 
-  public getModalPositions(modalIds: ModalId[] = []): Map<ModalId, ModalPosition> {
+  public getModalPositions(
+    modalIds: ModalId[] = []
+  ): Map<ModalId, ModalPosition> {
     if (modalIds.length === 0) return this.modalPositions;
     return modalIds.reduce<Map<ModalId, ModalPosition>>((acc, cur) => {
       const winPos = this.modalPositions.get(cur);
@@ -82,7 +86,7 @@ class ModalManager extends EventEmitter {
     this.modalPositionChanged$.publish(modalId);
   }
 
-  public setModalState(modalId: ModalId, state: ModalPosition['state']): void {
+  public setModalState(modalId: ModalId, state: ModalPosition["state"]): void {
     const pos = this.modalPositions.get(modalId);
     if (pos) {
       this.setModalPosition(modalId, {

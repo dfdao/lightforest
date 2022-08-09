@@ -1,12 +1,18 @@
-import { isLocatable } from '@darkforest_eth/gamelogic';
-import { CanvasCoords, Chunk, DiagnosticUpdater, Planet, WorldCoords } from '@darkforest_eth/types';
-import autoBind from 'auto-bind';
-import GameUIManager from '../../Backend/GameLogic/GameUIManager';
-import { distL2, vectorLength } from '../../Backend/Utils/Coordinates';
-import UIEmitter, { UIEmitterEvent } from '../Utils/UIEmitter';
+import { isLocatable } from "@dfdao/gamelogic";
+import {
+  CanvasCoords,
+  Chunk,
+  DiagnosticUpdater,
+  Planet,
+  WorldCoords,
+} from "@dfdao/types";
+import autoBind from "auto-bind";
+import GameUIManager from "../../Backend/GameLogic/GameUIManager";
+import { distL2, vectorLength } from "../../Backend/Utils/Coordinates";
+import UIEmitter, { UIEmitterEvent } from "../Utils/UIEmitter";
 
 export const getDefaultScroll = (): number => {
-  const isFirefox = navigator.userAgent.indexOf('Firefox') > 0;
+  const isFirefox = navigator.userAgent.indexOf("Firefox") > 0;
   return isFirefox ? 1.005 : 1.0006;
 };
 
@@ -71,7 +77,8 @@ class Viewport {
     // each of these is measured relative to the world coordinate system
     this.centerWorldCoords = centerWorldCoords;
     this.widthInWorldUnits = widthInWorldUnits;
-    this.heightInWorldUnits = (widthInWorldUnits * viewportHeight) / viewportWidth;
+    this.heightInWorldUnits =
+      (widthInWorldUnits * viewportHeight) / viewportWidth;
     // while all of the above are in the world coordinate system, the below are in the page coordinate system
     this.viewportWidth = viewportWidth; // width / height
     this.viewportHeight = viewportHeight;
@@ -79,7 +86,7 @@ class Viewport {
     this.mouseLastCoords = centerWorldCoords;
     this.canvas = canvas;
 
-    const scroll = localStorage.getItem('scrollSpeed');
+    const scroll = localStorage.getItem("scrollSpeed");
     if (scroll) {
       this.mouseSensitivity = parseFloat(scroll);
     } else {
@@ -145,12 +152,12 @@ class Viewport {
 
   public setMouseSensitivty(mouseSensitivity: number) {
     this.mouseSensitivity = 1 + mouseSensitivity;
-    localStorage.setItem('scrollSpeed', this.mouseSensitivity.toString());
+    localStorage.setItem("scrollSpeed", this.mouseSensitivity.toString());
   }
 
   static getInstance(): Viewport {
     if (!Viewport.instance) {
-      throw new Error('Attempted to get Viewport object before initialized');
+      throw new Error("Attempted to get Viewport object before initialized");
     }
 
     return Viewport.instance;
@@ -261,8 +268,10 @@ class Viewport {
   // set this viewport's zoom and pos to the given ViewportData
   setData(data: ViewportData) {
     // lets us prevent the program from crashing if this was called poorly
-    typeof data.widthInWorldUnits === 'number' && this.setWorldWidth(data.widthInWorldUnits);
-    typeof data.widthInWorldUnits === 'number' && this.centerCoords(data.centerWorldCoords);
+    typeof data.widthInWorldUnits === "number" &&
+      this.setWorldWidth(data.widthInWorldUnits);
+    typeof data.widthInWorldUnits === "number" &&
+      this.centerCoords(data.centerWorldCoords);
   }
 
   centerPlanet(planet: Planet | undefined): void {
@@ -284,8 +293,8 @@ class Viewport {
   }
 
   centerCoords(coords: WorldCoords): void {
-    if (typeof coords.x !== 'number' || typeof coords.y !== 'number')
-      throw new Error('please pass in an object that looks like {x: 0, y: 0}');
+    if (typeof coords.x !== "number" || typeof coords.y !== "number")
+      throw new Error("please pass in an object that looks like {x: 0, y: 0}");
     this.centerWorldCoords = { ...coords };
   }
 
@@ -348,7 +357,10 @@ class Viewport {
     const uiEmitter = UIEmitter.getInstance();
 
     const worldCoords = this.canvasToWorldCoords(canvasCoords);
-    if (this.mousedownCoords && distL2(canvasCoords, this.mousedownCoords) < 3) {
+    if (
+      this.mousedownCoords &&
+      distL2(canvasCoords, this.mousedownCoords) < 3
+    ) {
       uiEmitter.emit(UIEmitterEvent.WorldMouseClick, worldCoords);
     }
 
@@ -440,18 +452,29 @@ class Viewport {
   }
 
   private worldToCanvasY(y: number): number {
-    return (-1 * (y - this.centerWorldCoords.y)) / this.scale + this.viewportHeight / 2;
+    return (
+      (-1 * (y - this.centerWorldCoords.y)) / this.scale +
+      this.viewportHeight / 2
+    );
   }
 
   private canvasToWorldY(y: number): number {
-    return -1 * (y - this.viewportHeight / 2) * this.scale + this.centerWorldCoords.y;
+    return (
+      -1 * (y - this.viewportHeight / 2) * this.scale + this.centerWorldCoords.y
+    );
   }
 
   public isInOrAroundViewport(coords: WorldCoords): boolean {
-    if (Math.abs(coords.x - this.centerWorldCoords.x) > 0.6 * this.widthInWorldUnits) {
+    if (
+      Math.abs(coords.x - this.centerWorldCoords.x) >
+      0.6 * this.widthInWorldUnits
+    ) {
       return false;
     }
-    if (Math.abs(coords.y - this.centerWorldCoords.y) > 0.6 * this.heightInWorldUnits) {
+    if (
+      Math.abs(coords.y - this.centerWorldCoords.y) >
+      0.6 * this.heightInWorldUnits
+    ) {
       return false;
     }
     return true;
@@ -474,7 +497,8 @@ class Viewport {
 
     const viewportLeft = this.centerWorldCoords.x - this.widthInWorldUnits / 2;
     const viewportRight = this.centerWorldCoords.x + this.widthInWorldUnits / 2;
-    const viewportBottom = this.centerWorldCoords.y - this.heightInWorldUnits / 2;
+    const viewportBottom =
+      this.centerWorldCoords.y - this.heightInWorldUnits / 2;
     const viewportTop = this.centerWorldCoords.y + this.heightInWorldUnits / 2;
     if (
       chunkLeft > viewportRight ||
@@ -494,7 +518,8 @@ class Viewport {
   private setWorldWidth(width: number): void {
     if (this.isValidWorldWidth(width)) {
       this.widthInWorldUnits = width;
-      this.heightInWorldUnits = (width * this.viewportHeight) / this.viewportWidth;
+      this.heightInWorldUnits =
+        (width * this.viewportHeight) / this.viewportWidth;
       this.scale = this.widthInWorldUnits / this.viewportWidth;
       this.updateDiagnostics();
     }
@@ -502,7 +527,8 @@ class Viewport {
 
   public setWorldHeight(height: number): void {
     this.heightInWorldUnits = height;
-    this.widthInWorldUnits = (height * this.viewportWidth) / this.viewportHeight;
+    this.widthInWorldUnits =
+      (height * this.viewportWidth) / this.viewportHeight;
     this.updateDiagnostics();
   }
 

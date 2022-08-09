@@ -1,18 +1,18 @@
-import { EthAddress, LiveMatch, ExtendedMatchEntry } from '@darkforest_eth/types';
-import React, { CSSProperties } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import styled from 'styled-components';
-import { Subber } from '../../Components/Text';
-import dfstyles from '../../Styles/dfstyles';
-import { useTwitters } from '../../Utils/AppHooks';
-import { formatStartTime } from '../../Utils/TimeUtils';
-import { compPlayerToEntry } from '../Leaderboards/ArenaLeaderboard';
-import { GenericErrorBoundary } from '../GenericErrorBoundary';
-import { getConfigName } from '@darkforest_eth/procedural';
-import { Btn } from '../../Components/Btn';
-import { Row } from '../../Components/Row';
-import _ from 'lodash';
-import Button from '../../Components/Button';
+import { EthAddress, LiveMatch, ExtendedMatchEntry } from "@dfdao/types";
+import React, { CSSProperties } from "react";
+import { Link, useHistory } from "react-router-dom";
+import styled from "styled-components";
+import { Subber } from "../../Components/Text";
+import dfstyles from "../../Styles/dfstyles";
+import { useTwitters } from "../../Utils/AppHooks";
+import { formatStartTime } from "../../Utils/TimeUtils";
+import { compPlayerToEntry } from "../Leaderboards/ArenaLeaderboard";
+import { GenericErrorBoundary } from "../GenericErrorBoundary";
+import { getConfigName } from "@dfdao/procedural";
+import { Btn } from "../../Components/Btn";
+import { Row } from "../../Components/Row";
+import _ from "lodash";
+import Button from "../../Components/Button";
 
 export interface FindMatchProps {
   game: LiveMatch | undefined;
@@ -21,7 +21,7 @@ export interface FindMatchProps {
 export interface MatchDetails {
   configHash: string;
   creator: EthAddress;
-  matchType: 'Solo' | '1v1';
+  matchType: "Solo" | "1v1";
   totalSpots: number;
   spotsTaken: number;
   matchId: string;
@@ -44,20 +44,22 @@ export const MatchComponent: React.FC<MatchDetails> = ({
 
   return (
     <MatchContainer>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
         <Button onClick={() => history.push(`map/${configHash}`)}>
           {getConfigName(configHash)}
         </Button>
         <span>By: {compPlayerToEntry(creator, twitters[creator])}</span>
         {players && players.length > 0 && (
           <span>
-            Players:{' '}
+            Players:{" "}
             {players.map((p) => (
-              <span key={p.address}>{compPlayerToEntry(p.address, twitters[p.address])}</span>
+              <span key={p.address}>
+                {compPlayerToEntry(p.address, twitters[p.address])}
+              </span>
             ))}
           </span>
         )}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
           <span>{matchType}</span>
           {totalSpots == spotsTaken ? (
             <span style={{ color: dfstyles.colors.dfred }}>
@@ -70,7 +72,7 @@ export const MatchComponent: React.FC<MatchDetails> = ({
           )}
         </div>
         <div>Creation Time: {formatStartTime(startTime)}</div>
-        <Link to={`/play/${matchId}`} target='_blank'>
+        <Link to={`/play/${matchId}`} target="_blank">
           {totalSpots == spotsTaken ? (
             <MatchButton>View</MatchButton>
           ) : (
@@ -96,15 +98,18 @@ export const FindMatch: React.FC<FindMatchProps> = ({ game }) => {
           _.chunk(game.entries, chunkSize).map((items, rowIdx) => (
             <Row
               key={`row-${rowIdx}`}
-              style={{ gap: '16px' } as CSSStyleDeclaration & CSSProperties}
+              style={{ gap: "16px" } as CSSStyleDeclaration & CSSProperties}
             >
               {items.map((entry: ExtendedMatchEntry) => (
                 <MatchComponent
                   configHash={entry.configHash}
                   key={entry.id}
                   creator={entry.creator}
-                  matchType='1v1'
-                  totalSpots={entry.planets.filter((planet) => planet.spawnPlanet == true).length}
+                  matchType="1v1"
+                  totalSpots={
+                    entry.planets.filter((planet) => planet.spawnPlanet == true)
+                      .length
+                  }
                   spotsTaken={entry.players ? entry.players.length : 0}
                   matchId={entry.id}
                   startTime={entry.startTime}

@@ -1,8 +1,8 @@
-import { monomitter, Monomitter } from '@darkforest_eth/events';
-import { AutoGasSetting, EthAddress, Setting } from '@darkforest_eth/types';
-import React, { useCallback, useState } from 'react';
-import GameUIManager from '../../Backend/GameLogic/GameUIManager';
-import { SelectFrom } from '../Components/CoreUI';
+import { monomitter, Monomitter } from "@dfdao/events";
+import { AutoGasSetting, EthAddress, Setting } from "@dfdao/types";
+import React, { useCallback, useState } from "react";
+import GameUIManager from "../../Backend/GameLogic/GameUIManager";
+import { SelectFrom } from "../Components/CoreUI";
 import {
   Checkbox,
   ColorInput,
@@ -12,8 +12,8 @@ import {
   DarkForestTextInput,
   NumberInput,
   TextInput,
-} from '../Components/Input';
-import { useEmitterSubscribe } from './EmitterHooks';
+} from "../Components/Input";
+import { useEmitterSubscribe } from "./EmitterHooks";
 
 /**
  * Whenever a setting changes, we publish the setting's name to this event emitter.
@@ -27,50 +27,50 @@ export const ALL_AUTO_GAS_SETTINGS = [
 ];
 
 function onlyInProduction(): string {
-  return process.env.NODE_ENV === 'production' ? 'true' : 'false';
+  return process.env.NODE_ENV === "production" ? "true" : "false";
 }
 
 function onlyInDevelopment(): string {
-  return process.env.NODE_ENV !== 'production' ? 'true' : 'false';
+  return process.env.NODE_ENV !== "production" ? "true" : "false";
 }
 
 const defaultSettings: Record<Setting, string> = {
   [Setting.OptOutMetrics]: onlyInDevelopment(),
-  [Setting.AutoApproveNonPurchaseTransactions]: 'true',
-  [Setting.DrawChunkBorders]: 'false',
-  [Setting.HighPerformanceRendering]: 'false',
-  [Setting.MoveNotifications]: 'true',
+  [Setting.AutoApproveNonPurchaseTransactions]: "true",
+  [Setting.DrawChunkBorders]: "false",
+  [Setting.HighPerformanceRendering]: "false",
+  [Setting.MoveNotifications]: "true",
   [Setting.HasAcceptedPluginRisk]: onlyInDevelopment(),
   [Setting.GasFeeGwei]: AutoGasSetting.Average,
-  [Setting.TerminalVisible]: 'true',
+  [Setting.TerminalVisible]: "true",
   // [Setting.TutorialOpen]: onlyInProduction(),
-  [Setting.TutorialOpen]: 'false',
-  [Setting.FoundPirates]: 'false',
-  [Setting.TutorialCompleted]: 'false',
-  [Setting.FoundSilver]: 'false',
-  [Setting.FoundSilverBank]: 'false',
-  [Setting.FoundTradingPost]: 'false',
-  [Setting.FoundComet]: 'false',
-  [Setting.FoundArtifact]: 'false',
-  [Setting.FoundDeepSpace]: 'false',
-  [Setting.FoundSpace]: 'false',
+  [Setting.TutorialOpen]: "false",
+  [Setting.FoundPirates]: "false",
+  [Setting.TutorialCompleted]: "false",
+  [Setting.FoundSilver]: "false",
+  [Setting.FoundSilverBank]: "false",
+  [Setting.FoundTradingPost]: "false",
+  [Setting.FoundComet]: "false",
+  [Setting.FoundArtifact]: "false",
+  [Setting.FoundDeepSpace]: "false",
+  [Setting.FoundSpace]: "false",
   // prevent the tutorial and help pane popping up in development mode.
-  [Setting.NewPlayer]: 'false',
-  [Setting.MiningCores]: '1',
-  [Setting.IsMining]: 'true',
-  [Setting.DisableDefaultShortcuts]: 'false',
-  [Setting.ExperimentalFeatures]: 'false',
-  [Setting.DisableEmojiRendering]: 'false',
-  [Setting.DisableHatRendering]: 'false',
-  [Setting.AutoClearConfirmedTransactionsAfterSeconds]: '-1',
-  [Setting.AutoClearRejectedTransactionsAfterSeconds]: '-1',
-  [Setting.DisableFancySpaceEffect]: 'true',
-  [Setting.RendererColorInnerNebula]: '#186469',
-  [Setting.RendererColorNebula]: '#0B2B5B',
-  [Setting.RendererColorSpace]: '#0B0F34',
-  [Setting.RendererColorDeepSpace]: '#0B061F',
-  [Setting.RendererColorDeadSpace]: '#11291b',
-  [Setting.ForceReloadEmbeddedPlugins]: 'false',
+  [Setting.NewPlayer]: "false",
+  [Setting.MiningCores]: "1",
+  [Setting.IsMining]: "true",
+  [Setting.DisableDefaultShortcuts]: "false",
+  [Setting.ExperimentalFeatures]: "false",
+  [Setting.DisableEmojiRendering]: "false",
+  [Setting.DisableHatRendering]: "false",
+  [Setting.AutoClearConfirmedTransactionsAfterSeconds]: "-1",
+  [Setting.AutoClearRejectedTransactionsAfterSeconds]: "-1",
+  [Setting.DisableFancySpaceEffect]: "true",
+  [Setting.RendererColorInnerNebula]: "#186469",
+  [Setting.RendererColorNebula]: "#0B2B5B",
+  [Setting.RendererColorSpace]: "#0B0F34",
+  [Setting.RendererColorDeepSpace]: "#0B061F",
+  [Setting.RendererColorDeadSpace]: "#11291b",
+  [Setting.ForceReloadEmbeddedPlugins]: "false",
 };
 
 interface SettingStorageConfig {
@@ -86,16 +86,19 @@ export function getLocalStorageSettingKey(
   setting: Setting
 ): string {
   if (account === undefined) {
-    return contractAddress + ':anonymous:' + setting;
+    return contractAddress + ":anonymous:" + setting;
   }
 
-  return contractAddress + ':' + account + ':' + setting;
+  return contractAddress + ":" + account + ":" + setting;
 }
 
 /**
  * Read the local storage setting from local storage.
  */
-export function getSetting(config: SettingStorageConfig, setting: Setting): string {
+export function getSetting(
+  config: SettingStorageConfig,
+  setting: Setting
+): string {
   const key = getLocalStorageSettingKey(config, setting);
 
   let valueInStorage = localStorage.getItem(key);
@@ -128,22 +131,32 @@ export function setSetting(
 /**
  * Loads from local storage, and interprets as a boolean the setting with the given name.
  */
-export function getBooleanSetting(config: SettingStorageConfig, setting: Setting): boolean {
+export function getBooleanSetting(
+  config: SettingStorageConfig,
+  setting: Setting
+): boolean {
   const value = getSetting(config, setting);
-  return value === 'true';
+  return value === "true";
 }
 
 /**
  * Save the given setting to local storage. Publish an event to {@link settingChanged$}.
  */
-export function setBooleanSetting(config: SettingStorageConfig, setting: Setting, value: boolean) {
-  setSetting(config, setting, value + '');
+export function setBooleanSetting(
+  config: SettingStorageConfig,
+  setting: Setting,
+  value: boolean
+) {
+  setSetting(config, setting, value + "");
 }
 
 /**
  * Loads from local storage, and interprets as a boolean the setting with the given name.
  */
-export function getNumberSetting(config: SettingStorageConfig, setting: Setting): number {
+export function getNumberSetting(
+  config: SettingStorageConfig,
+  setting: Setting
+): number {
   const value = getSetting(config, setting);
   const parsedValue = parseFloat(value);
 
@@ -157,8 +170,12 @@ export function getNumberSetting(config: SettingStorageConfig, setting: Setting)
 /**
  * Save the given setting to local storage. Publish an event to {@link settingChanged$}.
  */
-export function setNumberSetting(config: SettingStorageConfig, setting: Setting, value: number) {
-  setSetting(config, setting, value + '');
+export function setNumberSetting(
+  config: SettingStorageConfig,
+  setting: Setting,
+  value: number
+) {
+  setSetting(config, setting, value + "");
 }
 
 /**
@@ -171,7 +188,9 @@ export function useSetting(
   const contractAddress = uiManager.getContractAddress();
   const account = uiManager.getAccount();
   const config = { contractAddress, account };
-  const [settingValue, setSettingValue] = useState(() => getSetting(config, setting));
+  const [settingValue, setSettingValue] = useState(() =>
+    getSetting(config, setting)
+  );
 
   useEmitterSubscribe(
     settingChanged$,
@@ -259,7 +278,7 @@ export function useNumberSetting(
   return [
     parsedNumber,
     (newValue: number) => {
-      setStringSetting(newValue + '');
+      setStringSetting(newValue + "");
     },
   ];
 }
@@ -273,12 +292,12 @@ export function useBooleanSetting(
   setting: Setting
 ): [boolean, (newValue: boolean) => void] {
   const [stringSetting, setStringSetting] = useSetting(uiManager, setting);
-  const booleanValue = stringSetting === 'true';
+  const booleanValue = stringSetting === "true";
 
   return [
     booleanValue,
     (newValue: boolean) => {
-      setStringSetting(newValue + '');
+      setStringSetting(newValue + "");
     },
   ];
 }
@@ -322,7 +341,7 @@ export function NumberSetting({
 
   return (
     <NumberInput
-      format='float'
+      format="float"
       value={settingValue}
       onChange={(e: Event & React.ChangeEvent<DarkForestNumberInput>) => {
         if (e.target.value) {

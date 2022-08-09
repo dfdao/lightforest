@@ -1,5 +1,5 @@
-import { CONTRACT_PRECISION } from '@darkforest_eth/constants';
-import { hasOwner, isActivated, isEmojiFlagMessage } from '@darkforest_eth/gamelogic';
+import { CONTRACT_PRECISION } from "@dfdao/constants";
+import { hasOwner, isActivated, isEmojiFlagMessage } from "@dfdao/gamelogic";
 import {
   ArrivalType,
   Artifact,
@@ -11,9 +11,9 @@ import {
   Player,
   QueuedArrival,
   Upgrade,
-} from '@darkforest_eth/types';
-import _ from 'lodash';
-import { ContractConstants } from '../../_types/darkforest/api/ContractsAPITypes';
+} from "@dfdao/types";
+import _ from "lodash";
+import { ContractConstants } from "../../_types/darkforest/api/ContractsAPITypes";
 
 // TODO: planet class, cmon, let's go
 export const blocksLeftToProspectExpiration = (
@@ -24,11 +24,20 @@ export const blocksLeftToProspectExpiration = (
 };
 
 // TODO: Planet. Class.
-export const prospectExpired = (currentBlockNumber: number, prospectedBlockNumber: number) => {
-  return blocksLeftToProspectExpiration(currentBlockNumber, prospectedBlockNumber) <= 0;
+export const prospectExpired = (
+  currentBlockNumber: number,
+  prospectedBlockNumber: number
+) => {
+  return (
+    blocksLeftToProspectExpiration(currentBlockNumber, prospectedBlockNumber) <=
+    0
+  );
 };
 
-export const isFindable = (planet: Planet, currentBlockNumber?: number): boolean => {
+export const isFindable = (
+  planet: Planet,
+  currentBlockNumber?: number
+): boolean => {
   return (
     currentBlockNumber !== undefined &&
     planet.planetType === PlanetType.RUINS &&
@@ -39,7 +48,10 @@ export const isFindable = (planet: Planet, currentBlockNumber?: number): boolean
 };
 
 export const isProspectable = (planet: Planet): boolean => {
-  return planet.planetType === PlanetType.RUINS && planet.prospectedBlockNumber === undefined;
+  return (
+    planet.planetType === PlanetType.RUINS &&
+    planet.prospectedBlockNumber === undefined
+  );
 };
 
 const getSilverOverTime = (
@@ -56,7 +68,10 @@ const getSilverOverTime = (
   }
   const timeElapsed = endTimeMillis / 1000 - startTimeMillis / 1000;
 
-  return Math.min(timeElapsed * planet.silverGrowth + planet.silver, planet.silverCap);
+  return Math.min(
+    timeElapsed * planet.silverGrowth + planet.silver,
+    planet.silverCap
+  );
 };
 
 const getEnergyAtTime = (planet: Planet, atTimeMillis: number): number => {
@@ -93,13 +108,18 @@ export const updatePlanetToTime = (
   }
 
   if (planet.pausers === 0) {
-    planet.silver = getSilverOverTime(planet, planet.lastUpdated * 1000, atTimeMillis);
+    planet.silver = getSilverOverTime(
+      planet,
+      planet.lastUpdated * 1000,
+      atTimeMillis
+    );
     planet.energy = getEnergyAtTime(planet, atTimeMillis);
   }
 
   planet.lastUpdated = atTimeMillis / 1000;
 
-  const photoidActivationTime = contractConstants.PHOTOID_ACTIVATION_DELAY * 1000;
+  const photoidActivationTime =
+    contractConstants.PHOTOID_ACTIVATION_DELAY * 1000;
   const activePhotoid = planetArtifacts.find(
     (a) =>
       a.artifactType === ArtifactType.PhotoidCannon &&
@@ -115,7 +135,11 @@ export const updatePlanetToTime = (
   setPlanet(planet);
 };
 
-export const applyUpgrade = (planet: Planet, upgrade: Upgrade, unApply = false) => {
+export const applyUpgrade = (
+  planet: Planet,
+  upgrade: Upgrade,
+  unApply = false
+) => {
   if (unApply) {
     planet.speed /= upgrade.energyCapMultiplier / 100;
     planet.energyGrowth /= upgrade.energyGroMultiplier / 100;
@@ -153,11 +177,18 @@ export const arrive = (
 ): PlanetDiff => {
   // this function optimistically simulates an arrival
   if (toPlanet.locationId !== arrival.toPlanet) {
-    throw new Error(`attempted to apply arrival for wrong toPlanet ${toPlanet.locationId}`);
+    throw new Error(
+      `attempted to apply arrival for wrong toPlanet ${toPlanet.locationId}`
+    );
   }
 
   // update toPlanet energy and silver right before arrival
-  updatePlanetToTime(toPlanet, artifactsOnPlanet, arrival.arrivalTime * 1000, contractConstants);
+  updatePlanetToTime(
+    toPlanet,
+    artifactsOnPlanet,
+    arrival.arrivalTime * 1000,
+    contractConstants
+  );
 
   const prevPlanet = _.cloneDeep(toPlanet);
   if (toPlanet.destroyed) {
@@ -168,7 +199,10 @@ export const arrive = (
   const { energyArriving } = arrival;
 
   const onSameTeam = toOwner && arrivalPlayer?.team == toOwner?.team;
-  if (arrival.player !== toPlanet.owner && (!contractConstants.TEAMS_ENABLED || !onSameTeam) ) {
+  if (
+    arrival.player !== toPlanet.owner &&
+    (!contractConstants.TEAMS_ENABLED || !onSameTeam)
+  ) {
     if (arrival.arrivalType === ArrivalType.Wormhole) {
       // if this is a wormhole arrival to a planet that isn't owned by the initiator of
       // the move, then don't move any energy
@@ -176,19 +210,24 @@ export const arrive = (
     // attacking enemy - includes emptyAddress
     else if (
       toPlanet.energy >
-      Math.floor((energyArriving * CONTRACT_PRECISION * 100) / toPlanet.defense) /
+      Math.floor(
+        (energyArriving * CONTRACT_PRECISION * 100) / toPlanet.defense
+      ) /
         CONTRACT_PRECISION
     ) {
       // attack reduces target planet's garrison but doesn't conquer it
       toPlanet.energy -=
-        Math.floor((energyArriving * CONTRACT_PRECISION * 100) / toPlanet.defense) /
-        CONTRACT_PRECISION;
+        Math.floor(
+          (energyArriving * CONTRACT_PRECISION * 100) / toPlanet.defense
+        ) / CONTRACT_PRECISION;
     } else {
       // conquers planet
       toPlanet.owner = arrival.player;
       toPlanet.energy =
         energyArriving -
-        Math.floor((toPlanet.energy * CONTRACT_PRECISION * toPlanet.defense) / 100) /
+        Math.floor(
+          (toPlanet.energy * CONTRACT_PRECISION * toPlanet.defense) / 100
+        ) /
           CONTRACT_PRECISION;
     }
   } else {
@@ -196,7 +235,10 @@ export const arrive = (
     toPlanet.energy += energyArriving;
   }
 
-  if (toPlanet.planetType === PlanetType.SILVER_BANK || toPlanet.pausers !== 0) {
+  if (
+    toPlanet.planetType === PlanetType.SILVER_BANK ||
+    toPlanet.pausers !== 0
+  ) {
     if (toPlanet.energy > toPlanet.energyCap) {
       toPlanet.energy = toPlanet.energyCap;
     }

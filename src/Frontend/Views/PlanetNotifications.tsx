@@ -1,14 +1,14 @@
-import { isLocatable } from '@darkforest_eth/gamelogic';
-import { EthAddress, Planet } from '@darkforest_eth/types';
-import React from 'react';
-import styled from 'styled-components';
-import { GameObjects } from '../../Backend/GameLogic/GameObjects';
-import { Wrapper } from '../../Backend/Utils/Wrapper';
-import { AccountLabel } from '../Components/Labels/Labels';
-import { Row } from '../Components/Row';
-import { Sub } from '../Components/Text';
-import dfstyles from '../Styles/dfstyles';
-import { EmojiPlanetNotification } from './Game/EmojiPlanetNotification';
+import { isLocatable } from "@dfdao/gamelogic";
+import { EthAddress, Planet } from "@dfdao/types";
+import React from "react";
+import styled from "styled-components";
+import { GameObjects } from "../../Backend/GameLogic/GameObjects";
+import { Wrapper } from "../../Backend/Utils/Wrapper";
+import { AccountLabel } from "../Components/Labels/Labels";
+import { Row } from "../Components/Row";
+import { Sub } from "../Components/Text";
+import dfstyles from "../Styles/dfstyles";
+import { EmojiPlanetNotification } from "./Game/EmojiPlanetNotification";
 
 export const enum PlanetNotifType {
   PlanetCanUpgrade,
@@ -29,7 +29,8 @@ export function getNotifsForPlanet(
   if (!planet) return notifs;
 
   if (planet?.owner === account && account !== undefined) {
-    if (GameObjects.planetCanUpgrade(planet)) notifs.push(PlanetNotifType.PlanetCanUpgrade);
+    if (GameObjects.planetCanUpgrade(planet))
+      notifs.push(PlanetNotifType.PlanetCanUpgrade);
     if (process.env.DF_WEBSERVER_URL) notifs.push(PlanetNotifType.CanAddEmoji);
   }
 
@@ -46,14 +47,20 @@ const PlanetCanUpgradeRow = () => (
   </Row>
 );
 
-export const DistanceFromCenterRow = ({ planet }: { planet: Wrapper<Planet | undefined> }) =>
+export const DistanceFromCenterRow = ({
+  planet,
+}: {
+  planet: Wrapper<Planet | undefined>;
+}) =>
   planet.value && isLocatable(planet.value) ? (
     <Row>
       <Sub>
-        Distance From Center:{' '}
+        Distance From Center:{" "}
         {Math.floor(
           Math.sqrt(
-            planet.value.location.coords.x ** 2 + planet.value.location.coords.y ** 2 + 0.001
+            planet.value.location.coords.x ** 2 +
+              planet.value.location.coords.y ** 2 +
+              0.001
           )
         ).toLocaleString()}
       </Sub>
@@ -62,26 +69,46 @@ export const DistanceFromCenterRow = ({ planet }: { planet: Wrapper<Planet | und
     <Sub>Unclaimed</Sub>
   );
 
-export const PlanetClaimedRow = ({ planet }: { planet: Wrapper<Planet | undefined> }) =>
+export const PlanetClaimedRow = ({
+  planet,
+}: {
+  planet: Wrapper<Planet | undefined>;
+}) =>
   planet.value?.claimer ? (
     <Row>
       <Sub>
-        Claimed by{' '}
-        <AccountLabel ethAddress={planet.value?.claimer} includeAddressIfHasTwitter={true} />
+        Claimed by{" "}
+        <AccountLabel
+          ethAddress={planet.value?.claimer}
+          includeAddressIfHasTwitter={true}
+        />
       </Sub>
     </Row>
   ) : (
     <Sub>Unclaimed</Sub>
   );
 
-function renderNotification(notif: PlanetNotifType, planet: Wrapper<Planet | undefined>) {
+function renderNotification(
+  notif: PlanetNotifType,
+  planet: Wrapper<Planet | undefined>
+) {
   switch (notif) {
     case PlanetNotifType.PlanetCanUpgrade:
       return <PlanetCanUpgradeRow />;
     case PlanetNotifType.CanAddEmoji:
-      return <EmojiRow wrapper={planet} key={notif + (planet.value?.locationId + '')} />;
+      return (
+        <EmojiRow
+          wrapper={planet}
+          key={notif + (planet.value?.locationId + "")}
+        />
+      );
     case PlanetNotifType.Claimed:
-      return <PlanetClaimedRow key={notif + (planet.value?.locationId + '')} planet={planet} />;
+      return (
+        <PlanetClaimedRow
+          key={notif + (planet.value?.locationId + "")}
+          planet={planet}
+        />
+      );
     case PlanetNotifType.DistanceFromCenter:
       return <DistanceFromCenterRow planet={planet} />;
     default:

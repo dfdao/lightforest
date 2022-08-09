@@ -1,7 +1,7 @@
-import { ArtifactRarity, ArtifactRarityNames } from '@darkforest_eth/types';
-import React from 'react';
-import styled, { keyframes } from 'styled-components';
-import { RarityColors } from '../../Styles/Colors';
+import { ArtifactRarity, ArtifactRarityNames } from "@dfdao/types";
+import React from "react";
+import styled, { keyframes } from "styled-components";
+import { RarityColors } from "../../Styles/Colors";
 
 const color = keyframes`
   0% {
@@ -24,12 +24,18 @@ const Anim = styled.span`
   color: ${RarityColors[ArtifactRarity.Mythic]};
 `;
 
-export function MythicLabelText({ text, style }: { text: string; style?: React.CSSProperties }) {
+export function MythicLabelText({
+  text,
+  style,
+}: {
+  text: string;
+  style?: React.CSSProperties;
+}) {
   return (
     <Anim style={style}>
-      {text.split('').map((c, i) => (
+      {text.split("").map((c, i) => (
         <AnimDelay i={i} key={i}>
-          {c === ' ' ? <>&nbsp;</> : c}
+          {c === " " ? <>&nbsp;</> : c}
         </AnimDelay>
       ))}
     </Anim>

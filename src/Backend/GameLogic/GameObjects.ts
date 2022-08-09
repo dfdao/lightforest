@@ -1,8 +1,12 @@
-import { EMPTY_ADDRESS, MAX_PLANET_LEVEL, MIN_PLANET_LEVEL } from '@darkforest_eth/constants';
-import { Monomitter, monomitter } from '@darkforest_eth/events';
-import { hasOwner, isActivated, isLocatable } from '@darkforest_eth/gamelogic';
-import { bonusFromHex, getBytesFromHex } from '@darkforest_eth/hexgen';
-import { TxCollection } from '@darkforest_eth/network';
+import {
+  EMPTY_ADDRESS,
+  MAX_PLANET_LEVEL,
+  MIN_PLANET_LEVEL,
+} from "@dfdao/constants";
+import { Monomitter, monomitter } from "@dfdao/events";
+import { hasOwner, isActivated, isLocatable } from "@dfdao/gamelogic";
+import { bonusFromHex, getBytesFromHex } from "@dfdao/hexgen";
+import { TxCollection } from "@dfdao/network";
 import {
   isUnconfirmedActivateArtifact,
   isUnconfirmedActivateArtifactTx,
@@ -32,7 +36,7 @@ import {
   isUnconfirmedWithdrawArtifactTx,
   isUnconfirmedWithdrawSilver,
   isUnconfirmedWithdrawSilverTx,
-} from '@darkforest_eth/serde';
+} from "@dfdao/serde";
 import {
   Abstract,
   ArrivalWithTimer,
@@ -58,25 +62,25 @@ import {
   WorldCoords,
   WorldLocation,
   Wormhole,
-} from '@darkforest_eth/types';
-import autoBind from 'auto-bind';
-import bigInt from 'big-integer';
-import { ethers } from 'ethers';
-import _ from 'lodash';
-import NotificationManager from '../../Frontend/Game/NotificationManager';
+} from "@dfdao/types";
+import autoBind from "auto-bind";
+import bigInt from "big-integer";
+import { ethers } from "ethers";
+import _ from "lodash";
+import NotificationManager from "../../Frontend/Game/NotificationManager";
 import {
   getArtifactId,
   getArtifactOwner,
   getPlanetId,
   getPlanetOwner,
   setObjectSyncState,
-} from '../../Frontend/Utils/EmitterUtils';
-import { ContractConstants } from '../../_types/darkforest/api/ContractsAPITypes';
-import { arrive, PlanetDiff, updatePlanetToTime } from './ArrivalUtils';
-import GameManager from './GameManager';
-import { LayeredMap } from './LayeredMap';
+} from "../../Frontend/Utils/EmitterUtils";
+import { ContractConstants } from "../../_types/darkforest/api/ContractsAPITypes";
+import { arrive, PlanetDiff, updatePlanetToTime } from "./ArrivalUtils";
+import GameManager from "./GameManager";
+import { LayeredMap } from "./LayeredMap";
 
-type CoordsString = Abstract<string, 'CoordString'>;
+type CoordsString = Abstract<string, "CoordString">;
 
 const getCoordsString = (coords: WorldCoords): CoordsString => {
   return `${coords.x},${coords.y}` as CoordsString;
@@ -282,9 +286,8 @@ export class GameObjects {
       const arrivalIds = unprocessedPlanetArrivalIds.get(planetId);
 
       if (planet && arrivalIds) {
-        const arrivalsForPlanetNull: (QueuedArrival | undefined)[] = arrivalIds.map((arrivalId) =>
-          unprocessedArrivals.get(arrivalId)
-        );
+        const arrivalsForPlanetNull: (QueuedArrival | undefined)[] =
+          arrivalIds.map((arrivalId) => unprocessedArrivals.get(arrivalId));
         const arrivalsForPlanet: QueuedArrival[] = arrivalsForPlanetNull.filter(
           (x) => !!x
         ) as QueuedArrival[];
@@ -379,7 +382,10 @@ export class GameObjects {
   }
 
   // get planet by ID - must be in contract or known chunks
-  public getPlanetWithId(planetId: LocationId, updateIfStale = true): Planet | undefined {
+  public getPlanetWithId(
+    planetId: LocationId,
+    updateIfStale = true
+  ): Planet | undefined {
     const planet = this.planets.get(planetId);
     if (planet) {
       if (updateIfStale) {
@@ -453,7 +459,10 @@ export class GameObjects {
    * Given a planet id, update the state of the given planet by calling the given update function.
    * If the planet was updated, then also publish the appropriate event.
    */
-  public updateArtifact(id: ArtifactId | undefined, updateFn: (p: Artifact) => void) {
+  public updateArtifact(
+    id: ArtifactId | undefined,
+    updateFn: (p: Artifact) => void
+  ) {
     const artifact = this.getArtifactById(id);
 
     if (artifact !== undefined) {
@@ -506,7 +515,8 @@ export class GameObjects {
       planet.heldArtifactIds = updatedArtifactsOnPlanet;
     }
     // make planet Locatable if we know its location
-    const loc = this.planetLocationMap.get(planet.locationId) || revealedLocation;
+    const loc =
+      this.planetLocationMap.get(planet.locationId) || revealedLocation;
     if (loc) {
       (planet as LocatablePlanet).location = loc;
       (planet as LocatablePlanet).biome = this.getBiome(loc);
@@ -527,7 +537,10 @@ export class GameObjects {
     if (updatedArrivals) {
       // apply arrivals
       this.clearOldArrivals(planet);
-      const updatedAwts = this.processArrivalsForPlanet(planet.locationId, updatedArrivals);
+      const updatedAwts = this.processArrivalsForPlanet(
+        planet.locationId,
+        updatedArrivals
+      );
       for (const awt of updatedAwts) {
         const arrivalId = awt.arrivalData.eventId;
         this.arrivals.set(arrivalId, awt);
@@ -556,7 +569,9 @@ export class GameObjects {
   // - returns an empty planet if planet is not in contract
   // - returns undefined if this isn't a planet, according to hash and coords
   // - if this planet hasn't been initialized in the client yet, initializes it
-  public getPlanetWithLocation(location: WorldLocation | undefined): Planet | undefined {
+  public getPlanetWithLocation(
+    location: WorldLocation | undefined
+  ): Planet | undefined {
     if (!location) return undefined;
 
     const planet = this.planets.get(location.hash);
@@ -588,7 +603,10 @@ export class GameObjects {
     this.layeredMap.insertPlanet(
       planetLocation,
       this.getPlanetWithId(planetLocation.hash, false)?.planetLevel ??
-        this.planetLevelFromHexPerlin(planetLocation.hash, planetLocation.perlin)
+        this.planetLevelFromHexPerlin(
+          planetLocation.hash,
+          planetLocation.perlin
+        )
     );
 
     this.planetLocationMap.set(planetLocation.hash, planetLocation);
@@ -961,7 +979,10 @@ export class GameObjects {
   /**
    * Gets all the planets with the given ids, giltering out the ones that we don't have.
    */
-  public getPlanetsWithIds(locationIds: LocationId[], updateIfStale = true): Planet[] {
+  public getPlanetsWithIds(
+    locationIds: LocationId[],
+    updateIfStale = true
+  ): Planet[] {
     return locationIds
       .map((id) => this.getPlanetWithId(id, updateIfStale))
       .filter((p) => p !== undefined) as Planet[];
@@ -971,7 +992,10 @@ export class GameObjects {
    * Gets all the planets that are within {@code radius} world units from the given coordinate. Fast
    * because it uses {@link LayeredMap}.
    */
-  public getPlanetsInWorldCircle(coords: WorldCoords, radius: number): LocatablePlanet[] {
+  public getPlanetsInWorldCircle(
+    coords: WorldCoords,
+    radius: number
+  ): LocatablePlanet[] {
     const locationIds = this.layeredMap.getPlanetsInCircle(coords, radius);
     return this.getPlanetsWithIds(locationIds) as LocatablePlanet[];
   }
@@ -998,7 +1022,10 @@ export class GameObjects {
       levels,
       planetLevelToRadii
     );
-    return this.getPlanetsWithIds(locationIds, updateIfStale) as LocatablePlanet[];
+    return this.getPlanetsWithIds(
+      locationIds,
+      updateIfStale
+    ) as LocatablePlanet[];
   }
 
   public forceTick(locationId: LocationId) {
@@ -1038,7 +1065,10 @@ export class GameObjects {
    * @param artifact the artifact to set
    */
   private setArtifact(artifact: Artifact) {
-    if (artifact.artifactType === ArtifactType.Wormhole && artifact.onPlanetId) {
+    if (
+      artifact.artifactType === ArtifactType.Wormhole &&
+      artifact.onPlanetId
+    ) {
       if (artifact.wormholeTo && isActivated(artifact)) {
         this.wormholes.set(artifact.id, {
           from: artifact.onPlanetId,
@@ -1108,7 +1138,9 @@ export class GameObjects {
   ): ArrivalWithTimer[] {
     const planet = this.planets.get(planetId);
     if (!planet) {
-      console.error(`attempted to process arrivals for planet not in memory: ${planetId}`);
+      console.error(
+        `attempted to process arrivals for planet not in memory: ${planetId}`
+      );
       return [];
     }
     // process the QueuedArrival[] for a single planet
@@ -1161,7 +1193,9 @@ export class GameObjects {
           arrivalsWithTimers.push(arrivalWithTimer);
         }
       } catch (e) {
-        console.error(`error occurred processing arrival for updated planet ${planetId}: ${e}`);
+        console.error(
+          `error occurred processing arrival for updated planet ${planetId}: ${e}`
+        );
       }
     }
     return arrivalsWithTimers;
@@ -1186,7 +1220,10 @@ export class GameObjects {
     this.planetArrivalIds.set(planetId, []);
   }
 
-  public planetLevelFromHexPerlin(hex: LocationId, perlin: number): PlanetLevel {
+  public planetLevelFromHexPerlin(
+    hex: LocationId,
+    perlin: number
+  ): PlanetLevel {
     const spaceType = this.spaceTypeFromPerlin(perlin);
 
     const levelBigInt = getBytesFromHex(hex, 4, 7);
@@ -1194,7 +1231,9 @@ export class GameObjects {
     let ret = MIN_PLANET_LEVEL;
 
     for (let type = MAX_PLANET_LEVEL; type >= MIN_PLANET_LEVEL; type--) {
-      if (levelBigInt < bigInt(this.contractConstants.planetLevelThresholds[type])) {
+      if (
+        levelBigInt < bigInt(this.contractConstants.planetLevelThresholds[type])
+      ) {
         ret = type;
         break;
       }
@@ -1234,8 +1273,10 @@ export class GameObjects {
     const totalRank = planet.upgradeState.reduce((a, b) => a + b);
     if (planet.spaceType === SpaceType.NEBULA && totalRank >= 3) return false;
     if (planet.spaceType === SpaceType.SPACE && totalRank >= 4) return false;
-    if (planet.spaceType === SpaceType.DEEP_SPACE && totalRank >= 5) return false;
-    if (planet.spaceType === SpaceType.DEAD_SPACE && totalRank >= 5) return false;
+    if (planet.spaceType === SpaceType.DEEP_SPACE && totalRank >= 5)
+      return false;
+    if (planet.spaceType === SpaceType.DEAD_SPACE && totalRank >= 5)
+      return false;
     return (
       planet.planetLevel !== 0 &&
       planet.planetType === PlanetType.PLANET &&
@@ -1248,7 +1289,8 @@ export class GameObjects {
     const planetLevel = this.planetLevelFromHexPerlin(hex, perlin);
 
     const spaceType = this.spaceTypeFromPerlin(perlin);
-    const weights = this.contractConstants.PLANET_TYPE_WEIGHTS[spaceType][planetLevel];
+    const weights =
+      this.contractConstants.PLANET_TYPE_WEIGHTS[spaceType][planetLevel];
     const weightSum = weights.reduce((x, y) => x + y);
     let thresholds = [weightSum - weights[0]];
     for (let i = 1; i < weights.length; i++) {
@@ -1291,8 +1333,14 @@ export class GameObjects {
     const planetType = this.planetTypeFromHexPerlin(hex, perlin);
     const spaceType = this.spaceTypeFromPerlin(perlin);
 
-    const [energyCapBonus, energyGroBonus, rangeBonus, speedBonus, defBonus, spaceJunkBonus] =
-      bonusFromHex(hex);
+    const [
+      energyCapBonus,
+      energyGroBonus,
+      rangeBonus,
+      speedBonus,
+      defBonus,
+      spaceJunkBonus,
+    ] = bonusFromHex(hex);
 
     let energyCap = this.contractConstants.defaultPopulationCap[planetLevel];
     let energyGro = this.contractConstants.defaultPopulationGrowth[planetLevel];
@@ -1358,7 +1406,9 @@ export class GameObjects {
     }
 
     let pirates =
-      (energyCap * this.contractConstants.defaultBarbarianPercentage[planetLevel]) / 100;
+      (energyCap *
+        this.contractConstants.defaultBarbarianPercentage[planetLevel]) /
+      100;
     // increase pirates
     if (spaceType === SpaceType.DEAD_SPACE) pirates *= 20;
     else if (spaceType === SpaceType.DEEP_SPACE) pirates *= 10;
@@ -1432,7 +1482,7 @@ export class GameObjects {
 
       isTargetPlanet,
       isSpawnPlanet,
-      blockedPlanetIds: []
+      blockedPlanetIds: [],
     };
   }
 
@@ -1470,7 +1520,10 @@ export class GameObjects {
    * doesn't produce silver, returns undefined if already over percent% of silcap,
    * returns undefined
    */
-  public getSilverCurveAtPercent(planet: Planet, percent: number): number | undefined {
+  public getSilverCurveAtPercent(
+    planet: Planet,
+    percent: number
+  ): number | undefined {
     if (planet.silverGrowth <= 0) {
       return undefined;
     }
@@ -1506,14 +1559,18 @@ export class GameObjects {
       const arrival = this.arrivals.get(artifact.onVoyageId);
       return arrival?.arrivalData.player || undefined;
     } else {
-      return artifact.currentOwner === EMPTY_ADDRESS ? undefined : artifact.currentOwner;
+      return artifact.currentOwner === EMPTY_ADDRESS
+        ? undefined
+        : artifact.currentOwner;
     }
   }
 
   /**
    * Get all of the incoming voyages for a given location.
    */
-  public getArrivalIdsForLocation(location: LocationId | undefined): VoyageId[] | undefined {
+  public getArrivalIdsForLocation(
+    location: LocationId | undefined
+  ): VoyageId[] | undefined {
     if (!location) return [];
 
     return this.planetArrivalIds.get(location);

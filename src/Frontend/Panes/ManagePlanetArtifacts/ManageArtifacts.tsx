@@ -1,9 +1,9 @@
-import { Artifact, LocatablePlanet, PlanetType } from '@darkforest_eth/types';
-import React, { useEffect, useState } from 'react';
-import styled, { css } from 'styled-components';
-import { Spacer } from '../../Components/CoreUI';
-import { ModalHandle } from '../../Views/Game/ModalPane';
-import { AllArtifacts } from '../Game/ArtifactsList';
+import { Artifact, LocatablePlanet, PlanetType } from "@dfdao/types";
+import React, { useEffect, useState } from "react";
+import styled, { css } from "styled-components";
+import { Spacer } from "../../Components/CoreUI";
+import { ModalHandle } from "../../Views/Game/ModalPane";
+import { AllArtifacts } from "../Game/ArtifactsList";
 
 export function ManageArtifactsPane({
   planet,
@@ -96,7 +96,7 @@ const SelectArtifactsContainer = styled.div`
 
 const SelectArtifactList = styled.span`
   ${({ selected }: { selected?: boolean }) => css`
-    ${selected && 'text-decoration: underline;'}
+    ${selected && "text-decoration: underline;"}
     cursor: pointer;
   `}
 `;

@@ -1,5 +1,5 @@
-import { formatNumber, isAncient, isLocatable } from '@darkforest_eth/gamelogic';
-import { getPlanetName } from '@darkforest_eth/procedural';
+import { formatNumber, isAncient, isLocatable } from "@dfdao/gamelogic";
+import { getPlanetName } from "@dfdao/procedural";
 import {
   ArtifactRarityNames,
   ArtifactTypeNames,
@@ -7,14 +7,19 @@ import {
   Planet,
   PlanetType,
   TooltipName,
-} from '@darkforest_eth/types';
-import React, { useMemo } from 'react';
-import styled from 'styled-components';
-import { Wrapper } from '../../../Backend/Utils/Wrapper';
-import { StatIdx } from '../../../_types/global/GlobalTypes';
-import { AlignCenterHorizontally, EmSpacer, InlineBlock, SpreadApart } from '../../Components/CoreUI';
-import { Icon, IconType } from '../../Components/Icons';
-import { AccountLabel } from '../../Components/Labels/Labels';
+} from "@dfdao/types";
+import React, { useMemo } from "react";
+import styled from "styled-components";
+import { Wrapper } from "../../../Backend/Utils/Wrapper";
+import { StatIdx } from "../../../_types/global/GlobalTypes";
+import {
+  AlignCenterHorizontally,
+  EmSpacer,
+  InlineBlock,
+  SpreadApart,
+} from "../../Components/CoreUI";
+import { Icon, IconType } from "../../Components/Icons";
+import { AccountLabel } from "../../Components/Labels/Labels";
 import {
   DefenseText,
   EnergyGrowthText,
@@ -27,21 +32,31 @@ import {
   RangeText,
   SilverGrowthText,
   SpeedText,
-} from '../../Components/Labels/PlanetLabels';
-import { Green, Red, Smaller, Sub } from '../../Components/Text';
-import { PlanetIcons } from '../../Renderers/PlanetscapeRenderer/PlanetIcons';
-import dfstyles, { snips } from '../../Styles/dfstyles';
-import { useActiveArtifact, usePlanetArtifacts, useUIManager } from '../../Utils/AppHooks';
-import { useEmitterValue } from '../../Utils/EmitterHooks';
-import { SelectArtifactRow } from './ArtifactRow';
-import { Halved, PlanetActiveArtifact, RowTip, TimesTwo, TitleBar } from '../PlanetCardComponents';
+} from "../../Components/Labels/PlanetLabels";
+import { Green, Red, Smaller, Sub } from "../../Components/Text";
+import { PlanetIcons } from "../../Renderers/PlanetscapeRenderer/PlanetIcons";
+import dfstyles, { snips } from "../../Styles/dfstyles";
+import {
+  useActiveArtifact,
+  usePlanetArtifacts,
+  useUIManager,
+} from "../../Utils/AppHooks";
+import { useEmitterValue } from "../../Utils/EmitterHooks";
+import { SelectArtifactRow } from "./ArtifactRow";
+import {
+  Halved,
+  PlanetActiveArtifact,
+  RowTip,
+  TimesTwo,
+  TitleBar,
+} from "../PlanetCardComponents";
 import {
   ArtifactRarityBiomeTypeText,
   ArtifactRarityLabelAnim,
-} from '../../Components/Labels/ArtifactLabels';
-import { getDeterministicArtifact } from '../../../Backend/Utils/Utils';
-import { ArtifactBiomeLabelAnimSimple } from '../../Components/Labels/BiomeLabels';
-import { EMPTY_ADDRESS } from '@darkforest_eth/constants';
+} from "../../Components/Labels/ArtifactLabels";
+import { getDeterministicArtifact } from "../../../Backend/Utils/Utils";
+import { ArtifactBiomeLabelAnimSimple } from "../../Components/Labels/BiomeLabels";
+import { EMPTY_ADDRESS } from "@dfdao/constants";
 
 export function PlanetCardTitle({
   planet,
@@ -54,7 +69,9 @@ export function PlanetCardTitle({
   if (small) return <>{getPlanetName(planet.value)}</>;
 
   return (
-    <AlignCenterHorizontally style={{ width: 'initial', display: 'inline-flex' }}>
+    <AlignCenterHorizontally
+      style={{ width: "initial", display: "inline-flex" }}
+    >
       {getPlanetName(planet.value)}
       <EmSpacer width={0.5} />
       <EmSpacer width={0.5} />
@@ -86,14 +103,18 @@ export function PlanetCard({
   const planet = p.value;
   const artifacts = usePlanetArtifacts(p, uiManager);
   const spaceJunkEnabled = uiManager.getSpaceJunkEnabled();
-  const isAbandoning = useEmitterValue(uiManager.isAbandoning$, uiManager.isAbandoning());
+  const isAbandoning = useEmitterValue(
+    uiManager.isAbandoning$,
+    uiManager.isAbandoning()
+  );
   const randomArtifacts = uiManager.contractConstants.RANDOM_ARTIFACTS;
 
   const energyLeftToClaimVictory = useMemo(() => {
     if (!planet) {
       return 0;
     }
-    const percentRequired = uiManager.contractConstants.CLAIM_VICTORY_ENERGY_PERCENT;
+    const percentRequired =
+      uiManager.contractConstants.CLAIM_VICTORY_ENERGY_PERCENT;
     const percentHeld = Math.floor((planet.energy * 100) / planet.energyCap);
     let percentNeeded;
     if (planet.owner == EMPTY_ADDRESS) {
@@ -112,7 +133,9 @@ export function PlanetCard({
   const triedFinding = planet.hasTriedFindingArtifact;
 
   const energyRequired =
-    (uiManager.contractConstants.CLAIM_VICTORY_ENERGY_PERCENT * planet.energyCap) / 100;
+    (uiManager.contractConstants.CLAIM_VICTORY_ENERGY_PERCENT *
+      planet.energyCap) /
+    100;
 
   const energyNeeded = energyRequired - planet.energy;
   return (
@@ -122,8 +145,8 @@ export function PlanetCard({
           <PlanetCardTitle planet={p} />
         </TitleBar>
       )}
-      <div style={{ padding: standalone ? '8px' : undefined }}>
-        <AlignCenterHorizontally style={{ justifyContent: 'space-between' }}>
+      <div style={{ padding: standalone ? "8px" : undefined }}>
+        <AlignCenterHorizontally style={{ justifyContent: "space-between" }}>
           <InlineBlock>
             <PlanetLevel planet={planet} />
             <EmSpacer width={0.5} />
@@ -134,11 +157,12 @@ export function PlanetCard({
           </InlineBlock>
         </AlignCenterHorizontally>
         {planet.isTargetPlanet && (
-          <AlignCenterHorizontally style={{ justifyContent: 'space-between' }}>
+          <AlignCenterHorizontally style={{ justifyContent: "space-between" }}>
             <Smaller>
               {energyLeftToClaimVictory > 0 ? (
                 <span>
-                  <Red>{formatNumber(energyLeftToClaimVictory)}</Red> needed to capture
+                  <Red>{formatNumber(energyLeftToClaimVictory)}</Red> needed to
+                  capture
                 </span>
               ) : (
                 <Green>This target is capturable!</Green>
@@ -147,9 +171,9 @@ export function PlanetCard({
           </AlignCenterHorizontally>
         )}
         {!randomArtifacts && isFoundry && !triedFinding ? (
-          <AlignCenterHorizontally style={{ justifyContent: 'space-between' }}>
+          <AlignCenterHorizontally style={{ justifyContent: "space-between" }}>
             <InlineBlock>
-              <span>Contains</span> <ArtifactRarityLabelAnim rarity={rarity} />{' '}
+              <span>Contains</span> <ArtifactRarityLabelAnim rarity={rarity} />{" "}
               <span>{ArtifactTypeNames[type]} </span>
             </InlineBlock>
           </AlignCenterHorizontally>
@@ -167,9 +191,9 @@ export function PlanetCard({
               <div
                 style={{
                   border: `1px solid ${dfstyles.colors.borderDarker}`,
-                  borderTop: 'none',
-                  borderLeft: 'none',
-                  width: '50%',
+                  borderTop: "none",
+                  borderLeft: "none",
+                  width: "50%",
                 }}
               >
                 <RowTip name={TooltipName.Energy}>
@@ -180,7 +204,9 @@ export function PlanetCard({
                     </AlignCenterHorizontally>
                     <AlignCenterHorizontally>
                       <PlanetEnergyLabel planet={planet} />
-                      {planet?.bonus && planet.bonus[StatIdx.EnergyCap] && <TimesTwo />}
+                      {planet?.bonus && planet.bonus[StatIdx.EnergyCap] && (
+                        <TimesTwo />
+                      )}
                       <EmSpacer width={0.5} />
                     </AlignCenterHorizontally>
                   </SpreadApart>
@@ -189,10 +215,10 @@ export function PlanetCard({
               <div
                 style={{
                   border: `1px solid ${dfstyles.colors.borderDarker}`,
-                  borderTop: 'none',
-                  borderRight: 'none',
-                  borderLeft: 'none',
-                  width: '50%',
+                  borderTop: "none",
+                  borderRight: "none",
+                  borderLeft: "none",
+                  width: "50%",
                 }}
               >
                 <RowTip name={TooltipName.Silver}>
@@ -215,10 +241,10 @@ export function PlanetCard({
               <div
                 style={{
                   border: `1px solid ${dfstyles.colors.borderDarker}`,
-                  borderTop: 'none',
-                  borderLeft: 'none',
-                  borderBottom: 'none',
-                  width: '50%',
+                  borderTop: "none",
+                  borderLeft: "none",
+                  borderBottom: "none",
+                  width: "50%",
                 }}
               >
                 <RowTip name={TooltipName.EnergyGrowth}>
@@ -229,7 +255,9 @@ export function PlanetCard({
                     </AlignCenterHorizontally>
                     <AlignCenterHorizontally>
                       <EnergyGrowthText planet={planet} />
-                      {planet?.bonus && planet.bonus[StatIdx.EnergyGro] && <TimesTwo />}
+                      {planet?.bonus && planet.bonus[StatIdx.EnergyGro] && (
+                        <TimesTwo />
+                      )}
                       <EmSpacer width={0.5} />
                     </AlignCenterHorizontally>
                   </SpreadApart>
@@ -237,10 +265,10 @@ export function PlanetCard({
               </div>
               <div
                 style={{
-                  borderBottom: 'none',
-                  borderTop: 'none',
-                  borderRight: 'none',
-                  width: '50%',
+                  borderBottom: "none",
+                  borderTop: "none",
+                  borderRight: "none",
+                  width: "50%",
                 }}
               >
                 <RowTip name={TooltipName.SilverGrowth}>
@@ -264,9 +292,9 @@ export function PlanetCard({
               <div
                 style={{
                   border: `1px solid ${dfstyles.colors.borderDarker}`,
-                  borderBottom: 'none',
-                  borderLeft: 'none',
-                  width: spaceJunkEnabled ? '25%' : '34%',
+                  borderBottom: "none",
+                  borderLeft: "none",
+                  width: spaceJunkEnabled ? "25%" : "34%",
                 }}
               >
                 <RowTip name={TooltipName.Defense}>
@@ -277,7 +305,9 @@ export function PlanetCard({
                     </AlignCenterHorizontally>
                     <AlignCenterHorizontally>
                       <DefenseText planet={planet} />
-                      {planet?.bonus && planet.bonus[StatIdx.Defense] && <TimesTwo />}
+                      {planet?.bonus && planet.bonus[StatIdx.Defense] && (
+                        <TimesTwo />
+                      )}
                       <EmSpacer width={0.5} />
                     </AlignCenterHorizontally>
                   </SpreadApart>
@@ -287,9 +317,9 @@ export function PlanetCard({
               <div
                 style={{
                   border: `1px solid ${dfstyles.colors.borderDarker}`,
-                  borderLeft: 'none',
-                  borderBottom: 'none',
-                  width: spaceJunkEnabled ? '25%' : '33%',
+                  borderLeft: "none",
+                  borderBottom: "none",
+                  width: spaceJunkEnabled ? "25%" : "33%",
                 }}
               >
                 <RowTip name={TooltipName.Speed}>
@@ -301,9 +331,13 @@ export function PlanetCard({
                     <AlignCenterHorizontally>
                       <SpeedText
                         planet={planet}
-                        buff={isAbandoning ? uiManager.getSpeedBuff() : undefined}
+                        buff={
+                          isAbandoning ? uiManager.getSpeedBuff() : undefined
+                        }
                       />
-                      {planet?.bonus && planet.bonus[StatIdx.Speed] && <TimesTwo />}
+                      {planet?.bonus && planet.bonus[StatIdx.Speed] && (
+                        <TimesTwo />
+                      )}
                       <EmSpacer width={0.5} />
                     </AlignCenterHorizontally>
                   </SpreadApart>
@@ -313,10 +347,10 @@ export function PlanetCard({
               <div
                 style={{
                   border: `1px solid ${dfstyles.colors.borderDarker}`,
-                  borderLeft: 'none',
-                  borderRight: 'none',
-                  borderBottom: 'none',
-                  width: spaceJunkEnabled ? '25%' : '33%',
+                  borderLeft: "none",
+                  borderRight: "none",
+                  borderBottom: "none",
+                  width: spaceJunkEnabled ? "25%" : "33%",
                 }}
               >
                 <RowTip name={TooltipName.Range}>
@@ -329,9 +363,13 @@ export function PlanetCard({
                     <AlignCenterHorizontally>
                       <RangeText
                         planet={planet}
-                        buff={isAbandoning ? uiManager.getRangeBuff() : undefined}
+                        buff={
+                          isAbandoning ? uiManager.getRangeBuff() : undefined
+                        }
                       />
-                      {planet?.bonus && planet.bonus[StatIdx.Range] && <TimesTwo />}
+                      {planet?.bonus && planet.bonus[StatIdx.Range] && (
+                        <TimesTwo />
+                      )}
                       <EmSpacer width={0.5} />
                     </AlignCenterHorizontally>
                   </SpreadApart>
@@ -342,9 +380,9 @@ export function PlanetCard({
                 <div
                   style={{
                     border: `1px solid ${dfstyles.colors.borderDarker}`,
-                    borderRight: 'none',
-                    borderBottom: 'none',
-                    width: '25%',
+                    borderRight: "none",
+                    borderBottom: "none",
+                    width: "25%",
                   }}
                 >
                   <RowTip name={TooltipName.SpaceJunk}>
@@ -356,7 +394,9 @@ export function PlanetCard({
 
                       <AlignCenterHorizontally>
                         <JunkText planet={planet} />
-                        {planet?.bonus && planet.bonus[StatIdx.SpaceJunk] && <Halved />}
+                        {planet?.bonus && planet.bonus[StatIdx.SpaceJunk] && (
+                          <Halved />
+                        )}
                         <EmSpacer width={0.5} />
                       </AlignCenterHorizontally>
                     </SpreadApart>
@@ -372,7 +412,10 @@ export function PlanetCard({
             <SpreadApart>
               <Sub>owner</Sub>
               <Sub>
-                <AccountLabel ethAddress={planet.owner} includeAddressIfHasTwitter={true} />
+                <AccountLabel
+                  ethAddress={planet.owner}
+                  includeAddressIfHasTwitter={true}
+                />
               </Sub>
             </SpreadApart>
             <SelectArtifactRow artifacts={artifacts} />

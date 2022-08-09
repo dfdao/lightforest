@@ -1,18 +1,18 @@
-import { isSpaceShip } from '@darkforest_eth/gamelogic';
-import { artifactName, getPlanetName } from '@darkforest_eth/procedural';
-import { Artifact, ArtifactTypeNames, LocationId } from '@darkforest_eth/types';
-import React from 'react';
-import styled from 'styled-components';
-import GameUIManager from '../../../Backend/GameLogic/GameUIManager';
-import { CenterBackgroundSubtext, Truncate } from '../../Components/CoreUI';
-import { ArtifactRarityLabelAnim } from '../../Components/Labels/ArtifactLabels';
-import { Sub } from '../../Components/Text';
-import { useUIManager } from '../../Utils/AppHooks';
-import { ArtifactLink } from '../../Views/Game/ArtifactLink';
-import { ModalHandle } from '../../Views/Game/ModalPane';
-import { PlanetLink } from '../../Views/Game/PlanetLink';
-import { SortableTable } from '../../Views/SortableTable';
-import { TabbedView } from '../../Views/TabbedView';
+import { isSpaceShip } from "@dfdao/gamelogic";
+import { artifactName, getPlanetName } from "@dfdao/procedural";
+import { Artifact, ArtifactTypeNames, LocationId } from "@dfdao/types";
+import React from "react";
+import styled from "styled-components";
+import GameUIManager from "../../../Backend/GameLogic/GameUIManager";
+import { CenterBackgroundSubtext, Truncate } from "../../Components/CoreUI";
+import { ArtifactRarityLabelAnim } from "../../Components/Labels/ArtifactLabels";
+import { Sub } from "../../Components/Text";
+import { useUIManager } from "../../Utils/AppHooks";
+import { ArtifactLink } from "../../Views/Game/ArtifactLink";
+import { ModalHandle } from "../../Views/Game/ModalPane";
+import { PlanetLink } from "../../Views/Game/PlanetLink";
+import { SortableTable } from "../../Views/SortableTable";
+import { TabbedView } from "../../Views/TabbedView";
 
 const ArtifactsBody = styled.div`
   min-height: 200px;
@@ -28,7 +28,10 @@ const PlanetName = styled.span`
   max-width: 100px;
 `;
 
-const planetArtifactName = (a: Artifact, uiManager: GameUIManager): string | undefined => {
+const planetArtifactName = (
+  a: Artifact,
+  uiManager: GameUIManager
+): string | undefined => {
   const onPlanet = uiManager?.getArtifactPlanet(a);
   if (!onPlanet) return undefined;
   return getPlanetName(onPlanet);
@@ -52,8 +55,8 @@ export function ArtifactsList({
   if (maxRarity !== undefined) {
     nonShipArtifacts = nonShipArtifacts.filter((a) => a.rarity <= maxRarity);
   }
-  const headers = ['Name', 'Location', 'Type', 'Rarity'];
-  const alignments: Array<'r' | 'c' | 'l'> = ['l', 'r', 'r', 'r'];
+  const headers = ["Name", "Location", "Type", "Rarity"];
+  const alignments: Array<"r" | "c" | "l"> = ["l", "r", "r", "r"];
 
   const columns = [
     (artifact: Artifact) => (
@@ -79,28 +82,33 @@ export function ArtifactsList({
     },
     (artifact: Artifact) => (
       <Sub>
-        <Truncate maxWidth='75px'>{ArtifactTypeNames[artifact.artifactType]}</Truncate>
+        <Truncate maxWidth="75px">
+          {ArtifactTypeNames[artifact.artifactType]}
+        </Truncate>
       </Sub>
     ),
-    (artifact: Artifact) => <ArtifactRarityLabelAnim rarity={artifact.rarity} />,
+    (artifact: Artifact) => (
+      <ArtifactRarityLabelAnim rarity={artifact.rarity} />
+    ),
   ];
 
   const sortFunctions = [
-    (left: Artifact, right: Artifact) => artifactName(left).localeCompare(artifactName(right)),
+    (left: Artifact, right: Artifact) =>
+      artifactName(left).localeCompare(artifactName(right)),
     (left: Artifact, right: Artifact) =>
       planetArtifactName(left, uiManager)?.localeCompare(
-        planetArtifactName(right, uiManager) || ''
+        planetArtifactName(right, uiManager) || ""
       ) || 0,
     (left: Artifact, right: Artifact) =>
       ArtifactTypeNames[left.artifactType]?.localeCompare(
-        ArtifactTypeNames[right.artifactType] || ''
+        ArtifactTypeNames[right.artifactType] || ""
       ) || 0,
     (left: Artifact, right: Artifact) => left.rarity - right.rarity,
   ];
 
   if (nonShipArtifacts.length === 0) {
     return (
-      <CenterBackgroundSubtext width={'100%'} height='100px'>
+      <CenterBackgroundSubtext width={"100%"} height="100px">
         {noArtifactsMessage ?? (
           <>
             You Don't Have <br /> Any Artifacts
@@ -134,8 +142,8 @@ export function ShipList({
   noShipsMessage?: React.ReactElement;
 }) {
   const uiManager = useUIManager();
-  const headers = ['Name', 'Location', 'Type'];
-  const alignments: Array<'r' | 'c' | 'l'> = ['l', 'r', 'r', 'r'];
+  const headers = ["Name", "Location", "Type"];
+  const alignments: Array<"r" | "c" | "l"> = ["l", "r", "r", "r"];
   const shipArtifacts = artifacts.filter((a) => isSpaceShip(a.artifactType));
 
   const columns = [
@@ -162,26 +170,29 @@ export function ShipList({
     },
     (artifact: Artifact) => (
       <Sub>
-        <Truncate maxWidth='75px'>{ArtifactTypeNames[artifact.artifactType]}</Truncate>
+        <Truncate maxWidth="75px">
+          {ArtifactTypeNames[artifact.artifactType]}
+        </Truncate>
       </Sub>
     ),
   ];
 
   const sortFunctions = [
-    (left: Artifact, right: Artifact) => artifactName(left).localeCompare(artifactName(right)),
+    (left: Artifact, right: Artifact) =>
+      artifactName(left).localeCompare(artifactName(right)),
     (left: Artifact, right: Artifact) =>
       planetArtifactName(left, uiManager)?.localeCompare(
-        planetArtifactName(right, uiManager) || ''
+        planetArtifactName(right, uiManager) || ""
       ) || 0,
     (left: Artifact, right: Artifact) =>
       ArtifactTypeNames[left.artifactType]?.localeCompare(
-        ArtifactTypeNames[right.artifactType] || ''
+        ArtifactTypeNames[right.artifactType] || ""
       ) || 0,
   ];
 
   if (shipArtifacts.length === 0) {
     return (
-      <CenterBackgroundSubtext width={'100%'} height='100px'>
+      <CenterBackgroundSubtext width={"100%"} height="100px">
         {noShipsMessage ?? (
           <>
             You Don't Have <br /> Any Ships
@@ -221,8 +232,8 @@ export function AllArtifacts({
   return (
     <ArtifactsBody>
       <TabbedView
-        style={{ height: '100%' }}
-        tabTitles={['artifacts', 'ships']}
+        style={{ height: "100%" }}
+        tabTitles={["artifacts", "ships"]}
         tabContents={(i) => {
           if (i === 0) {
             return (

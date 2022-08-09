@@ -4,28 +4,36 @@ import {
   Setting,
   TooltipName,
   WorldCoords,
-} from '@darkforest_eth/types';
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import TutorialManager, { TutorialState } from '../../../Backend/GameLogic/TutorialManager';
+} from "@dfdao/types";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import TutorialManager, {
+  TutorialState,
+} from "../../../Backend/GameLogic/TutorialManager";
 import {
   MiningPatternType,
   SpiralPattern,
   SwissCheesePattern,
   TowardsCenterPattern,
   TowardsCenterPatternV2,
-} from '../../../Backend/Miner/MiningPatterns';
-import { EmSpacer, SelectFrom } from '../../Components/CoreUI';
-import { Icon, IconType } from '../../Components/Icons';
-import { MaybeShortcutButton } from '../../Components/MaybeShortcutButton';
-import { Coords, Sub } from '../../Components/Text';
-import dfstyles from '../../Styles/dfstyles';
-import { useUIManager } from '../../Utils/AppHooks';
-import { MIN_CHUNK_SIZE } from '../../Utils/constants';
-import { MultiSelectSetting, useBooleanSetting } from '../../Utils/SettingsHooks';
-import { TOGGLE_EXPLORE, TOGGLE_TARGETTING } from '../../Utils/ShortcutConstants';
-import UIEmitter, { UIEmitterEvent } from '../../Utils/UIEmitter';
-import { TooltipTrigger } from '../Tooltip';
+} from "../../../Backend/Miner/MiningPatterns";
+import { EmSpacer, SelectFrom } from "../../Components/CoreUI";
+import { Icon, IconType } from "../../Components/Icons";
+import { MaybeShortcutButton } from "../../Components/MaybeShortcutButton";
+import { Coords, Sub } from "../../Components/Text";
+import dfstyles from "../../Styles/dfstyles";
+import { useUIManager } from "../../Utils/AppHooks";
+import { MIN_CHUNK_SIZE } from "../../Utils/constants";
+import {
+  MultiSelectSetting,
+  useBooleanSetting,
+} from "../../Utils/SettingsHooks";
+import {
+  TOGGLE_EXPLORE,
+  TOGGLE_TARGETTING,
+} from "../../Utils/ShortcutConstants";
+import UIEmitter, { UIEmitterEvent } from "../../Utils/UIEmitter";
+import { TooltipTrigger } from "../Tooltip";
 
 const StyledExplorePane = styled.div`
   background: ${dfstyles.colors.background};
@@ -43,12 +51,14 @@ const StyledExplorePane = styled.div`
 function Cores() {
   const uiManager = useUIManager();
 
-  const values = ['1', '2', '4', '8', '16', '32'];
-  const labels = values.map((value) => value + ' core' + (value === '1' ? '' : 's'));
+  const values = ["1", "2", "4", "8", "16", "32"];
+  const labels = values.map(
+    (value) => value + " core" + (value === "1" ? "" : "s")
+  );
 
   return (
     <MultiSelectSetting
-      style={{ width: '7em' }}
+      style={{ width: "7em" }}
       uiManager={uiManager}
       setting={Setting.MiningCores}
       values={values}
@@ -70,7 +80,12 @@ const miningSelectValues = [
   MiningPatternType.TowardsCenter.toString(),
   MiningPatternType.TowardsCenterV2.toString(),
 ];
-const miningSelectLabels = ['Spiral', 'SwissCheese', 'TowardsCenter', 'TowardsCenterV2'];
+const miningSelectLabels = [
+  "Spiral",
+  "SwissCheese",
+  "TowardsCenter",
+  "TowardsCenterV2",
+];
 
 function HashesPerSec() {
   const uiManager = useUIManager();
@@ -110,7 +125,9 @@ export function ExplorePane() {
   const uiManager = useUIManager();
   const modalManager = uiManager.getModalManager();
   const uiEmitter = UIEmitter.getInstance();
-  const [pattern, setPattern] = useState<string>(MiningPatternType.Spiral.toString());
+  const [pattern, setPattern] = useState<string>(
+    MiningPatternType.Spiral.toString()
+  );
   const [mining] = useBooleanSetting(uiManager, Setting.IsMining);
   const [targetting, setTargetting] = useState(false);
   const [coords, setCoords] = useState<WorldCoords>(uiManager.getHomeCoords());
@@ -143,8 +160,14 @@ export function ExplorePane() {
     uiEmitter.on(ModalManagerEvent.StateChanged, cursorStateChanged);
     return () => {
       uiEmitter.removeListener(UIEmitterEvent.WorldMouseDown, doMouseDown);
-      modalManager.removeListener(ModalManagerEvent.MiningCoordsUpdate, updateCoords);
-      uiEmitter.removeListener(ModalManagerEvent.StateChanged, cursorStateChanged);
+      modalManager.removeListener(
+        ModalManagerEvent.MiningCoordsUpdate,
+        updateCoords
+      );
+      uiEmitter.removeListener(
+        ModalManagerEvent.StateChanged,
+        cursorStateChanged
+      );
     };
   }, [uiEmitter, modalManager, uiManager, pattern]);
 
@@ -166,29 +189,39 @@ export function ExplorePane() {
   return (
     <StyledExplorePane>
       {/* button which allows player to preposition the center of their miner */}
-      <TooltipTrigger style={{ display: 'inline-block' }} name={TooltipName.MiningTarget}>
+      <TooltipTrigger
+        style={{ display: "inline-block" }}
+        name={TooltipName.MiningTarget}
+      >
         <MaybeShortcutButton
           onClick={doTarget}
           onShortcutPressed={doTarget}
           shortcutKey={TOGGLE_TARGETTING}
           shortcutText={TOGGLE_TARGETTING}
         >
-          {targetting ? 'Moving...' : 'Move'}
+          {targetting ? "Moving..." : "Move"}
           <EmSpacer width={1} />
           <Icon type={IconType.Target} />
         </MaybeShortcutButton>
       </TooltipTrigger>
       <EmSpacer width={0.5} />
       {/* button which toggles whether or not the game is mining. this persists between refreshes */}
-      <TooltipTrigger style={{ display: 'inline-block' }} name={TooltipName.MiningPause}>
+      <TooltipTrigger
+        style={{ display: "inline-block" }}
+        name={TooltipName.MiningPause}
+      >
         <MaybeShortcutButton
           onClick={doExplore}
           onShortcutPressed={doExplore}
           shortcutKey={TOGGLE_EXPLORE}
-          shortcutText={'space'}
+          shortcutText={"space"}
         >
-          {mining ? 'Pause' : 'Explore!'} <EmSpacer width={1} />{' '}
-          {mining ? <Icon type={IconType.Pause} /> : <Icon type={IconType.Play} />}
+          {mining ? "Pause" : "Explore!"} <EmSpacer width={1} />{" "}
+          {mining ? (
+            <Icon type={IconType.Pause} />
+          ) : (
+            <Icon type={IconType.Play} />
+          )}
         </MaybeShortcutButton>
       </TooltipTrigger>
 
@@ -199,7 +232,7 @@ export function ExplorePane() {
           <EmSpacer width={0.5} />
           {/* TODO: Make this a Settings thing */}
           <SelectFrom
-            style={{ width: '10em' }}
+            style={{ width: "10em" }}
             values={miningSelectValues}
             labels={miningSelectLabels}
             value={pattern}

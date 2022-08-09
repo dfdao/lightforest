@@ -1,21 +1,21 @@
-import React from 'react';
-import { ModifierType, TooltipName } from '@darkforest_eth/types';
+import React from "react";
+import { ModifierType, TooltipName } from "@dfdao/types";
 import {
   Checkbox,
   DarkForestCheckbox,
   DarkForestNumberInput,
   NumberInput,
-} from '../../Components/Input';
-import { ModifierText } from '../../Components/Labels/ModifierLabels';
-import { Row } from '../../Components/Row';
-import { DarkForestSlider, Slider } from '../../Components/Slider';
-import { LobbiesPaneProps, Warning } from './LobbiesUtils';
-import _ from 'lodash';
-import { Sub } from '../../Components/Text';
-import { PortalTooltipTrigger } from '../Tooltip';
+} from "../../Components/Input";
+import { ModifierText } from "../../Components/Labels/ModifierLabels";
+import { Row } from "../../Components/Row";
+import { DarkForestSlider, Slider } from "../../Components/Slider";
+import { LobbiesPaneProps, Warning } from "./LobbiesUtils";
+import _ from "lodash";
+import { Sub } from "../../Components/Text";
+import { PortalTooltipTrigger } from "../Tooltip";
 
 const rowChunkSize = 4;
-const rowStyle = { gap: '8px' } as CSSStyleDeclaration & React.CSSProperties;
+const rowStyle = { gap: "8px" } as CSSStyleDeclaration & React.CSSProperties;
 const itemStyle = { flex: `1 1 ${Math.floor(100 / rowChunkSize)}%` };
 
 function Modifiers({
@@ -29,10 +29,10 @@ function Modifiers({
       <ModifierText modifier={index as ModifierType} />
       <span> (%)</span>
       <NumberInput
-        format='integer'
+        format="integer"
         value={value}
         onChange={(e: Event & React.ChangeEvent<DarkForestNumberInput>) => {
-          onUpdate({ type: 'MODIFIERS', index, value: e.target.value });
+          onUpdate({ type: "MODIFIERS", index, value: e.target.value });
         }}
       />
     </div>
@@ -40,21 +40,23 @@ function Modifiers({
 }
 
 export function GameSettingsPane({ config, onUpdate }: LobbiesPaneProps) {
-  let modifiers = _.chunk(config.MODIFIERS.displayValue, rowChunkSize).map((items, rowIdx) => {
-    return (
-      <Row key={`threshold-row-${rowIdx}`} style={rowStyle}>
-        {items.map((item, idx) => (
-          <Modifiers
-            key={`threshold-lvl-${idx}`}
-            config={config}
-            value={item}
-            index={rowIdx * rowChunkSize + idx}
-            onUpdate={onUpdate}
-          />
-        ))}
-      </Row>
-    );
-  });
+  let modifiers = _.chunk(config.MODIFIERS.displayValue, rowChunkSize).map(
+    (items, rowIdx) => {
+      return (
+        <Row key={`threshold-row-${rowIdx}`} style={rowStyle}>
+          {items.map((item, idx) => (
+            <Modifiers
+              key={`threshold-lvl-${idx}`}
+              config={config}
+              value={item}
+              index={rowIdx * rowChunkSize + idx}
+              onUpdate={onUpdate}
+            />
+          ))}
+        </Row>
+      );
+    }
+  );
 
   return (
     <>
@@ -73,16 +75,16 @@ export function GameSettingsPane({ config, onUpdate }: LobbiesPaneProps) {
       <PortalTooltipTrigger
         name={TooltipName.Empty}
         extraContent={
-          'When enabled, you can block certain spawn planets from accessing certain admin-created planets in the planet creation pane.'
+          "When enabled, you can block certain spawn planets from accessing certain admin-created planets in the planet creation pane."
         }
-        style={{ width: '100%' }}
+        style={{ width: "100%" }}
       >
         <Row>
           <Checkbox
-            label='Block spawn planets enabled?'
+            label="Block spawn planets enabled?"
             checked={config.BLOCK_MOVES.displayValue}
             onChange={(e: Event & React.ChangeEvent<DarkForestCheckbox>) =>
-              onUpdate({ type: 'BLOCK_MOVES', value: e.target.checked })
+              onUpdate({ type: "BLOCK_MOVES", value: e.target.checked })
             }
           />
         </Row>
@@ -92,20 +94,23 @@ export function GameSettingsPane({ config, onUpdate }: LobbiesPaneProps) {
       </Row>
       <PortalTooltipTrigger
         name={TooltipName.Empty}
-        extraContent={'We recommend a game speed of at least 10x.'}
-        style={{ width: '100%' }}
+        extraContent={"We recommend a game speed of at least 10x."}
+        style={{ width: "100%" }}
       >
         <Row>
           <Slider
-            variant='filled'
-            label='Game speed'
-            formatOptions={{ style: 'unit', unit: 'x' }}
+            variant="filled"
+            label="Game speed"
+            formatOptions={{ style: "unit", unit: "x" }}
             min={1}
             max={60}
             step={1}
             value={config.TIME_FACTOR_HUNDREDTHS.displayValue}
             onChange={(e: Event & React.ChangeEvent<DarkForestSlider>) => {
-              onUpdate({ type: 'TIME_FACTOR_HUNDREDTHS', value: e.target.value });
+              onUpdate({
+                type: "TIME_FACTOR_HUNDREDTHS",
+                value: e.target.value,
+              });
             }}
           />
         </Row>
@@ -127,10 +132,13 @@ export function GameSettingsPane({ config, onUpdate }: LobbiesPaneProps) {
       </Row>
       <Row>
         <Checkbox
-          label='Planet transfer enabled?'
+          label="Planet transfer enabled?"
           checked={config.PLANET_TRANSFER_ENABLED.displayValue}
           onChange={(e: Event & React.ChangeEvent<DarkForestCheckbox>) => {
-            onUpdate({ type: 'PLANET_TRANSFER_ENABLED', value: e.target.checked });
+            onUpdate({
+              type: "PLANET_TRANSFER_ENABLED",
+              value: e.target.checked,
+            });
           }}
         />
       </Row>
@@ -142,7 +150,10 @@ export function GameSettingsPane({ config, onUpdate }: LobbiesPaneProps) {
         <NumberInput
           value={config.LOCATION_REVEAL_COOLDOWN.displayValue}
           onChange={(e: Event & React.ChangeEvent<DarkForestNumberInput>) => {
-            onUpdate({ type: 'LOCATION_REVEAL_COOLDOWN', value: e.target.value });
+            onUpdate({
+              type: "LOCATION_REVEAL_COOLDOWN",
+              value: e.target.value,
+            });
           }}
         />
       </Row>
@@ -154,17 +165,17 @@ export function GameSettingsPane({ config, onUpdate }: LobbiesPaneProps) {
         <PortalTooltipTrigger
           name={TooltipName.Empty}
           extraContent={
-            'Used when playing with traditional Dark Forest scoring.'
+            "Used when playing with traditional Dark Forest scoring."
           }
-          style={{ width: '100%' }}
+          style={{ width: "100%" }}
         >
           {/* It is a little weird that this is in Game Settings, but I'd rather keep other scoring grouped */}
           <span>Points per silver withdrawn</span>
           <NumberInput
-            format='float'
+            format="float"
             value={config.SILVER_SCORE_VALUE.displayValue}
             onChange={(e: Event & React.ChangeEvent<DarkForestNumberInput>) => {
-              onUpdate({ type: 'SILVER_SCORE_VALUE', value: e.target.value });
+              onUpdate({ type: "SILVER_SCORE_VALUE", value: e.target.value });
             }}
           />
         </PortalTooltipTrigger>

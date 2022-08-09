@@ -1,14 +1,14 @@
-import { Artifact, Planet, TooltipName } from '@darkforest_eth/types';
-import React from 'react';
-import styled from 'styled-components';
+import { Artifact, Planet, TooltipName } from "@dfdao/types";
+import React from "react";
+import styled from "styled-components";
 import {
   ArtifactBiomeText,
   ArtifactRarityLabelAnim,
   ArtifactTypeText,
-} from '../Components/Labels/ArtifactLabels';
-import { Sub, White } from '../Components/Text';
-import { TooltipTrigger } from '../Panes/Tooltip';
-import dfstyles from '../Styles/dfstyles';
+} from "../Components/Labels/ArtifactLabels";
+import { Sub, White } from "../Components/Text";
+import { TooltipTrigger } from "../Panes/Tooltip";
+import dfstyles from "../Styles/dfstyles";
 
 const BonusStyle = styled.span`
   color: ${dfstyles.colors.dfgreen};
@@ -21,10 +21,21 @@ const BonusStyle = styled.span`
 export const TimesTwo = () => <BonusStyle>x2</BonusStyle>;
 export const Halved = () => <BonusStyle>%2</BonusStyle>;
 
-export const RowTip = ({ name, children }: { name: TooltipName; children: React.ReactNode }) => (
+export const RowTip = ({
+  name,
+  children,
+}: {
+  name: TooltipName;
+  children: React.ReactNode;
+}) => (
   <TooltipTrigger
     name={name}
-    style={{ lineHeight: '100%', position: 'relative', top: '0.2em', cursor: 'help' }}
+    style={{
+      lineHeight: "100%",
+      position: "relative",
+      top: "0.2em",
+      cursor: "help",
+    }}
   >
     {children}
   </TooltipTrigger>
@@ -58,11 +69,12 @@ export function PlanetActiveArtifact({
   return (
     <StyledPlanetActiveArtifact planet={planet}>
       <Sub>
-        Active Artifact:{' '}
+        Active Artifact:{" "}
         <White>
-          {' '}
-          <ArtifactRarityLabelAnim rarity={artifact.rarity} />{' '}
-          <ArtifactBiomeText artifact={artifact} /> <ArtifactTypeText artifact={artifact} />
+          {" "}
+          <ArtifactRarityLabelAnim rarity={artifact.rarity} />{" "}
+          <ArtifactBiomeText artifact={artifact} />{" "}
+          <ArtifactTypeText artifact={artifact} />
         </White>
       </Sub>
     </StyledPlanetActiveArtifact>

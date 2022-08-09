@@ -1,14 +1,14 @@
-import { EthAddress, TooltipName } from '@darkforest_eth/types';
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { getRank, Rank } from '../../Backend/Utils/Rank';
-import dfstyles from '../Styles/dfstyles';
-import { useUIManager } from '../Utils/AppHooks';
-import { formatDuration } from '../Utils/TimeUtils';
+import { EthAddress, TooltipName } from "@dfdao/types";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { getRank, Rank } from "../../Backend/Utils/Rank";
+import dfstyles from "../Styles/dfstyles";
+import { useUIManager } from "../Utils/AppHooks";
+import { formatDuration } from "../Utils/TimeUtils";
 
 export function Timer({ account }: { account: EthAddress | undefined }) {
   const uiManager = useUIManager();
-  const [time, setTime] = useState('00:00:00');
+  const [time, setTime] = useState("00:00:00");
   const [color, setColor] = useState(dfstyles.colors.dfwhite);
   const [moves, setMoves] = useState<number>(0);
   const [score, setScore] = useState<number>(0);
@@ -45,8 +45,8 @@ export function Timer({ account }: { account: EthAddress | undefined }) {
 
     return (
       <>
-        {account && <span style={{ gridColumn: '1' }}>Moves: {moves}</span>}
-        <span style={{ gridColumn: '2' }}>{time}</span>
+        {account && <span style={{ gridColumn: "1" }}>Moves: {moves}</span>}
+        <span style={{ gridColumn: "2" }}>{time}</span>
         {/* <span style={{ color, gridColumn: '3' }}>Score: {Math.round(score)}</span> */}
       </>
     );

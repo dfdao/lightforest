@@ -1,14 +1,18 @@
-import { EthAddress, WorldCoords } from '@darkforest_eth/types';
-import React, { CSSProperties, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import styled from 'styled-components';
-import { Spacer } from '../../Components/CoreUI';
-import { Minimap } from '../../Components/Minimap';
-import { ConfigUpload, Logo } from '../../Panes/Lobby/LobbiesUtils';
-import { MinimapConfig } from '../../Panes/Lobby/MinimapUtils';
-import { LobbyAction, lobbyConfigInit, LobbyInitializers } from '../../Panes/Lobby/Reducer';
-import { stockConfig } from '../../Utils/StockConfigs';
-import { Account } from '../../Views/Portal/Account';
+import { EthAddress, WorldCoords } from "@dfdao/types";
+import React, { CSSProperties, useState } from "react";
+import { useHistory } from "react-router-dom";
+import styled from "styled-components";
+import { Spacer } from "../../Components/CoreUI";
+import { Minimap } from "../../Components/Minimap";
+import { ConfigUpload, Logo } from "../../Panes/Lobby/LobbiesUtils";
+import { MinimapConfig } from "../../Panes/Lobby/MinimapUtils";
+import {
+  LobbyAction,
+  lobbyConfigInit,
+  LobbyInitializers,
+} from "../../Panes/Lobby/Reducer";
+import { stockConfig } from "../../Utils/StockConfigs";
+import { Account } from "../../Views/Portal/Account";
 
 export const LobbyMapSelectPage: React.FC<{
   address: EthAddress;
@@ -17,12 +21,19 @@ export const LobbyMapSelectPage: React.FC<{
   createDisabled: boolean;
   root: string;
   setError: (error: string) => void;
-}> = ({ address, startingConfig, updateConfig, createDisabled, root, setError }) => {
-  const mapSizePx = '250px';
+}> = ({
+  address,
+  startingConfig,
+  updateConfig,
+  createDisabled,
+  root,
+  setError,
+}) => {
+  const mapSizePx = "250px";
   const history = useHistory();
 
   function pickMap(initializers: LobbyInitializers, active?: number) {
-    updateConfig({ type: 'RESET', value: lobbyConfigInit(initializers) });
+    updateConfig({ type: "RESET", value: lobbyConfigInit(initializers) });
     history.push(`${root}/confirm`);
   }
 
@@ -50,36 +61,41 @@ export const LobbyMapSelectPage: React.FC<{
 
   const stockMaps: map[] = [
     {
-      title: '(1P) Grand Prix',
+      title: "(1P) Grand Prix",
       initializers: stockConfig.onePlayerRace,
       description: "Try this week's competitive event!",
     },
     {
-      title: '(4P) Battle for the Center',
+      title: "(4P) Battle for the Center",
       initializers: stockConfig.fourPlayerBattle,
-      description: 'Win the planet in the center!',
+      description: "Win the planet in the center!",
     },
     {
-      title: '(2P) Race',
+      title: "(2P) Race",
       initializers: stockConfig.sprint,
-      description: 'Sprint for the target!',
+      description: "Sprint for the target!",
     },
     {
-      title: 'Custom',
+      title: "Custom",
       initializers: startingConfig,
-      description: 'Design your own game',
+      description: "Design your own game",
     },
   ];
 
-  const MapItemComponent: React.FC<{ mapContent: map; idx: number }> = ({ mapContent, idx }) => {
-    const [currentPointer, setCurrentPointer] = useState<WorldCoords | undefined>();
+  const MapItemComponent: React.FC<{ mapContent: map; idx: number }> = ({
+    mapContent,
+    idx,
+  }) => {
+    const [currentPointer, setCurrentPointer] = useState<
+      WorldCoords | undefined
+    >();
     return (
       <MapItem
         onClick={() => pickMap(mapContent.initializers, idx)}
         style={
           {
-            '--x': currentPointer?.x,
-            '--y': currentPointer?.y,
+            "--x": currentPointer?.x,
+            "--y": currentPointer?.y,
           } as CSSProperties
         }
         onMouseMove={(e: any) => {
@@ -108,8 +124,8 @@ export const LobbyMapSelectPage: React.FC<{
     <Container>
       <Topbar>
         <p
-          style={{ fontWeight: 'bold', fontSize: '1.5em', cursor: 'pointer' }}
-          onClick={() => history.push('/portal/home')}
+          style={{ fontWeight: "bold", fontSize: "1.5em", cursor: "pointer" }}
+          onClick={() => history.push("/portal/home")}
         >
           Home
         </p>
@@ -117,14 +133,25 @@ export const LobbyMapSelectPage: React.FC<{
       </Topbar>
 
       <Header>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "8px",
+          }}
+        >
           <Logo />
           <Title>Create a new Arena Match</Title>
         </div>
       </Header>
       <MapsContainer>
         {stockMaps.map((mapContent, idx) => (
-          <MapItemComponent key={`map-item-${idx}`} mapContent={mapContent} idx={idx} />
+          <MapItemComponent
+            key={`map-item-${idx}`}
+            mapContent={mapContent}
+            idx={idx}
+          />
         ))}
       </MapsContainer>
       <ConfigUpload
@@ -183,7 +210,7 @@ const UploadCustomMapContainer = styled.div<{ disabled: boolean }>`
   align-items: center;
   margin-top: 24px;
   justify-content: center;
-  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   border-radius: 3px;
   width: 100%;
   transition: 0.2s all ease-in-out;
@@ -235,7 +262,7 @@ const MapItem = styled.div`
   overflow: hidden;
   &:before,
   &:after {
-    content: '';
+    content: "";
     display: block;
     position: absolute;
     top: 0;

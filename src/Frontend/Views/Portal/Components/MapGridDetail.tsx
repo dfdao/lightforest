@@ -1,17 +1,20 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { EthAddress } from '@darkforest_eth/types';
-import { generateMinimapConfig, MinimapConfig } from '../../../Panes/Lobby/MinimapUtils';
-import { debounce } from 'lodash';
-import styled from 'styled-components';
-import { Link, useHistory } from 'react-router-dom';
-import { LoadingSpinner } from '../../../Components/LoadingSpinner';
-import { Minimap } from '../../../Components/Minimap';
-import { getConfigName } from '@darkforest_eth/procedural';
-import { truncateAddress } from '../PortalUtils';
-import { Spacer } from '../../../Components/CoreUI';
-import { useConfigFromHash } from '../../../Utils/AppHooks';
-import dfstyles from '@darkforest_eth/ui/dist/styles';
-import { useTwitters } from '../../../Utils/AppHooks';
+import React, { useState, useMemo, useEffect } from "react";
+import { EthAddress } from "@dfdao/types";
+import {
+  generateMinimapConfig,
+  MinimapConfig,
+} from "../../../Panes/Lobby/MinimapUtils";
+import { debounce } from "lodash";
+import styled from "styled-components";
+import { Link, useHistory } from "react-router-dom";
+import { LoadingSpinner } from "../../../Components/LoadingSpinner";
+import { Minimap } from "../../../Components/Minimap";
+import { getConfigName } from "@dfdao/procedural";
+import { truncateAddress } from "../PortalUtils";
+import { Spacer } from "../../../Components/CoreUI";
+import { useConfigFromHash } from "../../../Utils/AppHooks";
+import dfstyles from "@dfdao/ui/dist/styles";
+import { useTwitters } from "../../../Utils/AppHooks";
 
 export const MapGridDetail: React.FC<{
   configHash: string;
@@ -20,11 +23,16 @@ export const MapGridDetail: React.FC<{
   nGames?: number;
 }> = ({ configHash, creator, lobbyAddress, nGames }) => {
   const { config } = useConfigFromHash(configHash);
-  const [minimapConfig, setMinimapConfig] = useState<MinimapConfig | undefined>();
+  const [minimapConfig, setMinimapConfig] = useState<
+    MinimapConfig | undefined
+  >();
   const twitters = useTwitters();
 
   const onMapChange = useMemo(() => {
-    return debounce((config: MinimapConfig) => configHash && setMinimapConfig(config), 500);
+    return debounce(
+      (config: MinimapConfig) => configHash && setMinimapConfig(config),
+      500
+    );
   }, [setMinimapConfig]);
 
   useEffect(() => {
@@ -42,18 +50,18 @@ export const MapGridDetail: React.FC<{
       {!minimapConfig ? (
         <div
           style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '100px',
-            height: '100px',
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100px",
+            height: "100px",
           }}
         >
-          <LoadingSpinner initialText='Loading...' />
+          <LoadingSpinner initialText="Loading..." />
         </div>
       ) : (
         <Minimap
-          style={{ width: '100px', height: '100px' }}
+          style={{ width: "100px", height: "100px" }}
           minimapConfig={minimapConfig}
           setRefreshing={() => {}}
         />
@@ -62,16 +70,21 @@ export const MapGridDetail: React.FC<{
       <ConfigTitle>{getConfigName(configHash)}</ConfigTitle>
       {lobbyAddress && (
         <>
-          <span>By {twitters[creator] ? `@${twitters[creator]}` : truncateAddress(creator)}</span>
+          <span>
+            By{" "}
+            {twitters[creator]
+              ? `@${twitters[creator]}`
+              : truncateAddress(creator)}
+          </span>
           <span>Lobby: {truncateAddress(lobbyAddress)}</span>
           {nGames && nGames > 0 && (
             <span>
-              {nGames} game{nGames > 1 && 's'}
+              {nGames} game{nGames > 1 && "s"}
             </span>
           )}
           <Link
-            style={{ minWidth: '250px' }}
-            target='blank'
+            style={{ minWidth: "250px" }}
+            target="blank"
             to={`/play/${lobbyAddress}?create=true`}
           ></Link>
         </>

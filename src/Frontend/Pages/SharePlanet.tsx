@@ -1,14 +1,18 @@
-import { isLocatable } from '@darkforest_eth/gamelogic';
-import { getPlanetBlurb, getPlanetName, getPlanetTagline } from '@darkforest_eth/procedural';
-import { LocationId, Planet } from '@darkforest_eth/types';
-import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
-import styled from 'styled-components';
-import ReaderDataStore from '../../Backend/Storage/ReaderDataStore';
-import { getPlanetShortHash } from '../../Backend/Utils/Utils';
-import { Sub } from '../Components/Text';
-import dfstyles from '../Styles/dfstyles';
-import { Share } from '../Views/Game/Share';
+import { isLocatable } from "@dfdao/gamelogic";
+import {
+  getPlanetBlurb,
+  getPlanetName,
+  getPlanetTagline,
+} from "@dfdao/procedural";
+import { LocationId, Planet } from "@dfdao/types";
+import React from "react";
+import { RouteComponentProps } from "react-router-dom";
+import styled from "styled-components";
+import ReaderDataStore from "../../Backend/Storage/ReaderDataStore";
+import { getPlanetShortHash } from "../../Backend/Utils/Utils";
+import { Sub } from "../Components/Text";
+import dfstyles from "../Styles/dfstyles";
+import { Share } from "../Views/Game/Share";
 
 const PlanetCard = styled.div`
   width: 36em;
@@ -39,9 +43,13 @@ interface SharePlanetData {
   ownerTwitter: string | null;
 }
 
-export function SharePlanet({ match }: RouteComponentProps<{ locationId: LocationId }>) {
+export function SharePlanet({
+  match,
+}: RouteComponentProps<{ locationId: LocationId }>) {
   async function load(dataStore: ReaderDataStore): Promise<SharePlanetData> {
-    const loadedPlanet = await dataStore.loadPlanetFromContract(match.params.locationId);
+    const loadedPlanet = await dataStore.loadPlanetFromContract(
+      match.params.locationId
+    );
 
     return {
       planet: loadedPlanet,
@@ -52,13 +60,17 @@ export function SharePlanet({ match }: RouteComponentProps<{ locationId: Locatio
 
   return (
     <Share load={load}>
-      {(data: SharePlanetData | undefined, loading: boolean, error: Error | undefined) => {
+      {(
+        data: SharePlanetData | undefined,
+        loading: boolean,
+        error: Error | undefined
+      ) => {
         if (loading) {
-          return 'loading';
+          return "loading";
         }
 
         if (error || !data) {
-          return 'error';
+          return "error";
         }
 
         return (
@@ -75,9 +87,10 @@ export function SharePlanet({ match }: RouteComponentProps<{ locationId: Locatio
               </p>
               <p>{`Owner: ${data.ownerTwitter || data.planet.owner}`}</p>
               <p>{`Energy: ${data.planet.energy}`}</p>
-              <p>{`Biome: ${data.biome || 'unknown'}`}</p>
+              <p>{`Biome: ${data.biome || "unknown"}`}</p>
               <p>
-                Find this planet in-game at <a href='/'>http://zkga.me</a> to read more!
+                Find this planet in-game at <a href="/">http://zkga.me</a> to
+                read more!
               </p>
             </div>
           </PlanetCard>

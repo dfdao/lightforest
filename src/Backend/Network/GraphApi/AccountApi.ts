@@ -1,8 +1,10 @@
-import { EthAddress, RawAccount } from '@darkforest_eth/types';
-import { apiUrl, CONFIG_CONSTANTS } from '../../../Frontend/Utils/constants';
-import { getGraphQLData } from '../GraphApi';
+import { EthAddress, RawAccount } from "@dfdao/types";
+import { apiUrl, CONFIG_CONSTANTS } from "../../../Frontend/Utils/constants";
+import { getGraphQLData } from "../GraphApi";
 
-export async function loadAccountData(address: EthAddress): Promise<RawAccount | undefined> {
+export async function loadAccountData(
+  address: EthAddress
+): Promise<RawAccount | undefined> {
   const query = `
 query {
   player(id:"${address}") {

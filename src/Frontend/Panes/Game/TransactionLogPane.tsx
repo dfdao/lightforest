@@ -1,10 +1,10 @@
-import { RECOMMENDED_MODAL_WIDTH } from '@darkforest_eth/constants';
-import { getPlanetName } from '@darkforest_eth/procedural';
+import { RECOMMENDED_MODAL_WIDTH } from "@dfdao/constants";
+import { getPlanetName } from "@dfdao/procedural";
 import {
   isUnconfirmedActivateArtifactTx,
   isUnconfirmedBuyHatTx,
   isUnconfirmedCapturePlanetTx,
-  isUnconfirmedClaimVictoryTx, 
+  isUnconfirmedClaimVictoryTx,
   isUnconfirmedDeactivateArtifactTx,
   isUnconfirmedDepositArtifactTx,
   isUnconfirmedFindArtifactTx,
@@ -17,28 +17,32 @@ import {
   isUnconfirmedUpgradeTx,
   isUnconfirmedWithdrawArtifactTx,
   isUnconfirmedWithdrawSilverTx,
-} from '@darkforest_eth/serde';
-import { ModalName, Planet, TooltipName, Transaction } from '@darkforest_eth/types';
-import { IconType } from '@darkforest_eth/ui';
-import { isEmpty, reverse, startCase, values } from 'lodash';
-import React, { useCallback } from 'react';
-import Loader from 'react-loader-spinner';
-import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-import TimeAgo from 'react-timeago';
-import styled from 'styled-components';
-import GameUIManager from '../../../Backend/GameLogic/GameUIManager';
-import { Wrapper } from '../../../Backend/Utils/Wrapper';
-import { Btn } from '../../Components/Btn';
-import { CenterBackgroundSubtext, Spacer } from '../../Components/CoreUI';
-import { Icon } from '../../Components/Icons';
-import { Sub, TxLink } from '../../Components/Text';
-import dfstyles from '../../Styles/dfstyles';
-import { TransactionRecord, useTransactionLog, useUIManager } from '../../Utils/AppHooks';
-import { ModalPane } from '../../Views/Game/ModalPane';
-import { PlanetLink } from '../../Views/Game/PlanetLink';
-import { SortableTable } from '../../Views/SortableTable';
-import { TooltipTrigger } from '../Tooltip';
-import { PlanetThumb } from './PlanetDexPane';
+} from "@dfdao/serde";
+import { ModalName, Planet, TooltipName, Transaction } from "@dfdao/types";
+import { IconType } from "@dfdao/ui";
+import { isEmpty, reverse, startCase, values } from "lodash";
+import React, { useCallback } from "react";
+import Loader from "react-loader-spinner";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import TimeAgo from "react-timeago";
+import styled from "styled-components";
+import GameUIManager from "../../../Backend/GameLogic/GameUIManager";
+import { Wrapper } from "../../../Backend/Utils/Wrapper";
+import { Btn } from "../../Components/Btn";
+import { CenterBackgroundSubtext, Spacer } from "../../Components/CoreUI";
+import { Icon } from "../../Components/Icons";
+import { Sub, TxLink } from "../../Components/Text";
+import dfstyles from "../../Styles/dfstyles";
+import {
+  TransactionRecord,
+  useTransactionLog,
+  useUIManager,
+} from "../../Utils/AppHooks";
+import { ModalPane } from "../../Views/Game/ModalPane";
+import { PlanetLink } from "../../Views/Game/PlanetLink";
+import { SortableTable } from "../../Views/SortableTable";
+import { TooltipTrigger } from "../Tooltip";
+import { PlanetThumb } from "./PlanetDexPane";
 
 const PlanetName = styled.span`
   display: block;
@@ -55,36 +59,51 @@ const TableContainer = styled.div`
 
 function TransactionState({ tx }: { tx: Transaction }) {
   let element;
-  if (tx.state === 'Init') {
+  if (tx.state === "Init") {
     element = (
-      <Sub style={{ overflowX: 'hidden', display: 'block' }}>
-        <TooltipTrigger name={TooltipName.Empty} extraContent='Queued'>
-          <Loader type='Circles' color={dfstyles.colors.subtext} height={23} width={23} />
+      <Sub style={{ overflowX: "hidden", display: "block" }}>
+        <TooltipTrigger name={TooltipName.Empty} extraContent="Queued">
+          <Loader
+            type="Circles"
+            color={dfstyles.colors.subtext}
+            height={23}
+            width={23}
+          />
         </TooltipTrigger>
       </Sub>
     );
-  } else if (tx.state === 'Prioritized') {
+  } else if (tx.state === "Prioritized") {
     element = (
-      <TooltipTrigger name={TooltipName.Empty} extraContent='Prioritized'>
-        <Loader type='Circles' color={dfstyles.colors.dfyellow} height={23} width={23} />
+      <TooltipTrigger name={TooltipName.Empty} extraContent="Prioritized">
+        <Loader
+          type="Circles"
+          color={dfstyles.colors.dfyellow}
+          height={23}
+          width={23}
+        />
       </TooltipTrigger>
     );
-  } else if (['Submit', 'Processing'].includes(tx.state)) {
+  } else if (["Submit", "Processing"].includes(tx.state)) {
     element = (
-      <TooltipTrigger name={TooltipName.Empty} extraContent='Submitting'>
-        <Loader type='Circles' color={dfstyles.colors.dfblue} height={23} width={23} />
+      <TooltipTrigger name={TooltipName.Empty} extraContent="Submitting">
+        <Loader
+          type="Circles"
+          color={dfstyles.colors.dfblue}
+          height={23}
+          width={23}
+        />
       </TooltipTrigger>
     );
-  } else if (tx.state === 'Confirm') {
+  } else if (tx.state === "Confirm") {
     element = (
-      <TooltipTrigger name={TooltipName.Empty} extraContent='Confirmed!'>
-        {' '}
+      <TooltipTrigger name={TooltipName.Empty} extraContent="Confirmed!">
+        {" "}
         <Icon type={IconType.Check} />
       </TooltipTrigger>
     );
-  } else if (tx.state === 'Cancel') {
+  } else if (tx.state === "Cancel") {
     element = (
-      <TooltipTrigger name={TooltipName.Empty} extraContent='Cancelled'>
+      <TooltipTrigger name={TooltipName.Empty} extraContent="Cancelled">
         <Icon type={IconType.X} />
       </TooltipTrigger>
     );
@@ -94,8 +113,8 @@ function TransactionState({ tx }: { tx: Transaction }) {
         name={TooltipName.Empty}
         extraContent={
           tx.hash
-            ? 'Failed. Use the transaction has link to look up the failure on Tenderly.'
-            : 'Failed.'
+            ? "Failed. Use the transaction has link to look up the failure on Tenderly."
+            : "Failed."
         }
       >
         <Icon type={IconType.X} />
@@ -106,11 +125,11 @@ function TransactionState({ tx }: { tx: Transaction }) {
   return (
     <div
       style={{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        padding: '0 8px',
-        lineHeight: '0',
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-around",
+        padding: "0 8px",
+        lineHeight: "0",
       }}
     >
       {element}
@@ -140,7 +159,7 @@ const TransactionActions = ({
 }) => {
   let actions;
 
-  if (tx.state === 'Fail') {
+  if (tx.state === "Fail") {
     actions = (
       <TooltipTrigger name={TooltipName.RetryTransaction}>
         <ActionButton onClick={() => retryTransaction(tx)}>
@@ -148,18 +167,18 @@ const TransactionActions = ({
         </ActionButton>
       </TooltipTrigger>
     );
-  } else if (tx.state === 'Init') {
+  } else if (tx.state === "Init") {
     actions = (
       <div
         style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
         }}
       >
         <TooltipTrigger
           name={TooltipName.Empty}
-          extraContent='Bump this transaction to the top of the queue.'
+          extraContent="Bump this transaction to the top of the queue."
         >
           <ActionButton onClick={() => prioritizeTransaction(tx)}>
             <Icon type={IconType.FastForward} />
@@ -173,7 +192,7 @@ const TransactionActions = ({
         </TooltipTrigger>
       </div>
     );
-  } else if (tx.state === 'Prioritized') {
+  } else if (tx.state === "Prioritized") {
     actions = (
       <TooltipTrigger name={TooltipName.CancelTransaction}>
         <ActionButton onClick={() => cancelTransaction(tx)}>
@@ -183,10 +202,11 @@ const TransactionActions = ({
     );
   }
 
-  return <ActionContainer>{actions || '-'}</ActionContainer>;
+  return <ActionContainer>{actions || "-"}</ActionContainer>;
 };
 
-const humanizeTransactionType = (tx: Transaction) => startCase(tx.intent.methodName);
+const humanizeTransactionType = (tx: Transaction) =>
+  startCase(tx.intent.methodName);
 
 /**
  * Grab the planet associated with the specified transction. Unfortunately, transaction intent
@@ -199,30 +219,48 @@ const getPlanetFromTransaction = (
 ): Planet | undefined => {
   const gameManager = uiManager.getGameManager();
 
-  if (isUnconfirmedMoveTx(tx)) return gameManager.getPlanetWithId(tx.intent.from);
-  if (isUnconfirmedUpgradeTx(tx)) return gameManager.getPlanetWithId(tx.intent.locationId);
-  if (isUnconfirmedActivateArtifactTx(tx)) return gameManager.getPlanetWithId(tx.intent.locationId);
-  if (isUnconfirmedRevealTx(tx)) return gameManager.getPlanetWithId(tx.intent.locationId);
-  if (isUnconfirmedInitTx(tx)) return gameManager.getPlanetWithId(tx.intent.locationId);
-  if (isUnconfirmedBuyHatTx(tx)) return gameManager.getPlanetWithId(tx.intent.locationId);
-  if (isUnconfirmedTransferTx(tx)) return gameManager.getPlanetWithId(tx.intent.planetId);
-  if (isUnconfirmedFindArtifactTx(tx)) return gameManager.getPlanetWithId(tx.intent.planetId);
-  if (isUnconfirmedDepositArtifactTx(tx)) return gameManager.getPlanetWithId(tx.intent.locationId);
-  if (isUnconfirmedWithdrawArtifactTx(tx)) return gameManager.getPlanetWithId(tx.intent.locationId);
-  if (isUnconfirmedProspectPlanetTx(tx)) return gameManager.getPlanetWithId(tx.intent.planetId);
+  if (isUnconfirmedMoveTx(tx))
+    return gameManager.getPlanetWithId(tx.intent.from);
+  if (isUnconfirmedUpgradeTx(tx))
+    return gameManager.getPlanetWithId(tx.intent.locationId);
+  if (isUnconfirmedActivateArtifactTx(tx))
+    return gameManager.getPlanetWithId(tx.intent.locationId);
+  if (isUnconfirmedRevealTx(tx))
+    return gameManager.getPlanetWithId(tx.intent.locationId);
+  if (isUnconfirmedInitTx(tx))
+    return gameManager.getPlanetWithId(tx.intent.locationId);
+  if (isUnconfirmedBuyHatTx(tx))
+    return gameManager.getPlanetWithId(tx.intent.locationId);
+  if (isUnconfirmedTransferTx(tx))
+    return gameManager.getPlanetWithId(tx.intent.planetId);
+  if (isUnconfirmedFindArtifactTx(tx))
+    return gameManager.getPlanetWithId(tx.intent.planetId);
+  if (isUnconfirmedDepositArtifactTx(tx))
+    return gameManager.getPlanetWithId(tx.intent.locationId);
+  if (isUnconfirmedWithdrawArtifactTx(tx))
+    return gameManager.getPlanetWithId(tx.intent.locationId);
+  if (isUnconfirmedProspectPlanetTx(tx))
+    return gameManager.getPlanetWithId(tx.intent.planetId);
   if (isUnconfirmedDeactivateArtifactTx(tx))
     return gameManager.getPlanetWithId(tx.intent.locationId);
-  if (isUnconfirmedWithdrawSilverTx(tx)) return gameManager.getPlanetWithId(tx.intent.locationId);
-  if (isUnconfirmedInvadePlanetTx(tx)) return gameManager.getPlanetWithId(tx.intent.locationId);
-  if (isUnconfirmedCapturePlanetTx(tx)) return gameManager.getPlanetWithId(tx.intent.locationId);
+  if (isUnconfirmedWithdrawSilverTx(tx))
+    return gameManager.getPlanetWithId(tx.intent.locationId);
+  if (isUnconfirmedInvadePlanetTx(tx))
+    return gameManager.getPlanetWithId(tx.intent.locationId);
+  if (isUnconfirmedCapturePlanetTx(tx))
+    return gameManager.getPlanetWithId(tx.intent.locationId);
 };
 
-function QueuedTransactionsTable({ transactions }: { transactions: Wrapper<TransactionRecord> }) {
+function QueuedTransactionsTable({
+  transactions,
+}: {
+  transactions: Wrapper<TransactionRecord>;
+}) {
   const uiManager = useUIManager();
   const visibleTransactions = reverse(values(transactions.value));
 
-  const headers = ['Type', 'Hash', 'State', 'Planet', 'Updated', 'Actions'];
-  const alignments: Array<'r' | 'c' | 'l'> = ['c', 'c', 'c', 'c', 'c', 'c'];
+  const headers = ["Type", "Hash", "State", "Planet", "Updated", "Actions"];
+  const alignments: Array<"r" | "c" | "l"> = ["c", "c", "c", "c", "c", "c"];
 
   const cancelTransaction = useCallback(
     (tx: Transaction) => {
@@ -246,7 +284,9 @@ function QueuedTransactionsTable({ transactions }: { transactions: Wrapper<Trans
   );
 
   const queuedTransctions = useCallback(() => {
-    return values(transactions.value).filter((tx) => ['Init', 'Prioritized'].includes(tx.state));
+    return values(transactions.value).filter((tx) =>
+      ["Init", "Prioritized"].includes(tx.state)
+    );
   }, [transactions]);
 
   const cancelAllQueuedTransactions = useCallback(() => {
@@ -261,20 +301,23 @@ function QueuedTransactionsTable({ transactions }: { transactions: Wrapper<Trans
     (tx: Transaction) => (
       <Sub
         style={{
-          display: 'block',
-          whiteSpace: 'nowrap',
-          textOverflow: 'ellipsis',
-          width: '54px',
-          overflow: 'hidden',
+          display: "block",
+          whiteSpace: "nowrap",
+          textOverflow: "ellipsis",
+          width: "54px",
+          overflow: "hidden",
         }}
       >
-        <TooltipTrigger name={TooltipName.Empty} extraContent={humanizeTransactionType(tx)}>
+        <TooltipTrigger
+          name={TooltipName.Empty}
+          extraContent={humanizeTransactionType(tx)}
+        >
           {humanizeTransactionType(tx)}
         </TooltipTrigger>
       </Sub>
     ),
     (tx: Transaction) => (
-      <div style={{ minWidth: '80px' }}>
+      <div style={{ minWidth: "80px" }}>
         <TxLink tx={tx} />
       </div>
     ),
@@ -286,10 +329,10 @@ function QueuedTransactionsTable({ transactions }: { transactions: Wrapper<Trans
       return (
         <div
           style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            minWidth: '144px',
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            minWidth: "144px",
           }}
         >
           <PlanetThumb planet={planet} />
@@ -300,17 +343,21 @@ function QueuedTransactionsTable({ transactions }: { transactions: Wrapper<Trans
       );
     },
     (tx: Transaction) => (
-      <Sub style={{ display: 'block', minWidth: '80px' }}>
+      <Sub style={{ display: "block", minWidth: "80px" }}>
         <TimeAgo
           date={tx.lastUpdatedAt}
-          formatter={(value: number, unit: TimeAgo.Unit, suffix: TimeAgo.Suffix) => {
+          formatter={(
+            value: number,
+            unit: TimeAgo.Unit,
+            suffix: TimeAgo.Suffix
+          ) => {
             let newUnit = unit as string;
 
-            if (unit === 'second' && value === 0) return 'just now';
-            if (unit === 'second') newUnit = 's';
-            if (unit === 'minute') newUnit = 'm';
-            if (unit === 'hour') newUnit = 'h';
-            if (unit === 'day') newUnit = 'd';
+            if (unit === "second" && value === 0) return "just now";
+            if (unit === "second") newUnit = "s";
+            if (unit === "minute") newUnit = "m";
+            if (unit === "hour") newUnit = "h";
+            if (unit === "day") newUnit = "d";
 
             return `${value}${newUnit} ${suffix}`;
           }}
@@ -341,28 +388,34 @@ function QueuedTransactionsTable({ transactions }: { transactions: Wrapper<Trans
 
       return getPlanetName(planetB).localeCompare(getPlanetName(planetA));
     },
-    (a: Transaction, b: Transaction): number => b.lastUpdatedAt - a.lastUpdatedAt,
+    (a: Transaction, b: Transaction): number =>
+      b.lastUpdatedAt - a.lastUpdatedAt,
   ];
 
   return (
     <TableContainer>
       <div
         style={{
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-around',
+          width: "100%",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-around",
         }}
       >
         <div
           style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
           }}
         >
           {queuedTransctions().length !== 0 && (
-            <Loader type='Circles' color={dfstyles.colors.subtext} height={23} width={23} />
+            <Loader
+              type="Circles"
+              color={dfstyles.colors.subtext}
+              height={23}
+              width={23}
+            />
           )}
           <Spacer width={8} />
           {queuedTransctions().length} queued transactions
@@ -399,10 +452,10 @@ export function TransactionLogPane({
       visible={visible}
       onClose={onClose}
       id={ModalName.TransactionLog}
-      title='Transaction Log'
+      title="Transaction Log"
     >
       {isEmpty(transactions.value) ? (
-        <CenterBackgroundSubtext width={RECOMMENDED_MODAL_WIDTH} height='100px'>
+        <CenterBackgroundSubtext width={RECOMMENDED_MODAL_WIDTH} height="100px">
           No transactions to be shown
         </CenterBackgroundSubtext>
       ) : (

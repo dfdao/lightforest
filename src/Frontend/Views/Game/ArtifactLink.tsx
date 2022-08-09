@@ -1,11 +1,11 @@
-import { artifactName } from '@darkforest_eth/procedural';
-import { Artifact, LocationId } from '@darkforest_eth/types';
-import React, { useCallback, useEffect } from 'react';
-import { Link } from '../../Components/CoreUI';
-import { ArtifactDetailsPane } from '../../Panes/Game/ArtifactDetailsPane';
-import dfstyles from '../../Styles/dfstyles';
-import { useUIManager } from '../../Utils/AppHooks';
-import { ModalHandle } from './ModalPane';
+import { artifactName } from "@dfdao/procedural";
+import { Artifact, LocationId } from "@dfdao/types";
+import React, { useCallback, useEffect } from "react";
+import { Link } from "../../Components/CoreUI";
+import { ArtifactDetailsPane } from "../../Panes/Game/ArtifactDetailsPane";
+import dfstyles from "../../Styles/dfstyles";
+import { useUIManager } from "../../Utils/AppHooks";
+import { ModalHandle } from "./ModalPane";
 
 export function ArtifactLink({
   modal,
@@ -31,7 +31,11 @@ export function ArtifactLink({
       modal.push({
         element() {
           return (
-            <ArtifactDetailsPane depositOn={depositOn} artifactId={artifact?.id} modal={modal} />
+            <ArtifactDetailsPane
+              depositOn={depositOn}
+              artifactId={artifact?.id}
+              modal={modal}
+            />
           );
         },
         title: artifactName(artifact),

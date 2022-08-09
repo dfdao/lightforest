@@ -1,16 +1,20 @@
-import { weiToEth } from '@darkforest_eth/network';
-import { getHatSizeName, getPlanetCosmetic } from '@darkforest_eth/procedural';
-import { isUnconfirmedBuyHatTx } from '@darkforest_eth/serde';
-import { LocationId, Planet } from '@darkforest_eth/types';
-import { BigNumber } from 'ethers';
-import React from 'react';
-import styled from 'styled-components';
-import { Btn } from '../../Components/Btn';
-import { CenterBackgroundSubtext, EmSpacer, Link } from '../../Components/CoreUI';
-import { Sub } from '../../Components/Text';
-import { useAddress, usePlanet, useUIManager } from '../../Utils/AppHooks';
-import { useEmitterValue } from '../../Utils/EmitterHooks';
-import { ModalHandle } from '../../Views/Game/ModalPane';
+import { weiToEth } from "@dfdao/network";
+import { getHatSizeName, getPlanetCosmetic } from "@dfdao/procedural";
+import { isUnconfirmedBuyHatTx } from "@dfdao/serde";
+import { LocationId, Planet } from "@dfdao/types";
+import { BigNumber } from "ethers";
+import React from "react";
+import styled from "styled-components";
+import { Btn } from "../../Components/Btn";
+import {
+  CenterBackgroundSubtext,
+  EmSpacer,
+  Link,
+} from "../../Components/CoreUI";
+import { Sub } from "../../Components/Text";
+import { useAddress, usePlanet, useUIManager } from "../../Utils/AppHooks";
+import { useEmitterValue } from "../../Utils/EmitterHooks";
+import { ModalHandle } from "../../Views/Game/ModalPane";
 
 const StyledHatPane = styled.div`
   & > div {
@@ -43,11 +47,17 @@ export function HatPane({
 }) {
   const uiManager = useUIManager();
   const account = useAddress(uiManager);
-  const planetId = useEmitterValue(uiManager.selectedPlanetId$, initialPlanetId);
+  const planetId = useEmitterValue(
+    uiManager.selectedPlanetId$,
+    initialPlanetId
+  );
   const planetWrapper = usePlanet(uiManager, planetId);
   const planet = planetWrapper.value;
   const balanceEth = weiToEth(
-    useEmitterValue(uiManager.getEthConnection().myBalance$, BigNumber.from('0'))
+    useEmitterValue(
+      uiManager.getEthConnection().myBalance$,
+      BigNumber.from("0")
+    )
   );
   const enabled = (planet: Planet): boolean =>
     !planet.transactions?.hasTransaction(isUnconfirmedBuyHatTx) &&
@@ -65,7 +75,7 @@ export function HatPane({
           <Sub>HAT Level</Sub>
           <span>{getHatSizeName(planet)}</span>
         </div>
-        <div className='margin-top'>
+        <div className="margin-top">
           <Sub>Next Level Cost</Sub>
           <span>
             {getHatCostEth(planet)} USD <Sub>/</Sub> {getHatCostEth(planet)} DAI
@@ -77,7 +87,7 @@ export function HatPane({
         </div>
 
         <EmSpacer height={1} />
-        <Link to={'https://blog.zkga.me/df-04-faq'}>Get More xDai</Link>
+        <Link to={"https://blog.zkga.me/df-04-faq"}>Get More xDai</Link>
         <EmSpacer height={0.5} />
 
         <Btn
@@ -87,13 +97,13 @@ export function HatPane({
           }}
           disabled={!enabled(planet)}
         >
-          {planet && planet.hatLevel > 0 ? 'Upgrade' : 'Buy'} HAT
+          {planet && planet.hatLevel > 0 ? "Upgrade" : "Buy"} HAT
         </Btn>
       </StyledHatPane>
     );
   } else {
     return (
-      <CenterBackgroundSubtext width='100%' height='75px'>
+      <CenterBackgroundSubtext width="100%" height="75px">
         Select a Planet <br /> You Own
       </CenterBackgroundSubtext>
     );

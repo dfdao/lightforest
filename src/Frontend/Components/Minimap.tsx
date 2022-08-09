@@ -1,8 +1,14 @@
-import React, { useEffect, useMemo, useRef } from 'react';
-import { DrawMessage, MinimapColors, MinimapConfig } from '../Panes/Lobby/MinimapUtils';
+import React, { useEffect, useMemo, useRef } from "react";
+import {
+  DrawMessage,
+  MinimapColors,
+  MinimapConfig,
+} from "../Panes/Lobby/MinimapUtils";
 
 function getWorker() {
-  return new Worker(new URL('../../Backend/Utils/minimap.worker.ts', import.meta.url));
+  return new Worker(
+    new URL("../../Backend/Utils/minimap.worker.ts", import.meta.url)
+  );
 }
 
 function drawOnCanvas(canvas: HTMLCanvasElement | null, msg: DrawMessage) {
@@ -11,7 +17,7 @@ function drawOnCanvas(canvas: HTMLCanvasElement | null, msg: DrawMessage) {
     return;
   }
 
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext("2d");
 
   if (!ctx) {
     console.error(`Couldn't get the planet context`);
@@ -31,15 +37,23 @@ function drawOnCanvas(canvas: HTMLCanvasElement | null, msg: DrawMessage) {
   const dot = msg.dot * 1.2;
 
   for (let i = 0; i < data.length; i++) {
-    if (data[i].planet == 'target') ctx.fillStyle = MinimapColors.targetPlanet;
-    else if (data[i].planet == 'staged') ctx.fillStyle = MinimapColors.stagedPlanet;
-    else if (data[i].planet == 'spawn') ctx.fillStyle = MinimapColors.spawnPlanet;
-    else if (data[i].planet == 'created') ctx.fillStyle = MinimapColors.createdPlanet;
+    if (data[i].planet == "target") ctx.fillStyle = MinimapColors.targetPlanet;
+    else if (data[i].planet == "staged")
+      ctx.fillStyle = MinimapColors.stagedPlanet;
+    else if (data[i].planet == "spawn")
+      ctx.fillStyle = MinimapColors.spawnPlanet;
+    else if (data[i].planet == "created")
+      ctx.fillStyle = MinimapColors.createdPlanet;
     else if (data[i].type === 0) ctx.fillStyle = MinimapColors.innerNebula;
     else if (data[i].type === 1) ctx.fillStyle = MinimapColors.outerNebula;
     else if (data[i].type === 2) ctx.fillStyle = MinimapColors.deepSpace;
     else ctx.fillStyle = MinimapColors.deadSpace;
-    ctx.fillRect(normalize(data[i].x) + 10, normalize(data[i].y * -1) + 10, dot, dot);
+    ctx.fillRect(
+      normalize(data[i].x) + 10,
+      normalize(data[i].y * -1) + 10,
+      dot,
+      dot
+    );
   }
 
   // draw extents of map
@@ -47,8 +61,14 @@ function drawOnCanvas(canvas: HTMLCanvasElement | null, msg: DrawMessage) {
   const radiusNormalized = normalize(radius) / 2;
 
   ctx.beginPath();
-  ctx.arc(radiusNormalized + 12, radiusNormalized + 12, radiusNormalized, 0, 2 * Math.PI);
-  ctx.strokeStyle = '#DDDDDD';
+  ctx.arc(
+    radiusNormalized + 12,
+    radiusNormalized + 12,
+    radiusNormalized,
+    0,
+    2 * Math.PI
+  );
+  ctx.strokeStyle = "#DDDDDD";
   ctx.lineWidth = 5;
   ctx.stroke();
 }
@@ -58,12 +78,12 @@ function drawOnCanvas(canvas: HTMLCanvasElement | null, msg: DrawMessage) {
 // the canvas will be scaled to fit
 
 export const CANVAS_SIZE = {
-  width: '400',
-  height: '400',
+  width: "400",
+  height: "400",
 };
 
 export function Minimap({
-  style = { width: '400px', height: '400px' },
+  style = { width: "400px", height: "400px" },
   minimapConfig,
   setRefreshing = (b: boolean) => {},
 }: {
@@ -89,15 +109,15 @@ export function Minimap({
       }
     }
 
-    worker.addEventListener('message', onMessage);
+    worker.addEventListener("message", onMessage);
 
-    return () => worker.removeEventListener('message', onMessage);
+    return () => worker.removeEventListener("message", onMessage);
   }, [worker, setRefreshing]);
 
   return (
     <canvas
       ref={canvasRef}
-      style={{ ...style, margin: '0', gridArea: '1/1' }}
+      style={{ ...style, margin: "0", gridArea: "1/1" }}
       width={CANVAS_SIZE.width}
       height={CANVAS_SIZE.height}
     />

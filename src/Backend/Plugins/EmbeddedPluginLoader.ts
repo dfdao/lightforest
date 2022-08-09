@@ -1,4 +1,4 @@
-import { PluginId } from '@darkforest_eth/types';
+import { PluginId } from "@dfdao/types";
 
 /**
  * This interface represents an embedded plugin, which is stored in `embedded_plugins/`.
@@ -13,13 +13,17 @@ export interface EmbeddedPlugin {
  * Load all of the embedded plugins in the dist directory of the `embedded_plugins/` project
  * as Plain Text files. This means that `embedded_plugins/` can't use `import` for relative paths.
  */
-const pluginsContext = require.context('../../../embedded_plugins/', false, /\.[jt]sx?$/);
+const pluginsContext = require.context(
+  "../../../embedded_plugins/",
+  false,
+  /\.[jt]sx?$/
+);
 
 function cleanFilename(filename: string) {
   return filename
-    .replace(/^\.\//, '')
-    .replace(/[_-]/g, ' ')
-    .replace(/\.[jt]sx?$/, '');
+    .replace(/^\.\//, "")
+    .replace(/[_-]/g, " ")
+    .replace(/\.[jt]sx?$/, "");
 }
 
 export function getEmbeddedPlugins(isAdmin: boolean) {
@@ -29,7 +33,10 @@ export function getEmbeddedPlugins(isAdmin: boolean) {
       if (isAdmin) {
         return true;
       } else {
-        return !filename.startsWith('./Admin-Controls') && !filename.startsWith('./Metrics');
+        return (
+          !filename.startsWith("./Admin-Controls") &&
+          !filename.startsWith("./Metrics")
+        );
       }
     })
     .map((filename) => {

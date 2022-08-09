@@ -1,11 +1,11 @@
-import { getConfigName } from '@darkforest_eth/procedural';
-import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import styled from 'styled-components';
-import { Link } from '../../Components/CoreUI';
-import dfstyles from '../../Styles/dfstyles';
-import { useTwitters } from '../../Utils/AppHooks';
-import { formatStartTime } from '../../Utils/TimeUtils';
+import { getConfigName } from "@dfdao/procedural";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import styled from "styled-components";
+import { Link } from "../../Components/CoreUI";
+import dfstyles from "../../Styles/dfstyles";
+import { useTwitters } from "../../Utils/AppHooks";
+import { formatStartTime } from "../../Utils/TimeUtils";
 
 export interface TimelineProps {
   configHashes: string[];
@@ -25,9 +25,9 @@ export const PortalHistoryView: React.FC<{}> = ({}) => {
 
   useEffect(() => {
     async function getRoundHistory() {
-      const rounds = await fetch('http://localhost:3000/rounds', {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
+      const rounds = await fetch("http://localhost:3000/rounds", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
       });
       const roundText = await rounds.text();
       return JSON.parse(roundText).body;
@@ -47,7 +47,9 @@ export const PortalHistoryView: React.FC<{}> = ({}) => {
   }, []);
 
   const addressToTwitter = (address: string) => {
-    const foundTwitter = Object.entries(twitters).find((t) => t[1] == address.toLowerCase().trim());
+    const foundTwitter = Object.entries(twitters).find(
+      (t) => t[1] == address.toLowerCase().trim()
+    );
     if (foundTwitter) {
       return foundTwitter[0];
     } else {
@@ -78,15 +80,21 @@ export const PortalHistoryView: React.FC<{}> = ({}) => {
                     history.push(`/portal/map/${historyItem.configHash}`);
                   }}
                 >
-                  <TimelineItem>{formatStartTime(historyItem.startTime)}</TimelineItem>
+                  <TimelineItem>
+                    {formatStartTime(historyItem.startTime)}
+                  </TimelineItem>
                   <TimelineItem>{historyItem.name}</TimelineItem>
                   <TimelineItem>
-                    {historyItem.winner !== '' ? (
-                      <Link to={`https://twitter.com/${addressToTwitter(historyItem.winner)}`}>
+                    {historyItem.winner !== "" ? (
+                      <Link
+                        to={`https://twitter.com/${addressToTwitter(
+                          historyItem.winner
+                        )}`}
+                      >
                         {addressToTwitter(historyItem.winner)}
                       </Link>
                     ) : (
-                      'None'
+                      "None"
                     )}
                   </TimelineItem>
                   <TimelineItem>
@@ -146,12 +154,18 @@ const TimelineItem = styled.td`
 
 const HoverIcon = () => {
   return (
-    <svg width='15' height='15' viewBox='0 0 15 15' fill='none' xmlns='http://www.w3.org/2000/svg'>
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 15 15"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <path
-        d='M3.64645 11.3536C3.45118 11.1583 3.45118 10.8417 3.64645 10.6465L10.2929 4L6 4C5.72386 4 5.5 3.77614 5.5 3.5C5.5 3.22386 5.72386 3 6 3L11.5 3C11.6326 3 11.7598 3.05268 11.8536 3.14645C11.9473 3.24022 12 3.36739 12 3.5L12 9.00001C12 9.27615 11.7761 9.50001 11.5 9.50001C11.2239 9.50001 11 9.27615 11 9.00001V4.70711L4.35355 11.3536C4.15829 11.5488 3.84171 11.5488 3.64645 11.3536Z'
-        fill='currentColor'
-        fill-rule='evenodd'
-        clip-rule='evenodd'
+        d="M3.64645 11.3536C3.45118 11.1583 3.45118 10.8417 3.64645 10.6465L10.2929 4L6 4C5.72386 4 5.5 3.77614 5.5 3.5C5.5 3.22386 5.72386 3 6 3L11.5 3C11.6326 3 11.7598 3.05268 11.8536 3.14645C11.9473 3.24022 12 3.36739 12 3.5L12 9.00001C12 9.27615 11.7761 9.50001 11.5 9.50001C11.2239 9.50001 11 9.27615 11 9.00001V4.70711L4.35355 11.3536C4.15829 11.5488 3.84171 11.5488 3.64645 11.3536Z"
+        fill="currentColor"
+        fill-rule="evenodd"
+        clip-rule="evenodd"
       ></path>
     </svg>
   );

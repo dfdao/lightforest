@@ -1,16 +1,16 @@
-import { Planet, TooltipName } from '@darkforest_eth/types';
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { getEmojiMessage } from '../../../Backend/GameLogic/ArrivalUtils';
-import { Wrapper } from '../../../Backend/Utils/Wrapper';
-import { Btn } from '../../Components/Btn';
-import { LoadingSpinner } from '../../Components/LoadingSpinner';
-import { Row } from '../../Components/Row';
-import { Sub } from '../../Components/Text';
-import { TooltipTrigger } from '../../Panes/Tooltip';
-import dfstyles from '../../Styles/dfstyles';
-import { useUIManager } from '../../Utils/AppHooks';
-import { EmojiPicker } from '../EmojiPicker';
+import { Planet, TooltipName } from "@dfdao/types";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { getEmojiMessage } from "../../../Backend/GameLogic/ArrivalUtils";
+import { Wrapper } from "../../../Backend/Utils/Wrapper";
+import { Btn } from "../../Components/Btn";
+import { LoadingSpinner } from "../../Components/LoadingSpinner";
+import { Row } from "../../Components/Row";
+import { Sub } from "../../Components/Text";
+import { TooltipTrigger } from "../../Panes/Tooltip";
+import dfstyles from "../../Styles/dfstyles";
+import { useUIManager } from "../../Utils/AppHooks";
+import { EmojiPicker } from "../EmojiPicker";
 
 const TextWrapper = styled.span`
   width: 120px;
@@ -18,7 +18,11 @@ const TextWrapper = styled.span`
   text-align: center;
 `;
 
-export function EmojiPlanetNotification({ wrapper }: { wrapper: Wrapper<Planet | undefined> }) {
+export function EmojiPlanetNotification({
+  wrapper,
+}: {
+  wrapper: Wrapper<Planet | undefined>;
+}) {
   const gameManager = useUIManager().getGameManager();
   const emojiMessage = getEmojiMessage(wrapper.value);
   const currentEmoji = emojiMessage?.body?.emoji;
@@ -31,8 +35,8 @@ export function EmojiPlanetNotification({ wrapper }: { wrapper: Wrapper<Planet |
   if (wrapper.value?.needsServerRefresh) {
     return (
       <Row>
-        <Sub style={{ width: '100%' }}>
-          <LoadingSpinner initialText='Loading...' />
+        <Sub style={{ width: "100%" }}>
+          <LoadingSpinner initialText="Loading..." />
         </Sub>
       </Row>
     );
@@ -41,7 +45,10 @@ export function EmojiPlanetNotification({ wrapper }: { wrapper: Wrapper<Planet |
       <Row>
         <Sub>Current emoji: {emojiMessage?.body?.emoji}</Sub>
         <Btn
-          disabled={wrapper.value?.unconfirmedClearEmoji || wrapper.value?.needsServerRefresh}
+          disabled={
+            wrapper.value?.unconfirmedClearEmoji ||
+            wrapper.value?.needsServerRefresh
+          }
           onClick={() => {
             if (wrapper.value?.locationId) {
               gameManager.clearEmoji(wrapper.value.locationId);
@@ -54,7 +61,9 @@ export function EmojiPlanetNotification({ wrapper }: { wrapper: Wrapper<Planet |
     );
   } else {
     const disabled =
-      wrapper.value?.unconfirmedAddEmoji || wrapper.value?.needsServerRefresh || !chosenEmoji;
+      wrapper.value?.unconfirmedAddEmoji ||
+      wrapper.value?.needsServerRefresh ||
+      !chosenEmoji;
 
     return (
       <Row>
@@ -62,13 +71,16 @@ export function EmojiPlanetNotification({ wrapper }: { wrapper: Wrapper<Planet |
 
         <TooltipTrigger
           name={disabled ? TooltipName.Empty : undefined}
-          extraContent='Choose an emoji!'
+          extraContent="Choose an emoji!"
         >
           <Btn
             disabled={disabled}
             onClick={() => {
               if (wrapper.value?.locationId && chosenEmoji) {
-                gameManager.setPlanetEmoji(wrapper.value?.locationId, chosenEmoji);
+                gameManager.setPlanetEmoji(
+                  wrapper.value?.locationId,
+                  chosenEmoji
+                );
               }
             }}
           >

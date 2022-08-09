@@ -1,6 +1,6 @@
-# Namespace: "@darkforest_eth/contracts/abis/\*.json"
+# Namespace: "@dfdao/contracts/abis/\*.json"
 
-[\_types/file-loader/FileWorkerTypes](types_file_loader_FileWorkerTypes.md)."@darkforest_eth/contracts/abis/\*.json"
+[\_types/file-loader/FileWorkerTypes](types_file_loader_FileWorkerTypes.md)."@dfdao/contracts/abis/\*.json"
 
 ## Table of contents
 

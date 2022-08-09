@@ -1,12 +1,18 @@
-import { isLocatable } from '@darkforest_eth/gamelogic';
-import { Planet } from '@darkforest_eth/types';
-import React from 'react';
-import { Link } from '../../Components/CoreUI';
-import dfstyles from '../../Styles/dfstyles';
-import { useUIManager } from '../../Utils/AppHooks';
-import UIEmitter, { UIEmitterEvent } from '../../Utils/UIEmitter';
+import { isLocatable } from "@dfdao/gamelogic";
+import { Planet } from "@dfdao/types";
+import React from "react";
+import { Link } from "../../Components/CoreUI";
+import dfstyles from "../../Styles/dfstyles";
+import { useUIManager } from "../../Utils/AppHooks";
+import UIEmitter, { UIEmitterEvent } from "../../Utils/UIEmitter";
 
-export function PlanetLink({ planet, children }: { planet: Planet; children: React.ReactNode }) {
+export function PlanetLink({
+  planet,
+  children,
+}: {
+  planet: Planet;
+  children: React.ReactNode;
+}) {
   const uiManager = useUIManager();
   const uiEmitter = UIEmitter.getInstance();
 
@@ -20,7 +26,8 @@ export function PlanetLink({ planet, children }: { planet: Planet; children: Rea
         }
       }}
       onMouseEnter={() => {
-        if (isLocatable(planet)) uiManager?.setHoveringOverPlanet(planet, false);
+        if (isLocatable(planet))
+          uiManager?.setHoveringOverPlanet(planet, false);
       }}
       onMouseLeave={() => {
         uiManager?.setHoveringOverPlanet(undefined, false);

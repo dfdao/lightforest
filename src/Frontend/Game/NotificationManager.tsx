@@ -1,4 +1,4 @@
-import { biomeName, isLocatable } from '@darkforest_eth/gamelogic';
+import { biomeName, isLocatable } from "@dfdao/gamelogic";
 import {
   Artifact,
   Biome,
@@ -8,11 +8,11 @@ import {
   LocatablePlanet,
   Planet,
   TxIntent,
-} from '@darkforest_eth/types';
-import EventEmitter from 'events';
-import { startCase } from 'lodash';
-import React from 'react';
-import { getRandomActionId } from '../../Backend/Utils/Utils';
+} from "@dfdao/types";
+import EventEmitter from "events";
+import { startCase } from "lodash";
+import React from "react";
+import { getRandomActionId } from "../../Backend/Utils/Utils";
 import {
   ArtifactFound,
   ArtifactProspected,
@@ -40,13 +40,18 @@ import {
   PlanetSupported,
   Quasar,
   TxDeclined,
-} from '../Components/Icons';
+} from "../Components/Icons";
 import {
   ArtifactBiomeText,
   ArtifactRarityLabelAnim,
   ArtifactTypeText,
-} from '../Components/Labels/ArtifactLabels';
-import { ArtifactNameLink, CenterChunkLink, FAQ04Link, PlanetNameLink } from '../Components/Text';
+} from "../Components/Labels/ArtifactLabels";
+import {
+  ArtifactNameLink,
+  CenterChunkLink,
+  FAQ04Link,
+  PlanetNameLink,
+} from "../Components/Text";
 
 export const enum NotificationType {
   Tx,
@@ -97,7 +102,7 @@ const BiomeNotificationMap = {
   [Biome.CORRUPTED]: NotificationType.FoundBiomeCorrupted,
 };
 function getNotificationTypeFromPlanetBiome(biome: Biome): NotificationType {
-  if (!biome) throw new Error('Biome is a required to get a NotificationType');
+  if (!biome) throw new Error("Biome is a required to get a NotificationType");
   return BiomeNotificationMap[biome];
 }
 
@@ -112,8 +117,8 @@ export type NotificationInfo = {
 };
 
 export const enum NotificationManagerEvent {
-  Notify = 'Notify',
-  ClearNotification = 'ClearNotification',
+  Notify = "Notify",
+  ClearNotification = "ClearNotification",
 }
 
 class NotificationManager extends EventEmitter {
@@ -134,90 +139,90 @@ class NotificationManager extends EventEmitter {
   private getIcon(type: NotificationType) {
     switch (type) {
       case NotificationType.TxInitError:
-        return <TxDeclined height={'48px'} width={'48px'} />;
+        return <TxDeclined height={"48px"} width={"48px"} />;
       case NotificationType.FoundSilverBank:
-        return <Quasar height={'48px'} width={'48px'} />;
+        return <Quasar height={"48px"} width={"48px"} />;
         break;
       case NotificationType.FoundSpace:
-        return <FoundSpace height={'64px'} width={'64px'} />;
+        return <FoundSpace height={"64px"} width={"64px"} />;
         break;
       case NotificationType.FoundDeepSpace:
-        return <FoundDeepSpace height={'64px'} width={'64px'} />;
+        return <FoundDeepSpace height={"64px"} width={"64px"} />;
         break;
       case NotificationType.FoundDeadSpace:
-        return <FoundDeadSpace height={'64px'} width={'64px'} />;
+        return <FoundDeadSpace height={"64px"} width={"64px"} />;
         break;
       case NotificationType.FoundPirates:
-        return <FoundPirates height={'48px'} width={'48px'} />;
+        return <FoundPirates height={"48px"} width={"48px"} />;
         break;
       case NotificationType.FoundSilver:
-        return <FoundSilver height={'48px'} width={'48px'} />;
+        return <FoundSilver height={"48px"} width={"48px"} />;
         break;
       case NotificationType.FoundTradingPost:
-        return <FoundTradingPost height={'48px'} width={'48px'} />;
+        return <FoundTradingPost height={"48px"} width={"48px"} />;
         break;
 
       case NotificationType.FoundFoundry:
-        return <FoundRuins height={'64px'} width={'64px'} />;
+        return <FoundRuins height={"64px"} width={"64px"} />;
         break;
       case NotificationType.FoundBiomeOcean:
-        return <FoundOcean height={'64px'} width={'64px'} />;
+        return <FoundOcean height={"64px"} width={"64px"} />;
         break;
       case NotificationType.FoundBiomeForest:
-        return <FoundForest height={'64px'} width={'64px'} />;
+        return <FoundForest height={"64px"} width={"64px"} />;
         break;
       case NotificationType.FoundBiomeGrassland:
-        return <FoundGrassland height={'64px'} width={'64px'} />;
+        return <FoundGrassland height={"64px"} width={"64px"} />;
         break;
       case NotificationType.FoundBiomeTundra:
-        return <FoundTundra height={'64px'} width={'64px'} />;
+        return <FoundTundra height={"64px"} width={"64px"} />;
         break;
       case NotificationType.FoundBiomeSwamp:
-        return <FoundSwamp height={'64px'} width={'64px'} />;
+        return <FoundSwamp height={"64px"} width={"64px"} />;
         break;
       case NotificationType.FoundBiomeDesert:
-        return <FoundDesert height={'64px'} width={'64px'} />;
+        return <FoundDesert height={"64px"} width={"64px"} />;
         break;
       case NotificationType.FoundBiomeIce:
-        return <FoundIce height={'64px'} width={'64px'} />;
+        return <FoundIce height={"64px"} width={"64px"} />;
         break;
       case NotificationType.FoundBiomeWasteland:
-        return <FoundWasteland height={'64px'} width={'64px'} />;
+        return <FoundWasteland height={"64px"} width={"64px"} />;
         break;
       case NotificationType.FoundBiomeLava:
-        return <FoundLava height={'64px'} width={'64px'} />;
+        return <FoundLava height={"64px"} width={"64px"} />;
         break;
       case NotificationType.FoundBiomeCorrupted:
-        return <FoundCorrupted height={'64px'} width={'64px'} />;
+        return <FoundCorrupted height={"64px"} width={"64px"} />;
         break;
       case NotificationType.PlanetAttacked:
-        return <PlanetAttacked height={'48px'} width={'48px'} />;
+        return <PlanetAttacked height={"48px"} width={"48px"} />;
         break;
       case NotificationType.PlanetSupported:
-        return <PlanetSupported height={'48px'} width={'48px'} />;
+        return <PlanetSupported height={"48px"} width={"48px"} />;
         break;
       case NotificationType.PlanetLost:
-        return <PlanetLost height={'48px'} width={'48px'} />;
+        return <PlanetLost height={"48px"} width={"48px"} />;
         break;
       case NotificationType.PlanetWon:
-        return <PlanetConquered height={'48px'} width={'48px'} />;
+        return <PlanetConquered height={"48px"} width={"48px"} />;
         break;
       case NotificationType.ArtifactProspected:
-        return <ArtifactProspected height={'48px'} width={'48px'} />;
+        return <ArtifactProspected height={"48px"} width={"48px"} />;
         break;
       case NotificationType.ArtifactFound:
-        return <ArtifactFound height={'48px'} width={'48px'} />;
+        return <ArtifactFound height={"48px"} width={"48px"} />;
       default:
-        return <Generic height={'48px'} width={'48px'} />;
+        return <Generic height={"48px"} width={"48px"} />;
         break;
     }
   }
 
   reallyLongNotification() {
-    let message = '';
+    let message = "";
 
     for (let i = 0; i < 100; i++) {
-      message += 'lol ';
+      message += "lol ";
     }
 
     this.emit(NotificationManagerEvent.Notify, {
@@ -257,7 +262,7 @@ class NotificationManager extends EventEmitter {
       NotificationType.FoundSpace,
       <span>
         Congrats! You found space! Space has more valuable resources than <br />
-        the nebula where your home planet is located.{' '}
+        the nebula where your home planet is located.{" "}
         <CenterChunkLink chunk={chunk}>Click to view</CenterChunkLink>.
       </span>
     );
@@ -268,7 +273,7 @@ class NotificationManager extends EventEmitter {
       NotificationType.FoundDeepSpace,
       <span>
         Congrats! You found deep space! Deep space has more rare <br />
-        planets, but all planets in deep space have lowered defense!{' '}
+        planets, but all planets in deep space have lowered defense!{" "}
         <CenterChunkLink chunk={chunk}>Click to view</CenterChunkLink>.
       </span>
     );
@@ -279,7 +284,7 @@ class NotificationManager extends EventEmitter {
       NotificationType.FoundDeadSpace,
       <span>
         Congrats! You found dead space! Dead space is the most valuable <br />
-        and most dangerous part of the universe, where corrupted planets lie...{' '}
+        and most dangerous part of the universe, where corrupted planets lie...{" "}
         <CenterChunkLink chunk={chunk}>Click to view</CenterChunkLink>.
       </span>
     );
@@ -299,7 +304,8 @@ class NotificationManager extends EventEmitter {
     this.notify(
       NotificationType.FoundSilverBank,
       <span>
-        You found a quasar! Quasars are weak, but can hold a lot of silver. <br />
+        You found a quasar! Quasars are weak, but can hold a lot of silver.{" "}
+        <br />
         Click to view <PlanetNameLink planet={planet} />.
       </span>
     );
@@ -309,8 +315,8 @@ class NotificationManager extends EventEmitter {
     this.notify(
       NotificationType.FoundTradingPost,
       <span>
-        You found a spacetime rip! Now you can move artifacts in and out of the universe. Click to
-        view <PlanetNameLink planet={planet} />.
+        You found a spacetime rip! Now you can move artifacts in and out of the
+        universe. Click to view <PlanetNameLink planet={planet} />.
       </span>
     );
   }
@@ -350,8 +356,8 @@ class NotificationManager extends EventEmitter {
     this.notify(
       NotificationType.FoundFoundry,
       <span>
-        You have found a planet that can produce an artifact! Artifacts can be used to power up your
-        planets and moves! <br />
+        You have found a planet that can produce an artifact! Artifacts can be
+        used to power up your planets and moves! <br />
         Click to view <PlanetNameLink planet={planet} />
       </span>
     );
@@ -361,7 +367,7 @@ class NotificationManager extends EventEmitter {
       NotificationType.ArtifactProspected,
       <span>
         You prospected a Foundry! <br />
-        What artifacts are waiting to be found on it? Click to view{' '}
+        What artifacts are waiting to be found on it? Click to view{" "}
         <PlanetNameLink planet={planet} />
       </span>
     );
@@ -371,10 +377,11 @@ class NotificationManager extends EventEmitter {
     this.notify(
       NotificationType.ArtifactFound,
       <span>
-        You have found <ArtifactNameLink id={artifact.id} />, a{' '}
-        <ArtifactRarityLabelAnim rarity={artifact.rarity} />{' '}
-        <ArtifactBiomeText artifact={artifact} /> <ArtifactTypeText artifact={artifact} />
-        {'!'.repeat(artifact.rarity)} <br />
+        You have found <ArtifactNameLink id={artifact.id} />, a{" "}
+        <ArtifactRarityLabelAnim rarity={artifact.rarity} />{" "}
+        <ArtifactBiomeText artifact={artifact} />{" "}
+        <ArtifactTypeText artifact={artifact} />
+        {"!".repeat(artifact.rarity)} <br />
         Click to view <PlanetNameLink planet={planet} />
       </span>
     );
@@ -383,7 +390,8 @@ class NotificationManager extends EventEmitter {
     this.notify(
       NotificationType.PlanetWon,
       <span>
-        You conquered <PlanetNameLink planet={planet}></PlanetNameLink>, you're unstoppable!
+        You conquered <PlanetNameLink planet={planet}></PlanetNameLink>, you're
+        unstoppable!
       </span>
     );
   }
@@ -399,7 +407,8 @@ class NotificationManager extends EventEmitter {
     this.notify(
       NotificationType.PlanetAttacked,
       <span>
-        Your Planet <PlanetNameLink planet={planet}></PlanetNameLink> has been attacked!
+        Your Planet <PlanetNameLink planet={planet}></PlanetNameLink> has been
+        attacked!
       </span>
     );
   }
@@ -408,7 +417,8 @@ class NotificationManager extends EventEmitter {
     this.notify(
       NotificationType.PlanetSupported,
       <span>
-        A friend has supported your Planet <PlanetNameLink planet={planet}></PlanetNameLink>!
+        A friend has supported your Planet{" "}
+        <PlanetNameLink planet={planet}></PlanetNameLink>!
       </span>
     );
   }
@@ -437,8 +447,9 @@ class NotificationManager extends EventEmitter {
     this.notify(
       NotificationType.ReceivedPlanet,
       <span>
-        Someone just sent you their planet: <PlanetNameLink planet={planet} />.{' '}
-        {!isLocatable(planet) && "You'll need to ask the person who sent it for its location."}
+        Someone just sent you their planet: <PlanetNameLink planet={planet} />.{" "}
+        {!isLocatable(planet) &&
+          "You'll need to ask the person who sent it for its location."}
       </span>
     );
   }
@@ -447,8 +458,8 @@ class NotificationManager extends EventEmitter {
     this.notify(
       NotificationType.PlanetAttacked,
       <span>
-        Someone just invaded a target planet: <PlanetNameLink planet={planet} />.{' '}
-        Don't let them win!
+        Someone just invaded a target planet: <PlanetNameLink planet={planet} />
+        . Don't let them win!
       </span>
     );
   }

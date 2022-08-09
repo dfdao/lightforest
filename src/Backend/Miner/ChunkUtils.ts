@@ -1,5 +1,9 @@
-import { Chunk, Rectangle, WorldCoords, WorldLocation } from '@darkforest_eth/types';
-import { BucketId, ChunkId, PersistedChunk } from '../../_types/darkforest/api/ChunkStoreTypes';
+import { Chunk, Rectangle, WorldCoords, WorldLocation } from "@dfdao/types";
+import {
+  BucketId,
+  ChunkId,
+  PersistedChunk,
+} from "../../_types/darkforest/api/ChunkStoreTypes";
 
 /**
  * Deterministically assigns a bucket ID to a rectangle, based on its position and size in the
@@ -7,7 +11,7 @@ import { BucketId, ChunkId, PersistedChunk } from '../../_types/darkforest/api/C
  * roughly evenly between the buckets.
  */
 export function getBucket(chunk: Rectangle): BucketId {
-  const alphanumeric = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const alphanumeric = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   let sum =
     (Math.floor(chunk.bottomLeft.x / chunk.sideLength) +
       Math.floor(chunk.bottomLeft.y / chunk.sideLength)) %
@@ -85,10 +89,14 @@ export const toExploredChunk = (chunk: PersistedChunk): Chunk => {
  * that the four chunks, if merged, would result in an "aligned" chunk whose side length is double
  * the given chunk.
  */
-export const getSiblingLocations = (chunkLoc: Rectangle): [Rectangle, Rectangle, Rectangle] => {
+export const getSiblingLocations = (
+  chunkLoc: Rectangle
+): [Rectangle, Rectangle, Rectangle] => {
   const doubleSideLen = 2 * chunkLoc.sideLength;
-  const newBottomLeftX = Math.floor(chunkLoc.bottomLeft.x / doubleSideLen) * doubleSideLen;
-  const newBottomLeftY = Math.floor(chunkLoc.bottomLeft.y / doubleSideLen) * doubleSideLen;
+  const newBottomLeftX =
+    Math.floor(chunkLoc.bottomLeft.x / doubleSideLen) * doubleSideLen;
+  const newBottomLeftY =
+    Math.floor(chunkLoc.bottomLeft.y / doubleSideLen) * doubleSideLen;
   const newBottomLeft = { x: newBottomLeftX, y: newBottomLeftY };
 
   const siblingLocs: Rectangle[] = [];

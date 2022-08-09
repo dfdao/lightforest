@@ -1,9 +1,9 @@
-import { SpaceType, WorldCoords } from '@darkforest_eth/types';
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import GameUIManager from '../../../Backend/GameLogic/GameUIManager';
-import { useUIManager } from '../../Utils/AppHooks';
-import UIEmitter, { UIEmitterEvent } from '../../Utils/UIEmitter';
+import { SpaceType, WorldCoords } from "@dfdao/types";
+import React, { useState } from "react";
+import styled from "styled-components";
+import GameUIManager from "../../../Backend/GameLogic/GameUIManager";
+import { useUIManager } from "../../Utils/AppHooks";
+import UIEmitter, { UIEmitterEvent } from "../../Utils/UIEmitter";
 
 class CoordsText extends React.Component<
   {
@@ -32,28 +32,28 @@ class CoordsText extends React.Component<
     if (this.coordsRef.current) {
       this.coordsRef.current.innerText = coords
         ? `(${Math.round(coords.x)}, ${Math.round(coords.y)})`
-        : '(x, y)';
+        : "(x, y)";
     }
   }
 
   setSpacetype(coords: WorldCoords) {
-    let spacetypeText = '???';
+    let spacetypeText = "???";
 
     if (this.props.uiManager) {
       const per = this.props.uiManager.getSpaceTypePerlin(coords, false);
       const spaceType = this.props.uiManager.spaceTypeFromPerlin(per);
 
-      let suff = '';
-      if (spaceType === SpaceType.NEBULA) suff = '\u00b0 (NEBULA)';
-      else if (spaceType === SpaceType.SPACE) suff = '\u00b0 (SPACE)';
-      else if (spaceType === SpaceType.DEEP_SPACE) suff = '\u00b0 (DEEP SPACE)';
-      else if (spaceType === SpaceType.DEAD_SPACE) suff = '\u00b0 (DEAD SPACE)';
+      let suff = "";
+      if (spaceType === SpaceType.NEBULA) suff = "\u00b0 (NEBULA)";
+      else if (spaceType === SpaceType.SPACE) suff = "\u00b0 (SPACE)";
+      else if (spaceType === SpaceType.DEEP_SPACE) suff = "\u00b0 (DEEP SPACE)";
+      else if (spaceType === SpaceType.DEAD_SPACE) suff = "\u00b0 (DEAD SPACE)";
 
       spacetypeText = `${Math.floor((16 - per) * 16)}${suff}`;
     }
 
     if (this.spacetypeRef.current) {
-      this.spacetypeRef.current.innerText = 'TEMP: ' + spacetypeText;
+      this.spacetypeRef.current.innerText = "TEMP: " + spacetypeText;
     }
   }
 
@@ -94,7 +94,7 @@ export function CoordsPane() {
       onMouseLeave={() => setHovering(false)}
     >
       {hidden ? (
-        <span>{hovering ? 'Click to show' : ''}</span>
+        <span>{hovering ? "Click to show" : ""}</span>
       ) : hovering ? (
         <span>Click to hide</span>
       ) : (

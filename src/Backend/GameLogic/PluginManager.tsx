@@ -1,9 +1,12 @@
-import { Monomitter, monomitter } from '@darkforest_eth/events';
-import { PluginId } from '@darkforest_eth/types';
-import { EmbeddedPlugin, getEmbeddedPlugins } from '../Plugins/EmbeddedPluginLoader';
-import { PluginProcess } from '../Plugins/PluginProcess';
-import { SerializedPlugin } from '../Plugins/SerializedPlugin';
-import GameManager from './GameManager';
+import { Monomitter, monomitter } from "@dfdao/events";
+import { PluginId } from "@dfdao/types";
+import {
+  EmbeddedPlugin,
+  getEmbeddedPlugins,
+} from "../Plugins/EmbeddedPluginLoader";
+import { PluginProcess } from "../Plugins/PluginProcess";
+import { SerializedPlugin } from "../Plugins/SerializedPlugin";
+import GameManager from "./GameManager";
 
 /**
  * Represents book-keeping information about a running process. We keep it
@@ -70,13 +73,13 @@ export class PluginManager {
     if (this.pluginProcesses[id]) {
       try {
         const process = this.pluginProcesses[id];
-        if (process && typeof process.destroy === 'function') {
+        if (process && typeof process.destroy === "function") {
           // TODO: destroy should also receive the element to cleanup event handlers, etc
           process.destroy();
         }
       } catch (e) {
         this.pluginProcessInfos[id].hasError = true;
-        console.error('error when destroying plugin', e);
+        console.error("error when destroying plugin", e);
       } finally {
         delete this.pluginProcesses[id];
         delete this.pluginProcessInfos[id];
@@ -92,10 +95,16 @@ export class PluginManager {
    * @param overwriteEmbeddedPlugins Reload all embedded plugins even if a local copy is found.
    * Useful for plugin development.
    */
-  public async load(isAdmin: boolean, overwriteEmbeddedPlugins: boolean): Promise<void> {
+  public async load(
+    isAdmin: boolean,
+    overwriteEmbeddedPlugins: boolean
+  ): Promise<void> {
     this.pluginLibrary = await this.gameManager.loadPlugins();
 
-    this.onNewEmbeddedPlugins(getEmbeddedPlugins(isAdmin), overwriteEmbeddedPlugins);
+    this.onNewEmbeddedPlugins(
+      getEmbeddedPlugins(isAdmin),
+      overwriteEmbeddedPlugins
+    );
 
     this.notifyPluginLibraryUpdated();
   }
@@ -125,7 +134,11 @@ export class PluginManager {
    * 2) edits the plugin-library version of this plugin
    * 3) if a plugin was edited, save the plugin library to disk
    */
-  public overwritePlugin(newName: string, pluginCode: string, id: PluginId): void {
+  public overwritePlugin(
+    newName: string,
+    pluginCode: string,
+    id: PluginId
+  ): void {
     this.destroy(id);
 
     const plugin = this.getPluginFromLibrary(id);
@@ -150,7 +163,9 @@ export class PluginManager {
       .filter((p) => !!p) as SerializedPlugin[];
 
     if (newPluginsList.length !== this.pluginLibrary.length) {
-      throw new Error('to reorder the plugins, you must pass in precisely one id for each plugin');
+      throw new Error(
+        "to reorder the plugins, you must pass in precisely one id for each plugin"
+      );
     }
 
     this.pluginLibrary = newPluginsList;
@@ -162,7 +177,11 @@ export class PluginManager {
   /**
    * adds a new plugin into the plugin library.
    */
-  public addPluginToLibrary(id: PluginId, name: string, code: string): SerializedPlugin {
+  public addPluginToLibrary(
+    id: PluginId,
+    name: string,
+    code: string
+  ): SerializedPlugin {
     const newPlugin: SerializedPlugin = {
       id,
       lastEdited: new Date().getTime(),
@@ -197,7 +216,7 @@ export class PluginManager {
     this.pluginProcessInfos[plugin.id] = new ProcessInfo();
 
     const moduleFile = new File([plugin.code], plugin.name, {
-      type: 'text/javascript',
+      type: "text/javascript",
       lastModified: plugin.lastEdited,
     });
     const moduleUrl = URL.createObjectURL(moduleFile);
@@ -205,13 +224,18 @@ export class PluginManager {
       // The `webpackIgnore` "magic comment" is almost undocumented, but it makes
       // webpack skip over this dynamic `import` call so it won't be transformed into
       // a weird _webpack_require_dynamic_ call
-      const { default: Plugin } = await import(/* webpackIgnore: true */ moduleUrl);
+      const { default: Plugin } = await import(
+        /* webpackIgnore: true */ moduleUrl
+      );
       if (this.pluginProcesses[id] === undefined) {
         // instantiate the plugin and attach it to the process list
         this.pluginProcesses[id] = new Plugin();
       }
     } catch (e) {
-      console.error(`Failed to start plugin: ${plugin.name} - Please review stack trace\n`, e);
+      console.error(
+        `Failed to start plugin: ${plugin.name} - Please review stack trace\n`,
+        e
+      );
       this.pluginProcessInfos[id].hasError = true;
     }
 
@@ -226,7 +250,12 @@ export class PluginManager {
     const process = await this.spawn(id);
     const processInfo = this.pluginProcessInfos[id];
 
-    if (process && typeof process.render === 'function' && processInfo && !processInfo.rendered) {
+    if (
+      process &&
+      typeof process.render === "function" &&
+      processInfo &&
+      !processInfo.rendered
+    ) {
       try {
         // Allows a plugin render to be async which in turns allows
         // any method to be async since this is the entry point into it
@@ -234,7 +263,7 @@ export class PluginManager {
         processInfo.rendered = true;
       } catch (e) {
         processInfo.hasError = true;
-        console.log('failed to render plugin', e);
+        console.log("failed to render plugin", e);
       }
     }
   }
@@ -275,11 +304,15 @@ export class PluginManager {
       const processInfo = this.pluginProcessInfos[plugin.id];
       const pluginInstance = this.pluginProcesses[plugin.id];
 
-      if (pluginInstance && typeof pluginInstance.draw === 'function' && !processInfo.hasError) {
+      if (
+        pluginInstance &&
+        typeof pluginInstance.draw === "function" &&
+        !processInfo.hasError
+      ) {
         try {
           pluginInstance.draw(ctx);
         } catch (e) {
-          console.log('failed to draw plugin', e);
+          console.log("failed to draw plugin", e);
           processInfo.hasError = true;
         }
       }
@@ -290,7 +323,10 @@ export class PluginManager {
     return this.pluginLibrary.some((p) => p.id === plugin.id);
   }
 
-  private onNewEmbeddedPlugins(newPlugins: EmbeddedPlugin[], overwriteEmbeddedPlugins: boolean) {
+  private onNewEmbeddedPlugins(
+    newPlugins: EmbeddedPlugin[],
+    overwriteEmbeddedPlugins: boolean
+  ) {
     for (const plugin of newPlugins) {
       if (!this.hasPlugin(plugin)) {
         this.addPluginToLibrary(plugin.id, plugin.name, plugin.code);

@@ -1,6 +1,6 @@
-import { getActivatedArtifact, isActivated } from '@darkforest_eth/gamelogic';
-import { address } from '@darkforest_eth/serde';
-import { EthConnection } from '@darkforest_eth/network';
+import { getActivatedArtifact, isActivated } from "@dfdao/gamelogic";
+import { address } from "@dfdao/serde";
+import { EthConnection } from "@dfdao/network";
 import {
   Artifact,
   ArtifactId,
@@ -12,29 +12,35 @@ import {
   Player,
   Transaction,
   TransactionId,
-} from '@darkforest_eth/types';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import GameUIManager from '../../Backend/GameLogic/GameUIManager';
-import { loadConfigFromHash } from '../../Backend/Network/GraphApi/ConfigApi';
-import { Account } from '../../Backend/Network/AccountManager';
-import { loadArenaLeaderboard } from '../../Backend/Network/GraphApi/ArenaLeaderboardApi';
+} from "@dfdao/types";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import GameUIManager from "../../Backend/GameLogic/GameUIManager";
+import { loadConfigFromHash } from "../../Backend/Network/GraphApi/ConfigApi";
+import { Account } from "../../Backend/Network/AccountManager";
+import { loadArenaLeaderboard } from "../../Backend/Network/GraphApi/ArenaLeaderboardApi";
 import {
   GraphConfigPlayer,
   loadEloLeaderboard,
-} from '../../Backend/Network/GraphApi/EloLeaderboardApi';
-import { loadLeaderboard } from '../../Backend/Network/GraphApi/LeaderboardApi';
-import { loadLiveMatches } from '../../Backend/Network/GraphApi/SpyApi';
-import { Wrapper } from '../../Backend/Utils/Wrapper';
-import { ContractsAPIEvent } from '../../_types/darkforest/api/ContractsAPITypes';
-import { AddressTwitterMap } from '../../_types/darkforest/api/UtilityServerAPITypes';
-import { LobbyInitializers } from '../Panes/Lobby/Reducer';
-import { ModalHandle } from '../Views/Game/ModalPane';
-import { createDefinedContext } from './createDefinedContext';
-import { useEmitterSubscribe, useEmitterValue, useWrappedEmitter } from './EmitterHooks';
-import { usePoll } from './Hooks';
+} from "../../Backend/Network/GraphApi/EloLeaderboardApi";
+import { loadLeaderboard } from "../../Backend/Network/GraphApi/LeaderboardApi";
+import { loadLiveMatches } from "../../Backend/Network/GraphApi/SpyApi";
+import { Wrapper } from "../../Backend/Utils/Wrapper";
+import { ContractsAPIEvent } from "../../_types/darkforest/api/ContractsAPITypes";
+import { AddressTwitterMap } from "../../_types/darkforest/api/UtilityServerAPITypes";
+import { LobbyInitializers } from "../Panes/Lobby/Reducer";
+import { ModalHandle } from "../Views/Game/ModalPane";
+import { createDefinedContext } from "./createDefinedContext";
+import {
+  useEmitterSubscribe,
+  useEmitterValue,
+  useWrappedEmitter,
+} from "./EmitterHooks";
+import { usePoll } from "./Hooks";
 
-export const { useDefinedContext: useEthConnection, provider: EthConnectionProvider } =
-  createDefinedContext<EthConnection>();
+export const {
+  useDefinedContext: useEthConnection,
+  provider: EthConnectionProvider,
+} = createDefinedContext<EthConnection>();
 
 export const { useDefinedContext: useAccount, provider: AccountProvider } =
   createDefinedContext<Account>();
@@ -42,8 +48,10 @@ export const { useDefinedContext: useAccount, provider: AccountProvider } =
 export const { useDefinedContext: useUIManager, provider: UIManagerProvider } =
   createDefinedContext<GameUIManager>();
 
-export const { useDefinedContext: useTopLevelDiv, provider: TopLevelDivProvider } =
-  createDefinedContext<HTMLDivElement>();
+export const {
+  useDefinedContext: useTopLevelDiv,
+  provider: TopLevelDivProvider,
+} = createDefinedContext<HTMLDivElement>();
 
 export const { useDefinedContext: useTwitters, provider: TwitterProvider } =
   createDefinedContext<AddressTwitterMap>();
@@ -88,12 +96,20 @@ export function usePlayer(
  * Create a subscription to the currently selected planet.
  * @param uiManager instance of GameUIManager
  */
-export function useSelectedPlanet(uiManager: GameUIManager): Wrapper<Planet | undefined> {
-  const selectedPlanetId = useWrappedEmitter<LocationId>(uiManager.selectedPlanetId$, undefined);
+export function useSelectedPlanet(
+  uiManager: GameUIManager
+): Wrapper<Planet | undefined> {
+  const selectedPlanetId = useWrappedEmitter<LocationId>(
+    uiManager.selectedPlanetId$,
+    undefined
+  );
   return usePlanet(uiManager, selectedPlanetId.value);
 }
 
-export function useSelectedPlanetId(uiManager: GameUIManager, defaultId?: LocationId) {
+export function useSelectedPlanetId(
+  uiManager: GameUIManager,
+  defaultId?: LocationId
+) {
   return useWrappedEmitter<LocationId>(uiManager.selectedPlanetId$, defaultId);
 }
 
@@ -126,15 +142,21 @@ export function usePlanet(
  * Create a subscription to the currently hovering planet.
  * @param uiManager instance of GameUIManager
  */
-export function useHoverPlanet(uiManager: GameUIManager): Wrapper<Planet | undefined> {
+export function useHoverPlanet(
+  uiManager: GameUIManager
+): Wrapper<Planet | undefined> {
   return useWrappedEmitter<Planet>(uiManager.hoverPlanet$, undefined);
 }
 
-export function useHoverArtifact(uiManager: GameUIManager): Wrapper<Artifact | undefined> {
+export function useHoverArtifact(
+  uiManager: GameUIManager
+): Wrapper<Artifact | undefined> {
   return useWrappedEmitter<Artifact>(uiManager.hoverArtifact$, undefined);
 }
 
-export function useHoverArtifactId(uiManager: GameUIManager): Wrapper<ArtifactId | undefined> {
+export function useHoverArtifactId(
+  uiManager: GameUIManager
+): Wrapper<ArtifactId | undefined> {
   return useWrappedEmitter<ArtifactId>(uiManager.hoverArtifactId$, undefined);
 }
 
@@ -156,7 +178,10 @@ export function usePlanetArtifacts(
   uiManager: GameUIManager
 ): Artifact[] {
   const artifacts = useMemo(
-    () => (planet.value ? uiManager.getArtifactsWithIds(planet.value.heldArtifactIds) : []),
+    () =>
+      planet.value
+        ? uiManager.getArtifactsWithIds(planet.value.heldArtifactIds)
+        : [],
     [planet, uiManager]
   );
 
@@ -168,7 +193,10 @@ export function usePlanetInactiveArtifacts(
   uiManager: GameUIManager
 ): Artifact[] {
   const artifacts = usePlanetArtifacts(planet, uiManager);
-  const filtered = useMemo(() => artifacts.filter((a) => !isActivated(a)), [artifacts]);
+  const filtered = useMemo(
+    () => artifacts.filter((a) => !isActivated(a)),
+    [artifacts]
+  );
 
   return filtered;
 }
@@ -185,7 +213,9 @@ export function useActiveArtifact(
  * Create a subscription to the currently selected artifact.
  * @param uiManager instance of GameUIManager
  */
-export function useSelectedArtifact(uiManager: GameUIManager): Wrapper<Artifact | undefined> {
+export function useSelectedArtifact(
+  uiManager: GameUIManager
+): Wrapper<Artifact | undefined> {
   return useWrappedEmitter<Artifact>(uiManager.hoverArtifact$, undefined);
 }
 
@@ -225,7 +255,7 @@ export function useLeaderboard(poll: number | undefined = undefined): {
     try {
       setLeaderboard(await loadLeaderboard());
     } catch (e) {
-      console.log('error loading leaderboard', e);
+      console.log("error loading leaderboard", e);
       setError(e);
     }
   }, []);
@@ -243,14 +273,18 @@ export function useArenaLeaderboard(
   arenaLeaderboard: Leaderboard | undefined;
   arenaError: Error | undefined;
 } {
-  const [arenaLeaderboard, setArenaLeaderboard] = useState<Leaderboard | undefined>();
+  const [arenaLeaderboard, setArenaLeaderboard] = useState<
+    Leaderboard | undefined
+  >();
   const [arenaError, setArenaError] = useState<Error | undefined>();
 
   const loadArena = useCallback(async function loadArena() {
     try {
-      setArenaLeaderboard((await loadArenaLeaderboard(address, isCompetitive)) as Leaderboard);
+      setArenaLeaderboard(
+        (await loadArenaLeaderboard(address, isCompetitive)) as Leaderboard
+      );
     } catch (e) {
-      console.log('error loading leaderboard', e);
+      console.log("error loading leaderboard", e);
       setArenaError(e);
     }
   }, []);
@@ -268,14 +302,16 @@ export function useEloLeaderboard(
   eloLeaderboard: GraphConfigPlayer[] | undefined;
   eloError: Error | undefined;
 } {
-  const [eloLeaderboard, setEloLeaderboard] = useState<GraphConfigPlayer[] | undefined>();
+  const [eloLeaderboard, setEloLeaderboard] = useState<
+    GraphConfigPlayer[] | undefined
+  >();
   const [eloError, setEloError] = useState<Error | undefined>();
 
   const loadElo = useCallback(async function loadElo() {
     try {
       setEloLeaderboard(await loadEloLeaderboard(address, isCompetitive));
     } catch (e) {
-      console.log('error loading leaderboard', e);
+      console.log("error loading leaderboard", e);
       setEloError(e);
     }
   }, []);
@@ -324,7 +360,7 @@ export function useLiveMatches(
     try {
       setLiveMatches(await loadLiveMatches(config));
     } catch (e) {
-      console.log('error loading leaderboard', e);
+      console.log("error loading leaderboard", e);
       setSpyError(e);
     }
   }, []);
@@ -355,7 +391,9 @@ export type TransactionRecord = Record<TransactionId, Transaction>;
  */
 export function useTransactionLog() {
   const uiManager = useUIManager();
-  const [transactions, setTransactions] = useState<Wrapper<TransactionRecord>>(new Wrapper({}));
+  const [transactions, setTransactions] = useState<Wrapper<TransactionRecord>>(
+    new Wrapper({})
+  );
 
   /**
    * Update the matching transaction in the {@link TransactionRecord}
@@ -387,12 +425,27 @@ export function useTransactionLog() {
 
     return () => {
       contractEventEmitter.off(ContractsAPIEvent.TxQueued, updateTransaction);
-      contractEventEmitter.off(ContractsAPIEvent.TxPrioritized, updateTransaction);
-      contractEventEmitter.off(ContractsAPIEvent.TxProcessing, updateTransaction);
-      contractEventEmitter.off(ContractsAPIEvent.TxSubmitted, updateTransaction);
-      contractEventEmitter.off(ContractsAPIEvent.TxConfirmed, updateTransaction);
+      contractEventEmitter.off(
+        ContractsAPIEvent.TxPrioritized,
+        updateTransaction
+      );
+      contractEventEmitter.off(
+        ContractsAPIEvent.TxProcessing,
+        updateTransaction
+      );
+      contractEventEmitter.off(
+        ContractsAPIEvent.TxSubmitted,
+        updateTransaction
+      );
+      contractEventEmitter.off(
+        ContractsAPIEvent.TxConfirmed,
+        updateTransaction
+      );
       contractEventEmitter.off(ContractsAPIEvent.TxErrored, updateTransaction);
-      contractEventEmitter.off(ContractsAPIEvent.TxCancelled, updateTransaction);
+      contractEventEmitter.off(
+        ContractsAPIEvent.TxCancelled,
+        updateTransaction
+      );
     };
   }, [uiManager, updateTransaction]);
 

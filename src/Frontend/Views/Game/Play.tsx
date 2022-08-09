@@ -1,10 +1,10 @@
-import { TooltipName } from '@darkforest_eth/types';
-import React from 'react';
-import styled from 'styled-components';
-import { Btn } from '../../Components/Btn';
-import Button from '../../Components/Button';
-import { TooltipTrigger } from '../../Panes/Tooltip';
-import { useGameover, usePaused, useUIManager } from '../../Utils/AppHooks';
+import { TooltipName } from "@dfdao/types";
+import React from "react";
+import styled from "styled-components";
+import { Btn } from "../../Components/Btn";
+import Button from "../../Components/Button";
+import { TooltipTrigger } from "../../Panes/Tooltip";
+import { useGameover, usePaused, useUIManager } from "../../Utils/AppHooks";
 
 export function Play() {
   const uiManager = useUIManager();
@@ -13,7 +13,7 @@ export function Play() {
   const hidePlay = !(paused && CONFIRM_START);
 
   const ready = () => {
-    console.log('marking ready...');
+    console.log("marking ready...");
     uiManager.getGameManager().ready();
   };
 

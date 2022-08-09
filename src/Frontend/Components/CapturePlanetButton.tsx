@@ -1,18 +1,21 @@
-import { EMPTY_ADDRESS } from '@darkforest_eth/constants';
-import { isUnconfirmedCapturePlanetTx, isUnconfirmedInvadePlanetTx } from '@darkforest_eth/serde';
-import { Planet, TooltipName } from '@darkforest_eth/types';
-import React, { useCallback, useMemo } from 'react';
-import styled from 'styled-components';
-import { Wrapper } from '../../Backend/Utils/Wrapper';
-import { TooltipTrigger } from '../Panes/Tooltip';
-import { useAddress, useUIManager } from '../Utils/AppHooks';
-import { useEmitterValue } from '../Utils/EmitterHooks';
-import { INVADE } from '../Utils/ShortcutConstants';
-import { ShortcutBtn } from './Btn';
-import { LoadingSpinner } from './LoadingSpinner';
-import { MaybeShortcutButton } from './MaybeShortcutButton';
-import { Row } from './Row';
-import { Green, Red, White } from './Text';
+import { EMPTY_ADDRESS } from "@dfdao/constants";
+import {
+  isUnconfirmedCapturePlanetTx,
+  isUnconfirmedInvadePlanetTx,
+} from "@dfdao/serde";
+import { Planet, TooltipName } from "@dfdao/types";
+import React, { useCallback, useMemo } from "react";
+import styled from "styled-components";
+import { Wrapper } from "../../Backend/Utils/Wrapper";
+import { TooltipTrigger } from "../Panes/Tooltip";
+import { useAddress, useUIManager } from "../Utils/AppHooks";
+import { useEmitterValue } from "../Utils/EmitterHooks";
+import { INVADE } from "../Utils/ShortcutConstants";
+import { ShortcutBtn } from "./Btn";
+import { LoadingSpinner } from "./LoadingSpinner";
+import { MaybeShortcutButton } from "./MaybeShortcutButton";
+import { Row } from "./Row";
+import { Green, Red, White } from "./Text";
 
 const StyledRow = styled(Row)`
   .button {
@@ -29,7 +32,10 @@ export function CapturePlanetButton({
   const uiManager = useUIManager();
   const account = useAddress(uiManager);
   const gameManager = uiManager.getGameManager();
-  const currentBlockNumber = useEmitterValue(uiManager.getEthConnection().blockNumber$, undefined);
+  const currentBlockNumber = useEmitterValue(
+    uiManager.getEthConnection().blockNumber$,
+    undefined
+  );
   const owned = planetWrapper.value?.owner === account;
   const captureZoneGenerator = uiManager.getCaptureZoneGenerator();
 
@@ -50,7 +56,12 @@ export function CapturePlanetButton({
     const planet = planetWrapper.value;
     const inZone = captureZoneGenerator?.isInZone(planet.locationId);
 
-    return owned && inZone && planet.invader === EMPTY_ADDRESS && planet.capturer === EMPTY_ADDRESS;
+    return (
+      owned &&
+      inZone &&
+      planet.invader === EMPTY_ADDRESS &&
+      planet.capturer === EMPTY_ADDRESS
+    );
   }, [owned, planetWrapper, captureZoneGenerator]);
 
   const planetHasEnoughEnergy = useMemo(() => {
@@ -63,11 +74,16 @@ export function CapturePlanetButton({
   const invadable = useMemo(() => {
     if (!planetWrapper.value) return false;
     const planet = planetWrapper.value;
-    return planet.capturer === EMPTY_ADDRESS && planet.invader === EMPTY_ADDRESS;
+    return (
+      planet.capturer === EMPTY_ADDRESS && planet.invader === EMPTY_ADDRESS
+    );
   }, [planetWrapper]);
 
   const invading = useMemo(
-    () => planetWrapper.value?.transactions?.hasTransaction(isUnconfirmedInvadePlanetTx),
+    () =>
+      planetWrapper.value?.transactions?.hasTransaction(
+        isUnconfirmedInvadePlanetTx
+      ),
     [planetWrapper]
   );
 
@@ -80,7 +96,11 @@ export function CapturePlanetButton({
     if (!planetWrapper.value) return;
     const planet = planetWrapper.value;
 
-    return owned && planet.capturer === EMPTY_ADDRESS && planet.invader !== EMPTY_ADDRESS;
+    return (
+      owned &&
+      planet.capturer === EMPTY_ADDRESS &&
+      planet.invader !== EMPTY_ADDRESS
+    );
   }, [owned, planetWrapper]);
 
   const blocksLeft = useMemo(() => {
@@ -108,7 +128,10 @@ export function CapturePlanetButton({
   }, [planetHasEnoughEnergy, blocksLeft]);
 
   const capturing = useMemo(
-    () => planetWrapper.value?.transactions?.hasTransaction(isUnconfirmedCapturePlanetTx),
+    () =>
+      planetWrapper.value?.transactions?.hasTransaction(
+        isUnconfirmedCapturePlanetTx
+      ),
     [planetWrapper]
   );
 
@@ -123,8 +146,8 @@ export function CapturePlanetButton({
         <>
           {shouldShowInvade && (
             <MaybeShortcutButton
-              className='button'
-              size='stretch'
+              className="button"
+              size="stretch"
               active={invading}
               disabled={!invadable || invading}
               onClick={invade}
@@ -133,19 +156,23 @@ export function CapturePlanetButton({
               shortcutText={INVADE}
             >
               <TooltipTrigger
-                style={{ width: '100%', textAlign: 'center' }}
+                style={{ width: "100%", textAlign: "center" }}
                 name={TooltipName.Empty}
                 extraContent={<>Invade this planet. </>}
               >
-                {invading ? <LoadingSpinner initialText={'Invading...'} /> : 'Invade'}
+                {invading ? (
+                  <LoadingSpinner initialText={"Invading..."} />
+                ) : (
+                  "Invade"
+                )}
               </TooltipTrigger>
             </MaybeShortcutButton>
           )}
 
           {shouldShowCapture && (
             <ShortcutBtn
-              className='button'
-              size='stretch'
+              className="button"
+              size="stretch"
               active={capturing}
               disabled={!capturable || capturing}
               onClick={capture}
@@ -154,26 +181,33 @@ export function CapturePlanetButton({
               shortcutText={INVADE}
             >
               <TooltipTrigger
-                style={{ width: '100%', textAlign: 'center' }}
+                style={{ width: "100%", textAlign: "center" }}
                 name={TooltipName.Empty}
                 extraContent={
                   <>
                     <Green>
-                      Capture this planet for score!{' '}
+                      Capture this planet for score!{" "}
                       {!!blocksLeft && blocksLeft >= 0 && (
                         <>
-                          You must wait <White>{blocksLeft}</White> blocks until you can capture
-                          this planet.
+                          You must wait <White>{blocksLeft}</White> blocks until
+                          you can capture this planet.
                         </>
                       )}
                       {!planetHasEnoughEnergy && (
-                        <Red>The planet requires above 80% energy before you can capture it.</Red>
+                        <Red>
+                          The planet requires above 80% energy before you can
+                          capture it.
+                        </Red>
                       )}
                     </Green>
                   </>
                 }
               >
-                {capturing ? <LoadingSpinner initialText={'Capturing...'} /> : 'Capture!'}
+                {capturing ? (
+                  <LoadingSpinner initialText={"Capturing..."} />
+                ) : (
+                  "Capture!"
+                )}
               </TooltipTrigger>
             </ShortcutBtn>
           )}

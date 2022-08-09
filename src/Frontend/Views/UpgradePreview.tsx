@@ -1,10 +1,14 @@
-import { Planet, Upgrade, UpgradeBranchName } from '@darkforest_eth/types';
-import React from 'react';
-import styled from 'styled-components';
-import { getPlanetMaxRank, getPlanetRank, upgradeName } from '../../Backend/Utils/Utils';
-import { Icon, IconType } from '../Components/Icons';
-import { Green, Red, Sub } from '../Components/Text';
-import dfstyles from '../Styles/dfstyles';
+import { Planet, Upgrade, UpgradeBranchName } from "@dfdao/types";
+import React from "react";
+import styled from "styled-components";
+import {
+  getPlanetMaxRank,
+  getPlanetRank,
+  upgradeName,
+} from "../../Backend/Utils/Utils";
+import { Icon, IconType } from "../Components/Icons";
+import { Green, Red, Sub } from "../Components/Text";
+import dfstyles from "../Styles/dfstyles";
 
 const StyledUpgradePreview = styled.div`
   min-width: 15em;
@@ -73,7 +77,7 @@ const StatRowFilled = ({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const mySelected = planet as any;
 
-    if (stat === 'silverGrowth') return mySelected[stat] * 60;
+    if (stat === "silverGrowth") return mySelected[stat] * 60;
     else return mySelected[stat];
   };
   const statNow = (stat: string): string => {
@@ -89,15 +93,15 @@ const StatRowFilled = ({
     if (!upgrade) return mySelected[stat];
 
     let mult = 1;
-    if (stat === 'energyCap') {
+    if (stat === "energyCap") {
       mult = upgrade.energyCapMultiplier / 100;
-    } else if (stat === 'energyGrowth') {
+    } else if (stat === "energyGrowth") {
       mult = upgrade.energyGroMultiplier / 100;
-    } else if (stat === 'range') {
+    } else if (stat === "range") {
       mult = upgrade.rangeMultiplier / 100;
-    } else if (stat === 'speed') {
+    } else if (stat === "speed") {
       mult = upgrade.speedMultiplier / 100;
-    } else if (stat === 'defense') {
+    } else if (stat === "defense") {
       mult = upgrade.defMultiplier / 100;
     }
 
@@ -119,12 +123,12 @@ const StatRowFilled = ({
   };
 
   const updateClass = (stat: string): string => {
-    if (getStat(stat) !== getStatFuture(stat)) return 'upgrade-willupdate';
-    return '';
+    if (getStat(stat) !== getStatFuture(stat)) return "upgrade-willupdate";
+    return "";
   };
 
   return (
-    <StatRow className={[className, updateClass(stat)].join(' ')}>
+    <StatRow className={[className, updateClass(stat)].join(" ")}>
       <span>{title}</span>
       <span>{statNow(stat)}</span>
       <span>
@@ -150,7 +154,8 @@ export function UpgradePreview({
   const branchStrName = branchName !== undefined && upgradeName(branchName);
   const maxRank = getPlanetMaxRank(planet);
   const maxBranchRank = Math.min(4, maxRank);
-  const branchUpgradeState = (branchName && planet && planet.upgradeState[branchName]) || 0;
+  const branchUpgradeState =
+    (branchName && planet && planet.upgradeState[branchName]) || 0;
 
   if (cantUpgrade) {
     upgrade = {
@@ -166,12 +171,37 @@ export function UpgradePreview({
 
   return (
     <StyledUpgradePreview>
-      <StatRowFilled planet={planet} upgrade={upgrade} stat='energyCap' title='Energy Cap' />
-      <StatRowFilled planet={planet} upgrade={upgrade} stat='energyGrowth' title='Energy Growth' />
-      <StatRowFilled planet={planet} upgrade={upgrade} title='Range' stat='range' />
-      <StatRowFilled planet={planet} upgrade={upgrade} title='Speed' stat='speed' />
-      <StatRowFilled planet={planet} upgrade={upgrade} title='Defense' stat='defense' />
-      <StatRow className={cantUpgrade ? '' : 'upgrade-willupdate'}>
+      <StatRowFilled
+        planet={planet}
+        upgrade={upgrade}
+        stat="energyCap"
+        title="Energy Cap"
+      />
+      <StatRowFilled
+        planet={planet}
+        upgrade={upgrade}
+        stat="energyGrowth"
+        title="Energy Growth"
+      />
+      <StatRowFilled
+        planet={planet}
+        upgrade={upgrade}
+        title="Range"
+        stat="range"
+      />
+      <StatRowFilled
+        planet={planet}
+        upgrade={upgrade}
+        title="Speed"
+        stat="speed"
+      />
+      <StatRowFilled
+        planet={planet}
+        upgrade={upgrade}
+        title="Defense"
+        stat="defense"
+      />
+      <StatRow className={cantUpgrade ? "" : "upgrade-willupdate"}>
         <span>{branchStrName} Rank</span>
         <span>{branchUpgradeState}</span>
         <span>
@@ -182,7 +212,7 @@ export function UpgradePreview({
         </span>
         <span>{cantUpgrade ? <Sub>0</Sub> : <Green>+1</Green>}</span>
       </StatRow>
-      <StatRow className={cantUpgrade ? '' : 'upgrade-willupdate'}>
+      <StatRow className={cantUpgrade ? "" : "upgrade-willupdate"}>
         <span>Planet Rank</span>
         <span>{getPlanetRank(planet)}</span>
         <span>

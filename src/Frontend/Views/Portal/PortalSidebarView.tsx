@@ -1,14 +1,17 @@
-import { EthAddress } from '@darkforest_eth/types';
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import dfstyles from '../../Styles/dfstyles';
-import { Text } from '../../Components/Text';
-import { Link, useHistory } from 'react-router-dom';
-import { ArenaPortalButton } from './PortalHomeView';
-import { loadRecentMaps, MapInfo } from '../../../Backend/Network/GraphApi/MapsApi';
-import { getConfigName } from '@darkforest_eth/procedural';
-import { formatDate } from '../../Utils/TimeUtils';
-import { useEthConnection } from '../../Utils/AppHooks';
+import { EthAddress } from "@dfdao/types";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import dfstyles from "../../Styles/dfstyles";
+import { Text } from "../../Components/Text";
+import { Link, useHistory } from "react-router-dom";
+import { ArenaPortalButton } from "./PortalHomeView";
+import {
+  loadRecentMaps,
+  MapInfo,
+} from "../../../Backend/Network/GraphApi/MapsApi";
+import { getConfigName } from "@dfdao/procedural";
+import { formatDate } from "../../Utils/TimeUtils";
+import { useEthConnection } from "../../Utils/AppHooks";
 
 const SidebarMap: React.FC<{
   configHash: string;
@@ -18,7 +21,9 @@ const SidebarMap: React.FC<{
   const lastPlayed = startTime && new Date(startTime * 1000);
   const formattedDate = lastPlayed && `${formatDate(lastPlayed)}`;
   return (
-    <SidebarMapContainer onClick={() => history.push(`/portal/map/${configHash}`)}>
+    <SidebarMapContainer
+      onClick={() => history.push(`/portal/map/${configHash}`)}
+    >
       <SidebarMapTitle>{getConfigName(configHash)}</SidebarMapTitle>
       <span>Last played {formattedDate}</span>
     </SidebarMapContainer>
@@ -44,14 +49,16 @@ export function PortalSidebarView() {
 
   return (
     <SidebarContainer>
-      <Text style={{ fontSize: '1.5em', textTransform: 'uppercase' }}>Dark Forest Arena</Text>
-      <Link style={{ width: '100%' }} to={`/arena/`} target='blank'>
+      <Text style={{ fontSize: "1.5em", textTransform: "uppercase" }}>
+        Dark Forest Arena
+      </Text>
+      <Link style={{ width: "100%" }} to={`/arena/`} target="blank">
         <ArenaPortalButton secondary>New Arena</ArenaPortalButton>
       </Link>
       <span>
         {recentlyPlayedMaps.length > 0
-          ? 'Your recently created maps'
-          : 'Your recently created maps will appear here'}
+          ? "Your recently created maps"
+          : "Your recently created maps will appear here"}
       </span>
       {recentlyPlayedMaps.map((m) => (
         <SidebarMap

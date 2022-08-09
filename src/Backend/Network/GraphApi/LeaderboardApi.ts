@@ -1,13 +1,13 @@
-import { Leaderboard } from '@darkforest_eth/types';
+import { Leaderboard } from "@dfdao/types";
 
 export async function loadLeaderboard(): Promise<Leaderboard> {
   if (!process.env.DF_WEBSERVER_URL) {
-    return { entries: [], length: 0};
+    return { entries: [], length: 0 };
   }
 
   const address = `${process.env.DF_WEBSERVER_URL}/leaderboard`;
   const res = await fetch(address, {
-    method: 'GET',
+    method: "GET",
   });
 
   const rep = await res.json();

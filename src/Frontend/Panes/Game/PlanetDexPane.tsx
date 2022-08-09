@@ -1,23 +1,23 @@
-import { RECOMMENDED_MODAL_WIDTH } from '@darkforest_eth/constants';
-import { formatNumber } from '@darkforest_eth/gamelogic';
+import { RECOMMENDED_MODAL_WIDTH } from "@dfdao/constants";
+import { formatNumber } from "@dfdao/gamelogic";
 import {
   getPlanetClass,
   getPlanetCosmetic,
   getPlanetName,
   rgbStr,
-} from '@darkforest_eth/procedural';
-import { engineConsts } from '@darkforest_eth/renderer';
-import { ModalName, Planet, PlanetType, RGBVec } from '@darkforest_eth/types';
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { getPlanetRank } from '../../../Backend/Utils/Utils';
-import { CenterBackgroundSubtext, Spacer } from '../../Components/CoreUI';
-import { Icon, IconType } from '../../Components/Icons';
-import { Sub } from '../../Components/Text';
-import { useUIManager } from '../../Utils/AppHooks';
-import { ModalPane } from '../../Views/Game/ModalPane';
-import { PlanetLink } from '../../Views/Game/PlanetLink';
-import { SortableTable } from '../../Views/SortableTable';
+} from "@dfdao/procedural";
+import { engineConsts } from "@dfdao/renderer";
+import { ModalName, Planet, PlanetType, RGBVec } from "@dfdao/types";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { getPlanetRank } from "../../../Backend/Utils/Utils";
+import { CenterBackgroundSubtext, Spacer } from "../../Components/CoreUI";
+import { Icon, IconType } from "../../Components/Icons";
+import { Sub } from "../../Components/Text";
+import { useUIManager } from "../../Utils/AppHooks";
+import { ModalPane } from "../../Views/Game/ModalPane";
+import { PlanetLink } from "../../Views/Game/PlanetLink";
+import { SortableTable } from "../../Views/SortableTable";
 
 const StyledPlanetThumb = styled.div<{ iconColor?: string }>`
   width: 20px;
@@ -99,9 +99,9 @@ export function PlanetThumb({ planet }: { planet: Planet }) {
       <PlanetElement>
         <div
           style={{
-            width: radius + 'px',
-            height: radius + 'px',
-            borderRadius: radius / 2 + 'px',
+            width: radius + "px",
+            height: radius + "px",
+            borderRadius: radius / 2 + "px",
             background: baseStr,
           }}
         />
@@ -109,10 +109,10 @@ export function PlanetThumb({ planet }: { planet: Planet }) {
       <PlanetElement>
         <div
           style={{
-            width: ringW + 'px',
-            height: ringH + 'px',
-            borderRadius: ringW * 2 + 'px',
-            background: getPlanetRank(planet) > 0 ? ringColor() : 'none',
+            width: ringW + "px",
+            height: ringH + "px",
+            borderRadius: ringW * 2 + "px",
+            background: getPlanetRank(planet) > 0 ? ringColor() : "none",
           }}
         />
       </PlanetElement>
@@ -126,16 +126,22 @@ function HelpContent() {
       <p>These are all the planets you currently own.</p>
       <Spacer height={8} />
       <p>
-        The table is interactive, and allows you to sort the planets by clicking each column's
-        header. You can also navigate to a planet that you own by clicking on its name. The planet
-        you click will be centered at the spot on the screen where the current planet you have
-        selected is located.
+        The table is interactive, and allows you to sort the planets by clicking
+        each column's header. You can also navigate to a planet that you own by
+        clicking on its name. The planet you click will be centered at the spot
+        on the screen where the current planet you have selected is located.
       </p>
     </div>
   );
 }
 
-export function PlanetDexPane({ visible, onClose }: { visible: boolean; onClose: () => void }) {
+export function PlanetDexPane({
+  visible,
+  onClose,
+}: {
+  visible: boolean;
+  onClose: () => void;
+}) {
   const uiManager = useUIManager();
   const [planets, setPlanets] = useState<Planet[]>([]);
 
@@ -144,7 +150,9 @@ export function PlanetDexPane({ visible, onClose }: { visible: boolean; onClose:
     if (!uiManager) return;
     const myAddr = uiManager.getAccount();
     if (!myAddr) return;
-    const ownedPlanets = uiManager.getAllOwnedPlanets().filter((planet) => planet.owner === myAddr);
+    const ownedPlanets = uiManager
+      .getAllOwnedPlanets()
+      .filter((planet) => planet.owner === myAddr);
     setPlanets(ownedPlanets);
   }, [visible, uiManager]);
 
@@ -170,8 +178,8 @@ export function PlanetDexPane({ visible, onClose }: { visible: boolean; onClose:
     };
   }, [visible, uiManager]);
 
-  const headers = ['', 'Planet Name', 'Level', 'Energy', 'Silver', 'Inventory'];
-  const alignments: Array<'r' | 'c' | 'l'> = ['r', 'l', 'r', 'r', 'r', 'r'];
+  const headers = ["", "Planet Name", "Level", "Energy", "Silver", "Inventory"];
+  const alignments: Array<"r" | "c" | "l"> = ["r", "l", "r", "r", "r", "r"];
 
   const columns = [
     (planet: Planet) => <PlanetThumb planet={planet} />,
@@ -183,7 +191,9 @@ export function PlanetDexPane({ visible, onClose }: { visible: boolean; onClose:
     (planet: Planet) => <Sub>{planet.planetLevel}</Sub>,
     (planet: Planet) => <Sub>{formatNumber(planet.energy)}</Sub>,
     (planet: Planet) => <Sub>{formatNumber(planet.silver)}</Sub>,
-    (planet: Planet) => <Sub>{formatNumber(planet.heldArtifactIds.length)}</Sub>,
+    (planet: Planet) => (
+      <Sub>{formatNumber(planet.heldArtifactIds.length)}</Sub>
+    ),
   ];
 
   const sortingFunctions = [
@@ -202,7 +212,10 @@ export function PlanetDexPane({ visible, onClose }: { visible: boolean; onClose:
     (a: Planet, b: Planet): number => b.silver - a.silver,
     // artifacts
     (a: Planet, b: Planet): number => {
-      const [numArtifacts, scoreB] = [a.heldArtifactIds.length, b.heldArtifactIds.length];
+      const [numArtifacts, scoreB] = [
+        a.heldArtifactIds.length,
+        b.heldArtifactIds.length,
+      ];
       return scoreB - numArtifacts;
     },
   ];
@@ -211,7 +224,7 @@ export function PlanetDexPane({ visible, onClose }: { visible: boolean; onClose:
 
   if (planets.length === 0) {
     content = (
-      <CenterBackgroundSubtext width={RECOMMENDED_MODAL_WIDTH} height='100px'>
+      <CenterBackgroundSubtext width={RECOMMENDED_MODAL_WIDTH} height="100px">
         Loading Your Home Planet...
       </CenterBackgroundSubtext>
     );
@@ -235,7 +248,7 @@ export function PlanetDexPane({ visible, onClose }: { visible: boolean; onClose:
       visible={visible}
       onClose={onClose}
       id={ModalName.PlanetDex}
-      title='Planet Dex'
+      title="Planet Dex"
       helpContent={HelpContent}
     >
       {content}

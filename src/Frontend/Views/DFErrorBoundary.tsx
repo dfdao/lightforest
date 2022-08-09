@@ -1,10 +1,17 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Spacer, Underline } from '../Components/CoreUI';
-import { Red } from '../Components/Text';
+import React from "react";
+import styled from "styled-components";
+import { Spacer, Underline } from "../Components/CoreUI";
+import { Red } from "../Components/Text";
 
-export class DFErrorBoundary extends React.Component<unknown, { hasError: boolean }> {
-  constructor(props: unknown) {
+interface DfErrorBoundaryProps {
+  children: React.ReactNode;
+}
+
+export class DFErrorBoundary extends React.Component<
+  DfErrorBoundaryProps,
+  { hasError: boolean }
+> {
+  constructor(props: { children: React.ReactNode }) {
     super(props);
     this.state = { hasError: false };
   }
@@ -26,8 +33,9 @@ export class DFErrorBoundary extends React.Component<unknown, { hasError: boolea
           <Spacer height={8} />
           There was an error rendering this UI! Sorry!
           <Spacer height={8} />
-          If you would like to report this error, please send a screenshot of the developer console
-          to the <Underline>df-feedback</Underline> channel in our discord.
+          If you would like to report this error, please send a screenshot of
+          the developer console to the <Underline>df-feedback</Underline>{" "}
+          channel in our discord.
         </ErrorBoundaryContent>
       );
     }

@@ -1,11 +1,11 @@
-import { EthAddress, GraphArena, GraphPlanet, WorldCoords } from '@darkforest_eth/types';
-import { BigNumber } from 'ethers';
-import _ from 'lodash';
-import { LobbyPlanet } from '../../../Frontend/Panes/Lobby/LobbiesUtils';
-import { LobbyInitializers } from '../../../Frontend/Panes/Lobby/Reducer';
-import { apiUrl, CONFIG_CONSTANTS } from '../../../Frontend/Utils/constants';
-import { PlanetTypeWeights } from '../../../_types/darkforest/api/ContractsAPITypes';
-import { getGraphQLData } from '../GraphApi';
+import { EthAddress, GraphArena, GraphPlanet, WorldCoords } from "@dfdao/types";
+import { BigNumber } from "ethers";
+import _ from "lodash";
+import { LobbyPlanet } from "../../../Frontend/Panes/Lobby/LobbiesUtils";
+import { LobbyInitializers } from "../../../Frontend/Panes/Lobby/Reducer";
+import { apiUrl, CONFIG_CONSTANTS } from "../../../Frontend/Utils/constants";
+import { PlanetTypeWeights } from "../../../_types/darkforest/api/ContractsAPITypes";
+import { getGraphQLData } from "../GraphApi";
 
 function toNum(num: BigNumber): number {
   return BigNumber.from(num).toNumber();
@@ -52,16 +52,23 @@ export async function loadConfigFromAddress(address: EthAddress): Promise<{
   }
 `;
   try {
-    const rawData: GraphArena = (await getGraphQLData(query, apiUrl)).data.arena;
+    const rawData: GraphArena = (await getGraphQLData(query, apiUrl)).data
+      .arena;
     const configData = convertGraphConfig(rawData);
     return configData;
   } catch (e) {
     console.log(e);
-    throw new Error('could not fetch config data from the graph');
+    throw new Error("could not fetch config data from the graph");
   }
 }
 
-const GraphPlanetType = ['PLANET', 'ASTEROID', 'FOUNDRY', 'SPACETIME_RIP', 'QUASAR'];
+const GraphPlanetType = [
+  "PLANET",
+  "ASTEROID",
+  "FOUNDRY",
+  "SPACETIME_RIP",
+  "QUASAR",
+];
 
 export function convertGraphConfig(arena: GraphArena): {
   config: LobbyInitializers;
@@ -86,9 +93,13 @@ export function convertGraphConfig(arena: GraphArena): {
       BIOME_THRESHOLD_1: toNum(cf.BIOME_THRESHOLD_1),
       BIOME_THRESHOLD_2: toNum(cf.BIOME_THRESHOLD_2),
       BIOMEBASE_KEY: toNum(cf.BIOMEBASE_KEY),
-      CAPTURE_ZONE_CHANGE_BLOCK_INTERVAL: toNum(cf.CAPTURE_ZONE_CHANGE_BLOCK_INTERVAL),
+      CAPTURE_ZONE_CHANGE_BLOCK_INTERVAL: toNum(
+        cf.CAPTURE_ZONE_CHANGE_BLOCK_INTERVAL
+      ),
       CAPTURE_ZONE_COUNT: toNum(cf.CAPTURE_ZONE_COUNT),
-      CAPTURE_ZONE_HOLD_BLOCKS_REQUIRED: toNum(cf.CAPTURE_ZONE_HOLD_BLOCKS_REQUIRED),
+      CAPTURE_ZONE_HOLD_BLOCKS_REQUIRED: toNum(
+        cf.CAPTURE_ZONE_HOLD_BLOCKS_REQUIRED
+      ),
       CAPTURE_ZONE_PLANET_LEVEL_SCORE: [
         toNum(cf.CAPTURE_ZONE_PLANET_LEVEL_SCORE[0]),
         toNum(cf.CAPTURE_ZONE_PLANET_LEVEL_SCORE[1]),
@@ -102,7 +113,9 @@ export function convertGraphConfig(arena: GraphArena): {
         toNum(cf.CAPTURE_ZONE_PLANET_LEVEL_SCORE[9]),
       ],
       CAPTURE_ZONE_RADIUS: toNum(cf.CAPTURE_ZONE_RADIUS),
-      CAPTURE_ZONES_PER_5000_WORLD_RADIUS: toNum(cf.CAPTURE_ZONES_PER_5000_WORLD_RADIUS),
+      CAPTURE_ZONES_PER_5000_WORLD_RADIUS: toNum(
+        cf.CAPTURE_ZONES_PER_5000_WORLD_RADIUS
+      ),
       CLAIM_VICTORY_ENERGY_PERCENT: toNum(cf.CLAIM_VICTORY_ENERGY_PERCENT),
       INIT_PERLIN_MAX: toNum(cf.INIT_PERLIN_MAX),
       INIT_PERLIN_MIN: toNum(cf.INIT_PERLIN_MIN),
@@ -159,8 +172,8 @@ export function convertGraphConfig(arena: GraphArena): {
       TOKEN_MINT_END_TIMESTAMP: toNum(cf.TOKEN_MINT_END_TIMESTAMP),
       WORLD_RADIUS_MIN: toNum(cf.WORLD_RADIUS_MIN),
       // CLAIM_PLANET_COOLDOWN: 0,
-      PLANET_TYPE_WEIGHTS: _.chunk(arena.config.PLANET_TYPE_WEIGHTS, 50).map((block) =>
-        _.chunk(block, 5)
+      PLANET_TYPE_WEIGHTS: _.chunk(arena.config.PLANET_TYPE_WEIGHTS, 50).map(
+        (block) => _.chunk(block, 5)
       ) as any,
       WHITELIST: [],
       ADMIN_PLANETS: arena.planets.map((planet: GraphPlanet) => {
