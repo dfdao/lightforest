@@ -1,5 +1,4 @@
-import { CONTRACT_ADDRESS, FAUCET_ADDRESS } from "@dfdao/contracts";
-import { DFArenaFaucet } from "@dfdao/contracts/typechain";
+import { CONTRACT_ADDRESS } from "@dfdao/contracts";
 import {
   EthConnection,
   ThrottledConcurrentQueue,
@@ -15,14 +14,12 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import { active } from "sortablejs";
 import {
   Account,
   getAccounts,
   addAccount,
   setActive,
   getActive,
-  resetActive,
   logOut,
 } from "../../Backend/Network/AccountManager";
 import { getEthConnection } from "../../Backend/Network/Blockchain";
@@ -38,11 +35,7 @@ import {
 } from "../Components/GameLandingPageComponents";
 import { MythicLabelText } from "../Components/Labels/MythicLabel";
 import { TextPreview } from "../Components/TextPreview";
-import {
-  AccountProvider,
-  EthConnectionProvider,
-  TwitterProvider,
-} from "../Utils/AppHooks";
+import { EthConnectionProvider, TwitterProvider } from "../Utils/AppHooks";
 import { Incompatibility, unsupportedFeatures } from "../Utils/BrowserChecks";
 import { TerminalTextStyle } from "../Utils/TerminalTypes";
 import { PortalMainView } from "../Views/Portal/PortalMainView";
