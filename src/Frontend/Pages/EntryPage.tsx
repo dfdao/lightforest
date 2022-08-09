@@ -412,18 +412,12 @@ export function EntryPage() {
               />
               <Route path="/play/:contract" component={GameLandingPage} />
               <Redirect
-                path="/portal"
-                to={`/portal/home`}
-                push={true}
-                exact={true}
-              />
-              <Route path="/portal" component={PortalMainView} />
-              <Redirect
                 path="/arena"
                 to={`/arena/${defaultAddress}`}
                 push={true}
                 exact={true}
               />
+              <Route path="/" exact component={PortalMainView} />
               <Route path="*" component={NotFoundPage} />
             </Switch>
           </Router>

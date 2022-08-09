@@ -1,27 +1,154 @@
-import React from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import React, { useState, useMemo, useEffect } from "react";
 import styled from "styled-components";
 import { Account } from "./Account";
+import { getConfigName } from "@dfdao/procedural";
+import { EthAddress } from "@dfdao/types";
+import _ from "lodash";
+import { Link } from "react-router-dom";
+import { MythicLabelText } from "../../Components/Labels/MythicLabel";
+import { LoadingSpinner } from "../../Components/LoadingSpinner";
+import { LobbyButton } from "../../Components/LobbyButton";
+import { Minimap } from "../../Components/Minimap";
+import { TextPreview } from "../../Components/TextPreview";
+import {
+  generateMinimapConfig,
+  MinimapConfig,
+} from "../../Panes/Lobby/MinimapUtils";
+import { LobbyInitializers } from "../../Panes/Lobby/Reducer";
+import { useConfigFromHash } from "../../Utils/AppHooks";
+import { competitiveConfig } from "../../Utils/constants";
 
-import { MapInfoView } from "./MapInfoView";
+import { MapDetails } from "./MapDetails";
+
+const NONE = "no map found";
+
+function MapOverview({
+  configHash,
+  config,
+  lobbyAddress,
+}: {
+  configHash: string | undefined;
+  config: LobbyInitializers | undefined;
+  lobbyAddress: EthAddress | undefined;
+}) {
+  const [minimapConfig, setMinimapConfig] = useState<
+    MinimapConfig | undefined
+  >();
+  const [mapName, setMapName] = useState<string>(
+    configHash ? getConfigName(configHash) : NONE
+  );
+
+  const onMapChange = useMemo(() => {
+    return _.debounce(
+      (config: MinimapConfig) => configHash && setMinimapConfig(config),
+      500
+    );
+  }, [setMinimapConfig, configHash]);
+
+  useEffect(() => {
+    if (config) {
+      const name = configHash ? getConfigName(configHash) : NONE;
+      setMapName(name);
+      onMapChange(generateMinimapConfig(config, 4));
+    } else {
+      setMinimapConfig(undefined);
+      setMapName(NONE);
+    }
+  }, [config, onMapChange, setMapName, configHash]);
+
+  const { innerHeight } = window;
+  let mapSize = "500px";
+  if (innerHeight < 700) {
+    mapSize = "300px";
+  }
+
+  return (
+    <OverviewContainer>
+      <div style={{ textAlign: "center" }}>
+        {configHash == competitiveConfig && (
+          <MythicLabelText text={`Galactic League Official Map`} />
+        )}
+        <MapTitle>{mapName}</MapTitle>
+        <TextPreview
+          text={configHash}
+          focusedWidth={"200px"}
+          unFocusedWidth={"200px"}
+        />
+      </div>
+
+      {!minimapConfig ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "500px",
+            height: "500px",
+          }}
+        >
+          <LoadingSpinner initialText="Loading..." />
+        </div>
+      ) : (
+        <Minimap
+          style={{ width: mapSize, height: mapSize }}
+          minimapConfig={minimapConfig}
+          setRefreshing={() => {
+            // do nothing
+          }}
+        />
+      )}
+      <div
+        style={{
+          display: "flex",
+          gap: "16px",
+          justifyContent: "center",
+          width: "100%",
+        }}
+      >
+        <Link
+          style={{ minWidth: "250px" }}
+          target="blank"
+          to={`/play/${lobbyAddress}?create=true`}
+        >
+          <LobbyButton primary>Create Match</LobbyButton>
+        </Link>
+      </div>
+    </OverviewContainer>
+  );
+}
+
+function MapInfoView({}) {
+  const configHash =
+    "0x568297442f966cc66f2be7ced683e35ea2ca1e68b4f26dd5424158244da40bcc";
+  const { config, lobbyAddress, error } = useConfigFromHash(configHash);
+
+  return (
+    <MapInfoContainer>
+      {error ? (
+        <div>Map Not Found</div>
+      ) : (
+        config && (
+          <>
+            <MapOverview
+              configHash={configHash}
+              config={config}
+              lobbyAddress={lobbyAddress}
+            />
+            <MapDetails configHash={configHash} config={config} />
+          </>
+        )
+      )}
+    </MapInfoContainer>
+  );
+}
 
 export function PortalMainView() {
-  const roundConfig =
-    "0x568297442f966cc66f2be7ced683e35ea2ca1e68b4f26dd5424158244da40bcc";
-
   return (
     <MainContainer>
       <TopBar>
         <Account />
       </TopBar>
-      <Switch>
-        <Redirect
-          path="/portal/home"
-          to={`/portal/map/${roundConfig}`}
-          exact={true}
-        />
-        <Route path={"/portal/map/:configHash"} component={MapInfoView} />
-      </Switch>
+      <MapInfoView />
     </MainContainer>
   );
 }
@@ -43,4 +170,36 @@ const TopBar = styled.div`
   align-items: center;
   width: 100%;
   padding: 16px;
+`;
+
+const MapInfoContainer = styled.div`
+  display: flex;
+  flex: 1 1;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+  justify-content: space-evenly;
+  padding: 10px;
+  overflow: hidden;
+`;
+
+const OverviewContainer = styled.div`
+  flex: 1 1 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+`;
+
+const Title = styled.div`
+  display: flex;
+  text-align: center;
+  font-size: 3em;
+  white-space: nowrap;
+  justify-content: center;
+`;
+
+const MapTitle = styled(Title)`
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 `;
