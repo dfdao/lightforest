@@ -29,7 +29,7 @@ function findScopeDirectory() {
   return scopeDirectory;
 }
 
-const Initializers = yup
+const ConfigValidators = yup
   .object({
     round: yup.object({
       END_TIME: yup.date().required(),
@@ -85,8 +85,15 @@ function load() {
 }
 
 const tomlConfig = load();
-console.log(tomlConfig);
-parse(Initializers, tomlConfig);
+
+if (tomlConfig) {
+  console.log("Successfully loaded config from lightforest.toml:\n");
+  console.log(tomlConfig);
+} else {
+  console.error("Unable to load config");
+}
+
+parse(ConfigValidators, tomlConfig);
 
 module.exports = {
   mode: "production",
