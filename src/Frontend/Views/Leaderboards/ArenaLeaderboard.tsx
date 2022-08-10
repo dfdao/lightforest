@@ -34,11 +34,13 @@ export function ArenaLeaderboardWithData({ config }: { config: string }) {
 export function ArenaLeaderboardDisplay({
   leaderboard,
   error,
-  multiplayer,
+  startTime,
+  endTime,
 }: {
   leaderboard: Leaderboard | undefined;
   error: Error | undefined;
-  multiplayer?: boolean;
+  startTime?: number;
+  endTime?: number;
 }) {
   return (
     <GenericErrorBoundary errorMessage={errorMessage}>
@@ -50,7 +52,12 @@ export function ArenaLeaderboardDisplay({
           </StatsTable>
         </StatsTableContainer>
         {/* <Spacer height={8} /> */}
-        <ArenaLeaderboardBody leaderboard={leaderboard} error={error} />
+        <ArenaLeaderboardBody
+          leaderboard={leaderboard}
+          error={error}
+          startTime={startTime}
+          endTime={endTime}
+        />
       </LeaderboardContainer>
     </GenericErrorBoundary>
   );
@@ -387,9 +394,13 @@ function ArenaLeaderboardTable({ rows }: { rows: Row[] }) {
 function ArenaLeaderboardBody({
   leaderboard,
   error,
+  startTime,
+  endTime,
 }: {
   leaderboard: Leaderboard | undefined;
   error: Error | undefined;
+  startTime: number | undefined;
+  endTime: number | undefined;
 }) {
   if (error) {
     return (
@@ -415,14 +426,19 @@ function ArenaLeaderboardBody({
     return a.score - b.score;
   });
 
-  const arenaRows: Row[] = leaderboard.entries.map((entry) => {
-    return {
-      address: entry.ethAddress,
-      twitter: entry.twitter,
-      time: entry.time,
-      moves: entry.moves,
-    };
-  });
+  const arenaRows: Row[] = leaderboard.entries.reduce((total, curr) => {
+    if (startTime && startTime > curr.startTime) return total;
+    if (endTime && endTime < curr.startTime) return total;
+    return [
+      ...total,
+      {
+        address: curr.ethAddress,
+        twitter: curr.twitter,
+        time: curr.time,
+        moves: curr.moves,
+      },
+    ];
+  }, []);
 
   return <ArenaLeaderboardTable rows={arenaRows} />;
 }
