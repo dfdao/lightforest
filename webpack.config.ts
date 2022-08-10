@@ -32,9 +32,15 @@ function findScopeDirectory() {
 const ConfigValidators = yup
   .object({
     round: yup.object({
-      END_TIME: yup.date().required(),
       START_TIME: yup.date().required(),
+      // make sure end time is after start time
+      END_TIME: yup
+        .date()
+        .when("START_TIME", (startTime: string, schema: any) => {
+          return schema.min(startTime);
+        }),
       DESCRIPTION: yup.string().required(),
+      TITLE: yup.string().required(),
       MOVE_WEIGHT: yup.number().required(),
       TIME_WEIGHT: yup.number().required(),
       BRONZE_RANK: yup.number().required(),
@@ -52,8 +58,13 @@ function parse(schema: any, data: unknown) {
     const errors = err.errors
       .map((msg: string, i: number) => `${i + 1}. ${msg}`)
       .join("\n");
-    console.error(`Invalid config -- ${err.errors.length} errors:\n`);
+    console.error(
+      `Invalid config -- ${err.errors.length} error${
+        err.errors.length > 1 ? "s" : ""
+      }:\n`
+    );
     console.error(errors);
+    console.error("\n");
     process.exit(1);
   }
 }

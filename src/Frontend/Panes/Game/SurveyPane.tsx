@@ -59,7 +59,11 @@ function SurveyPaneContent({ numSpawnPlanets }: { numSpawnPlanets: number }) {
 
   let arenaStats = undefined;
   if (isCompetitive) {
-    const rank = getRank(time);
+    const rank = getRank(time, {
+      goldScore: goldTime,
+      silverScore: silverTime,
+      bronzeScore: bronzeTime,
+    });
 
     arenaStats = (
       <div>

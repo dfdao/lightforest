@@ -9,35 +9,22 @@ import { MythicLabelText } from "../../Components/Labels/MythicLabel";
 import { LoadingSpinner } from "../../Components/LoadingSpinner";
 import { LobbyButton } from "../../Components/LobbyButton";
 import { Minimap } from "../../Components/Minimap";
-import { TextPreview } from "../../Components/TextPreview";
 import {
   generateMinimapConfig,
   MinimapConfig,
 } from "../../Panes/Lobby/MinimapUtils";
 import { LobbyInitializers } from "../../Panes/Lobby/Reducer";
 import { useConfigFromHash } from "../../Utils/AppHooks";
-import { competitiveConfig } from "../../Utils/constants";
 
 import { MapDetails } from "./MapDetails";
-
-interface LoadedRound {
-  round: {
-    END_TIME: string;
-    BRONZE_RANK: number;
-    CONFIG_HASH: string;
-    DESCRIPTION: string;
-    GOLD_RANK: number;
-    MOVE_WEIGHT: number;
-    SILVER_RANK: number;
-    START_TIME: string;
-    TIME_WEIGHT: number;
-  };
-}
+import { formatDuration } from "../../Utils/TimeUtils";
+import { LoadedRound } from "../../../_types/global/GlobalTypes";
 
 declare const LIGHTFOREST_CONFIG: LoadedRound;
 
 const NONE = "no map found";
 
+type RoundStatus = "not started" | "started" | "ended";
 function MapOverview({
   configHash,
   config,
@@ -47,6 +34,11 @@ function MapOverview({
   config: LobbyInitializers | undefined;
   lobbyAddress: EthAddress | undefined;
 }) {
+  const endTime = new Date(LIGHTFOREST_CONFIG.round.END_TIME).getTime();
+  const startTime = new Date(LIGHTFOREST_CONFIG.round.START_TIME).getTime();
+
+  const [status, setStatus] = useState<RoundStatus>("not started");
+  const [countdown, setCountdown] = useState<number>();
   const [minimapConfig, setMinimapConfig] = useState<
     MinimapConfig | undefined
   >();
@@ -72,6 +64,34 @@ function MapOverview({
     }
   }, [config, onMapChange, setMapName, configHash]);
 
+  useEffect(() => {
+    const update = () => {
+      const now = Date.now();
+
+      if (now > endTime) {
+        setStatus("ended");
+        setCountdown(1);
+        return;
+      }
+      if (now < startTime) {
+        setStatus("not started");
+        const msWait = startTime - now;
+        setCountdown(msWait);
+        return;
+      }
+
+      const msWait = endTime - now;
+
+      setStatus("started");
+      setCountdown(msWait);
+    };
+
+    const interval = setInterval(() => {
+      update();
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [status, countdown]);
   const { innerHeight } = window;
   let mapSize = "500px";
   if (innerHeight < 700) {
@@ -81,15 +101,17 @@ function MapOverview({
   return (
     <OverviewContainer>
       <div style={{ textAlign: "center" }}>
-        {configHash == competitiveConfig && (
-          <MythicLabelText text={`Galactic League Official Map`} />
+        <MythicLabelText text={LIGHTFOREST_CONFIG.round.TITLE} />
+        <MapTitle>{mapName}</MapTitle>
+        {countdown && (
+          <div>
+            {status == "ended"
+              ? "Round over!"
+              : status == "not started"
+              ? `Round starts in ${formatDuration(countdown)} `
+              : `Round ends in ${formatDuration(countdown)} `}
+          </div>
         )}
-        <MapTitle>{LIGHTFOREST_CONFIG.round.DESCRIPTION}</MapTitle>
-        <TextPreview
-          text={configHash}
-          focusedWidth={"200px"}
-          unFocusedWidth={"200px"}
-        />
       </div>
 
       {!minimapConfig ? (
@@ -126,7 +148,9 @@ function MapOverview({
           target="blank"
           to={`/play/${lobbyAddress}?create=true`}
         >
-          <LobbyButton primary>Create Match</LobbyButton>
+          <LobbyButton disabled={status !== "started"} primary>
+            Play Round
+          </LobbyButton>
         </Link>
       </div>
     </OverviewContainer>
@@ -134,8 +158,7 @@ function MapOverview({
 }
 
 function MapInfoView({}) {
-  const configHash =
-    "0x568297442f966cc66f2be7ced683e35ea2ca1e68b4f26dd5424158244da40bcc";
+  const configHash = LIGHTFOREST_CONFIG.round.CONFIG_HASH;
   const { config, lobbyAddress, error } = useConfigFromHash(configHash);
 
   return (

@@ -26,13 +26,6 @@ export function Timer({ account }: { account: EthAddress | undefined }) {
       setTime(`${formatDuration(gameDuration * 1000)}`);
       const points = gameDuration * (1 + moves / 1000);
       setScore(points);
-      if (colored) {
-        const rank = getRank(points);
-        if (rank == Rank.GOLD) setColor(dfstyles.colors.dfgold);
-        else if (rank == Rank.SILVER) setColor(dfstyles.colors.dfsilver);
-        else if (rank == Rank.BRONZE) setColor(dfstyles.colors.dfbronze);
-        else setColor(dfstyles.colors.dfwhite);
-      }
     };
 
     useEffect(() => {
