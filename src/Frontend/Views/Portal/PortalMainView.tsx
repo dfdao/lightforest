@@ -27,6 +27,22 @@ import { MapDetails } from "./MapDetails";
 import { TimeUntil } from "../../Components/TimeUntil";
 import { formatDuration } from "../../Utils/TimeUtils";
 
+interface LoadedRound {
+  round: {
+    END_TIME: string;
+    BRONZE_RANK: number;
+    CONFIG_HASH: string;
+    DESCRIPTION: string;
+    GOLD_RANK: number;
+    MOVE_WEIGHT: number;
+    SILVER_RANK: number;
+    START_TIME: string;
+    TIME_WEIGHT: number;
+  };
+}
+
+declare const LIGHTFOREST_CONFIG: LoadedRound;
+
 const NONE = "no map found";
 
 type RoundStatus = "not started" | "started" | "ended";
