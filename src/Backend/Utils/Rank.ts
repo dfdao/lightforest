@@ -36,6 +36,10 @@ export function calculateScore({
   if (!time && !moves) throw new Error("score cannot be calculated");
   if (!time && moves) return moves;
   if (!moves && time) return time;
-  if (moves && time) return Math.floor(time - 1000 / moves);
+  if (moves && time) return scoreCalculation(time, moves);
   return 69;
+}
+
+function scoreCalculation(time: number, moves: number) {
+  return Math.floor(time - 1000 / moves);
 }

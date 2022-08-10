@@ -288,7 +288,7 @@ function ArenaLeaderboardTable({
     <TableContainer>
       <SortableTable
         sortFunctions={sortFunctions}
-        alignments={["r", "r", "l", "l", "r"]}
+        alignments={["r", "l", "c", "c", "r", "r", "r"]}
         headers={[
           // <Cell key='star'></Cell>,
           <Cell key="rank"></Cell>,
