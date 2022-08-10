@@ -18,7 +18,14 @@ import { ConfigDetails } from "./ConfigDetails";
 import { FindMatch } from "./FindMatch";
 import useSWR from "swr";
 import { fetcher } from "../../../Backend/Network/UtilityServerAPI";
-import { description } from "../../Utils/constants";
+import {
+  description,
+  roundStartTimestamp,
+  roundEndTimestamp,
+  goldTime,
+  silverTime,
+  bronzeTime,
+} from "../../Utils/constants";
 
 export function MapDetails({
   configHash,
@@ -38,6 +45,9 @@ export function MapDetails({
   const numSpawnPlanets =
     config?.ADMIN_PLANETS.filter((p) => p.isSpawnPlanet).length ?? 0;
   const hasWhitelist = config?.WHITELIST_ENABLED ?? true;
+
+  const startTime = new Date(roundStartTimestamp).getTime();
+  const endTime = new Date(roundEndTimestamp).getTime();
 
   useEffect(() => {
     setLeaderboard(undefined);
@@ -134,6 +144,11 @@ export function MapDetails({
               <ArenaLeaderboardDisplay
                 leaderboard={leaderboard}
                 error={leaderboardError}
+                startTime={startTime / 1000}
+                endTime={endTime / 1000}
+                goldScore={goldTime}
+                silverScore={silverTime}
+                bronzeScore={bronzeTime}
               />
             );
           }
