@@ -1,4 +1,4 @@
-import * as bigInt from 'big-integer';
+import * as bigInt from "big-integer";
 
 // To developer, increase this number to 256. This, in combination with setting `DISABLE_ZK_CHECKS`
 // in darkforest.toml, will make you mine the map at ULTRA SPEED!
@@ -15,24 +15,35 @@ const MIN_CHUNK_SIZE = 16;
 const MAX_CHUNK_SIZE = 2 ** 14;
 
 const LOCATION_ID_UB = bigInt(
-  '21888242871839275222246405745257275088548364400416034343698204186575808495617'
+  "21888242871839275222246405745257275088548364400416034343698204186575808495617"
 );
 
-const apiUrl = 'https://9a46-143-244-168-87.ngrok.io/subgraphs/name/df-arena-v2';
+const apiUrl =
+  "https://9a46-143-244-168-87.ngrok.io/subgraphs/name/df-arena-v2";
 
-const competitiveConfig = '0xfe719a3cfccf2bcfa23f71f0af80a931eda4f4197331828d728b7505a6156930';
+const competitiveConfig =
+  "0xfe719a3cfccf2bcfa23f71f0af80a931eda4f4197331828d728b7505a6156930";
 
-const tutorialConfig = '0xdccc97271cde9ad566db3a1e1d3d12220b04b595134bb7039b5606fdc57d82a1';
+const tutorialConfig =
+  "0xdccc97271cde9ad566db3a1e1d3d12220b04b595134bb7039b5606fdc57d82a1";
 
-const roundStartTimestamp = '2022-07-13T00:00:00.000Z';
+const roundStartTimestamp = "2022-07-13T00:00:00.000Z";
 
-const roundEndTimestamp = '2022-07-20T00:00:00.000Z';
+const roundEndTimestamp = "2022-07-20T00:00:00.000Z";
 
 const bronzeTime = 4500; // 80 minutes in seconds
 
 const silverTime = 3500; // 40 minutes in seconds
 
 const goldTime = 2500; // 20 minutes in seconds
+
+const moveWeight = 1;
+
+const timeWeight = 1;
+
+const title = "the best map ever";
+
+const description = "this could be the greatest map ever devised";
 
 const OPTIMISM_GAS_LIMIT = 15000000;
 
