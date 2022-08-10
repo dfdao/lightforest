@@ -1,6 +1,7 @@
 const path = require("path");
 const dotenv = require("dotenv");
 const webpack = require("webpack");
+const yup = require("yup");
 
 dotenv.config();
 
@@ -28,6 +29,35 @@ function findScopeDirectory() {
   return scopeDirectory;
 }
 
+const Initializers = yup
+  .object({
+    round: yup.object({
+      END_TIME: yup.date().required(),
+      START_TIME: yup.date().required(),
+      DESCRIPTION: yup.string().required(),
+      MOVE_WEIGHT: yup.number().required(),
+      TIME_WEIGHT: yup.number().required(),
+      BRONZE_RANK: yup.number().required(),
+      CONFIG_HASH: yup.string().required(),
+      GOLD_RANK: yup.number().required(),
+      SILVER_RANK: yup.number().required(),
+    }),
+  })
+  .defined();
+
+function parse(schema: any, data: unknown) {
+  try {
+    return schema.validateSync(data, { abortEarly: false });
+  } catch (err) {
+    const errors = err.errors
+      .map((msg: string, i: number) => `${i + 1}. ${msg}`)
+      .join("\n");
+    console.error(`Invalid config -- ${err.errors.length} errors:\n`);
+    console.error(errors);
+    process.exit(1);
+  }
+}
+
 const explorer = () =>
   cosmiconfig.cosmiconfigSync("lightforest", {
     cache: true,
@@ -45,9 +75,10 @@ const explorer = () =>
   });
 
 function load() {
+  console.log("Loading config from lightforest.toml...");
   const result = explorer().search();
   if (!result) {
-    console.error(`Couldn't find a config file for prod`);
+    console.error(`Couldn't find a config file`);
     process.exit(1);
   }
   return result.config;
@@ -55,6 +86,7 @@ function load() {
 
 const tomlConfig = load();
 console.log(tomlConfig);
+parse(Initializers, tomlConfig);
 
 module.exports = {
   mode: "production",
