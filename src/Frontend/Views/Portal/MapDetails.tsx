@@ -18,6 +18,7 @@ import { ConfigDetails } from "./ConfigDetails";
 import { FindMatch } from "./FindMatch";
 import useSWR from "swr";
 import { fetcher } from "../../../Backend/Network/UtilityServerAPI";
+import { description } from "../../Utils/constants";
 
 export function MapDetails({
   configHash,
@@ -34,11 +35,6 @@ export function MapDetails({
   const [liveMatches, setLiveMatches] = useState<LiveMatch | undefined>();
   const [liveMatchError, setLiveMatchError] = useState<Error | undefined>();
 
-  const { data: data, error } = useSWR(
-    `${process.env.DFDAO_WEBSERVER_URL}/rounds/${configHash}`,
-    fetcher
-  );
-  const parsedData = data ? JSON.parse(data) : undefined;
   const numSpawnPlanets =
     config?.ADMIN_PLANETS.filter((p) => p.isSpawnPlanet).length ?? 0;
   const hasWhitelist = config?.WHITELIST_ENABLED ?? true;
@@ -88,7 +84,7 @@ export function MapDetails({
         overflowY: "auto",
       }}
     >
-      {parsedData?.description?.length > 0 && (
+      {description.length > 0 && (
         <div
           style={{
             margin: "2rem auto",
@@ -101,13 +97,13 @@ export function MapDetails({
           <span style={{ color: "#fff" }}>Description</span>
           <span
             style={{
-              maxWidth: "66%",
+              maxWidth: "85%",
               margin: "0 auto",
               textAlign: "center",
               opacity: "70%",
             }}
           >
-            {parsedData.description}
+            {description}
           </span>
         </div>
       )}

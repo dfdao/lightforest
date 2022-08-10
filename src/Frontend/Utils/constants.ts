@@ -27,9 +27,9 @@ const competitiveConfig =
 const tutorialConfig =
   "0xdccc97271cde9ad566db3a1e1d3d12220b04b595134bb7039b5606fdc57d82a1";
 
-const roundStartTimestamp = "2022-07-13T00:00:00.000Z";
+const roundStartTimestamp = "2022-08-13T00:00:00.000Z";
 
-const roundEndTimestamp = "2022-07-20T00:00:00.000Z";
+const roundEndTimestamp = "2022-08-20T00:00:00.000Z";
 
 const bronzeTime = 4500; // 80 minutes in seconds
 
@@ -140,6 +140,10 @@ export {
   silverTime,
   CONFIG_CONSTANTS,
   goldTime,
+  title,
+  description,
+  moveWeight,
+  timeWeight,
 };
 
 export const enum DFZIndex {
