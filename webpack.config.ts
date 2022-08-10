@@ -1,6 +1,6 @@
-/* eslint-disable */
 const path = require("path");
 const dotenv = require("dotenv");
+const webpack = require("webpack");
 
 dotenv.config();
 
@@ -9,6 +9,9 @@ const { EnvironmentPlugin } = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+
+const toml = require("@iarna/toml");
+const cosmiconfig = require("cosmiconfig");
 
 // This code is used to lookup where the `@dfdao` packages exist in the tree
 // whether they are in a monorepo or installed as packages
@@ -24,6 +27,34 @@ function findScopeDirectory() {
 
   return scopeDirectory;
 }
+
+const explorer = () =>
+  cosmiconfig.cosmiconfigSync("lightforest", {
+    cache: true,
+    searchPlaces: [`lightforest.toml`],
+    loaders: {
+      ".toml": (filename: string, content: unknown) => {
+        try {
+          return toml.parse(content);
+        } catch (err) {
+          console.error(`Couldn't parse ${filename}`);
+          process.exit(1);
+        }
+      },
+    },
+  });
+
+function load() {
+  const result = explorer().search();
+  if (!result) {
+    console.error(`Couldn't find a config file for prod`);
+    process.exit(1);
+  }
+  return result.config;
+}
+
+const tomlConfig = load();
+console.log(tomlConfig);
 
 module.exports = {
   mode: "production",
@@ -89,7 +120,7 @@ module.exports = {
         test: /\.js$/,
         loader: "source-map-loader",
         options: {
-          filterSourceMappingUrl(url, resourcePath) {
+          filterSourceMappingUrl(_url: string, resourcePath: string) {
             // The sourcemaps in react-sortable are screwed up
             if (resourcePath.includes("react-sortablejs")) {
               return false;
@@ -128,6 +159,9 @@ module.exports = {
     }),
     new CopyPlugin({
       patterns: [{ from: "public", to: "public" }],
+    }),
+    new webpack.DefinePlugin({
+      LIGHTFOREST_CONFIG: JSON.stringify(tomlConfig),
     }),
   ],
 };

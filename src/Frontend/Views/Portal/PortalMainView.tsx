@@ -20,6 +20,22 @@ import { competitiveConfig } from "../../Utils/constants";
 
 import { MapDetails } from "./MapDetails";
 
+interface LoadedRound {
+  round: {
+    END_TIME: string;
+    BRONZE_RANK: number;
+    CONFIG_HASH: string;
+    DESCRIPTION: string;
+    GOLD_RANK: number;
+    MOVE_WEIGHT: number;
+    SILVER_RANK: number;
+    START_TIME: string;
+    TIME_WEIGHT: number;
+  };
+}
+
+declare const LIGHTFOREST_CONFIG: LoadedRound;
+
 const NONE = "no map found";
 
 function MapOverview({
@@ -68,7 +84,7 @@ function MapOverview({
         {configHash == competitiveConfig && (
           <MythicLabelText text={`Galactic League Official Map`} />
         )}
-        <MapTitle>{mapName}</MapTitle>
+        <MapTitle>{LIGHTFOREST_CONFIG.round.DESCRIPTION}</MapTitle>
         <TextPreview
           text={configHash}
           focusedWidth={"200px"}
