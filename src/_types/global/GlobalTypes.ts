@@ -69,3 +69,18 @@ export interface ClaimCountdownInfo {
   currentlyClaiming: boolean; // true iff player has an unconfirmedReveal currently being processed
   claimCooldownTime: number; // in seconds
 }
+
+export interface LoadedRound {
+  round: {
+    END_TIME: string;
+    BRONZE_RANK: number;
+    TITLE: string;
+    CONFIG_HASH: string;
+    DESCRIPTION: string;
+    GOLD_RANK: number;
+    MOVE_WEIGHT: number;
+    SILVER_RANK: number;
+    START_TIME: string;
+    TIME_WEIGHT: number;
+  };
+}

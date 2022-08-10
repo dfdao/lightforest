@@ -1,9 +1,6 @@
-import {
-  goldTime,
-  silverTime,
-  bronzeTime,
-} from "../../Frontend/Utils/constants";
+import { LoadedRound } from "../../_types/global/GlobalTypes";
 
+declare const LIGHTFOREST_CONFIG: LoadedRound;
 export enum Rank {
   GOLD,
   SILVER,
@@ -41,5 +38,8 @@ export function calculateScore({
 }
 
 function scoreCalculation(time: number, moves: number) {
-  return Math.floor(time - 1000 / moves);
+  return Math.floor(
+    time * LIGHTFOREST_CONFIG.round.TIME_WEIGHT -
+      1000 / (moves * LIGHTFOREST_CONFIG.round.MOVE_WEIGHT)
+  );
 }

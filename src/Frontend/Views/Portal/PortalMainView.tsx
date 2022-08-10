@@ -9,37 +9,16 @@ import { MythicLabelText } from "../../Components/Labels/MythicLabel";
 import { LoadingSpinner } from "../../Components/LoadingSpinner";
 import { LobbyButton } from "../../Components/LobbyButton";
 import { Minimap } from "../../Components/Minimap";
-import { TextPreview } from "../../Components/TextPreview";
 import {
   generateMinimapConfig,
   MinimapConfig,
 } from "../../Panes/Lobby/MinimapUtils";
 import { LobbyInitializers } from "../../Panes/Lobby/Reducer";
 import { useConfigFromHash } from "../../Utils/AppHooks";
-import {
-  competitiveConfig,
-  roundEndTimestamp,
-  roundStartTimestamp,
-  title,
-} from "../../Utils/constants";
 
 import { MapDetails } from "./MapDetails";
-import { TimeUntil } from "../../Components/TimeUntil";
 import { formatDuration } from "../../Utils/TimeUtils";
-
-interface LoadedRound {
-  round: {
-    END_TIME: string;
-    BRONZE_RANK: number;
-    CONFIG_HASH: string;
-    DESCRIPTION: string;
-    GOLD_RANK: number;
-    MOVE_WEIGHT: number;
-    SILVER_RANK: number;
-    START_TIME: string;
-    TIME_WEIGHT: number;
-  };
-}
+import { LoadedRound } from "../../../_types/global/GlobalTypes";
 
 declare const LIGHTFOREST_CONFIG: LoadedRound;
 
@@ -55,8 +34,9 @@ function MapOverview({
   config: LobbyInitializers | undefined;
   lobbyAddress: EthAddress | undefined;
 }) {
-  const endTime = new Date(roundEndTimestamp).getTime();
-  const startTime = new Date(roundStartTimestamp).getTime();
+  const endTime = new Date(LIGHTFOREST_CONFIG.round.END_TIME).getTime();
+  const startTime = new Date(LIGHTFOREST_CONFIG.round.START_TIME).getTime();
+
   const [status, setStatus] = useState<RoundStatus>("not started");
   const [countdown, setCountdown] = useState<number>();
   const [minimapConfig, setMinimapConfig] = useState<
@@ -90,6 +70,7 @@ function MapOverview({
 
       if (now > endTime) {
         setStatus("ended");
+        setCountdown(1);
         return;
       }
       if (now < startTime) {
@@ -120,7 +101,7 @@ function MapOverview({
   return (
     <OverviewContainer>
       <div style={{ textAlign: "center" }}>
-        {configHash == competitiveConfig && <MythicLabelText text={title} />}
+        <MythicLabelText text={LIGHTFOREST_CONFIG.round.TITLE} />
         <MapTitle>{mapName}</MapTitle>
         {countdown && (
           <div>
@@ -177,7 +158,7 @@ function MapOverview({
 }
 
 function MapInfoView({}) {
-  const configHash = competitiveConfig;
+  const configHash = LIGHTFOREST_CONFIG.round.CONFIG_HASH;
   const { config, lobbyAddress, error } = useConfigFromHash(configHash);
 
   return (

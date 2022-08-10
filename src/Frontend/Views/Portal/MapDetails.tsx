@@ -6,6 +6,7 @@ import {
   loadEloLeaderboard,
 } from "../../../Backend/Network/GraphApi/EloLeaderboardApi";
 import { loadLiveMatches } from "../../../Backend/Network/GraphApi/SpyApi";
+import { LoadedRound } from "../../../_types/global/GlobalTypes";
 import { Subber } from "../../Components/Text";
 import { LobbyInitializers } from "../../Panes/Lobby/Reducer";
 import {
@@ -16,16 +17,8 @@ import { LiveMatches } from "../Leaderboards/LiveMatches";
 import { TabbedView } from "../TabbedView";
 import { ConfigDetails } from "./ConfigDetails";
 import { FindMatch } from "./FindMatch";
-import useSWR from "swr";
-import { fetcher } from "../../../Backend/Network/UtilityServerAPI";
-import {
-  description,
-  roundStartTimestamp,
-  roundEndTimestamp,
-  goldTime,
-  silverTime,
-  bronzeTime,
-} from "../../Utils/constants";
+
+declare const LIGHTFOREST_CONFIG: LoadedRound;
 
 export function MapDetails({
   configHash,
@@ -46,9 +39,9 @@ export function MapDetails({
     config?.ADMIN_PLANETS.filter((p) => p.isSpawnPlanet).length ?? 0;
   const hasWhitelist = config?.WHITELIST_ENABLED ?? true;
 
-  const startTime = new Date(roundStartTimestamp).getTime();
-  const endTime = new Date(roundEndTimestamp).getTime();
-
+  const startTime = new Date(LIGHTFOREST_CONFIG.round.START_TIME).getTime();
+  const endTime = new Date(LIGHTFOREST_CONFIG.round.END_TIME).getTime();
+  const description = LIGHTFOREST_CONFIG.round.DESCRIPTION;
   useEffect(() => {
     setLeaderboard(undefined);
     setLiveMatches(undefined);
@@ -146,9 +139,9 @@ export function MapDetails({
                 error={leaderboardError}
                 startTime={startTime / 1000}
                 endTime={endTime / 1000}
-                goldScore={goldTime}
-                silverScore={silverTime}
-                bronzeScore={bronzeTime}
+                goldScore={LIGHTFOREST_CONFIG.round.GOLD_RANK}
+                silverScore={LIGHTFOREST_CONFIG.round.GOLD_RANK}
+                bronzeScore={LIGHTFOREST_CONFIG.round.BRONZE_RANK}
               />
             );
           }
