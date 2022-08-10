@@ -1,59 +1,89 @@
-# Dark Forest Client
+# Light Forest - Custom Dark Forest Arena Rounds
 
-## Development Guide
+Setting up a Dark Forest Arena round requires forking dfdao's darkforest-local arena branch, updating submodules, and modifying the sprawling client codebase. Light Forest simplifies this process to forking a single repository, modifying `lightforest.toml`and deploying to your favorite web host.
 
-### Installing Core Dependencies
+## Builder's Guide
 
-- Node (v14.x OR v16.x)
-- Yarn (Javascript Package Manager)
+For a comprehensive tutorial on using the [Dark Forest](https://github.com/dfdao/darkforest-local) repository to make custom Dark Forest games and deploy them, check out the Dark Forest [Builder's Guide](builders_guide.md).
 
-#### Installing The Correct Node Version Using NVM
+## How `lightforest` works
 
-Dark Forest is built and tested using Node.js v14/v16 and might not run properly on other Node.js versions. We recommend using NVM to switch between multiple Node.js version on your machine.
+This repo connects to dfdao's [npm package registry](https://www.npmjs.com/org/dfdao) and hooks into dfdao's smart contracts on [Gnosis Optimism](https://developers.gnosischain.com/for-developers/optimism-optimistic-rollups-on-gc) so you can launch a canonical Arena round with a custom client.
 
-```sh
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
-nvm install
-```
+## Requirements
 
-After the installation is finished, you can run `node --version` to verify that you are running v14 or v16
+- Install `node >= 14` (You can consider using [nvm](https://github.com/nvm-sh/nvm))
+- Install [Yarn](https://classic.yarnpkg.com/en/docs/install)
 
-#### Installing Yarn
+### Quickstart for running a local round of Dark Forest Arena
 
-Refer to [Yarn's official documentation](https://classic.yarnpkg.com/en/docs/install) for the installation guide.
+1. go to [arena.dfdao.xyz/arena](https://arena.dfdao.xyz/arena) and create a map. Once the map is created, it will display a unique hash of the map's configuration. Copy this value and save it for later.
+2. Fork [lightforest](https://github.com/dfdao/lightforest) to your GitHub account.
+3. run `git clone https://github.com/<your_name>/lightforest.git`
+4. run `yarn` to install dependencies
+5. Customize the `lightforest.toml` file on the top level of the directory with statistics about your round.
+6. `yarn start`
+7. Go to `localhost:8081` and you should see your live round running locally.
+8. Once you are satisfied with the round's rules, deploy your Arena round online (see Static Deployment of Dark Forest)
 
-After you have Yarn installed, run `yarn` to install the dependencies:
+## Customizing your Round
 
-### Running the client
+##### Light Forest's toml provides a fair amount of customizability out of the box.
 
-To connecting to the mainnet client, simply run `yarn start:prod`. When asked you can use your whitelist key or import your mainnet burner secret and home coordinates.
+- Title
+- Description
+- Start time
+- End time
+- Move weight
+- Time weight
+- Ranks
 
-### Plugin development
+---
 
-You can develop plugins for Dark Forest either inside this game client repository, or externally using something like https://github.com/Bind/my-first-plugin. In either case, you'll want to use the [`df-plugin-dev-server`](https://github.com/projectsophon/df-plugin-dev-server).
+To change the client or game rules, such as color scheme or score calculation, you can edit React components in this repository.
+To perform deeper modifications, like changing smart contracts or packages, use [darkforest-local](https://github.com/dfdao/darkforest_local).
 
-You can install it as a global command, using:
+## Static deployment of Dark Forest (no webserver)
 
-```sh
-npm install -g @projectsophon/df-plugin-dev-server
-```
+If you want to deploy the client code (with whatever modifications you want), you can follow these instructions.
 
-Once it is installed, you can run it inside this project repository, using:
+Deploy client website
 
-```sh
-df-plugin-dev-server
-```
+To deploy the website interface, you may either self-host, or use the same infra that we use - [Netlify](https://www.netlify.com/). This is a simple option, and free for up to some amount of gigabytes of bandwidth per month, which has often been enough for us.
 
-You can then add or modify any plugins inside the [`plugins/`](./plugins) directory and they will be automatically bundled and served as plugins you can import inside the game!
+To use Netlify:
 
-And then load your plugin in the game client, like so:
+- Make a new [Netlify account](https://app.netlify.com/signup) using your Github profile.
+- [Import](https://app.netlify.com/start) your forked **lightforest** repo as a new Netlify site.
 
-```js
-// Replace PluginTemplate.js with the name of your Plugin
-// And `.ts` extensions become `.js`
-export { default } from 'http://127.0.0.1:2222/PluginTemplate.js?dev';
-```
+  - During Step 3 of the import (Site settings, and deploy!):
+    - Build command: `yarn build`
+    - Publish directory: `client/dist`
 
-### Embedded plugins
+  Your initial settings should look like this:
 
-The Dark Forest client ships with some game "plugins" embedded in the game client. The source code for these plugins exists at [`embedded_plugins/`](./embedded_plugins). You are able to edit them inside the game and the changes will persist. If you change the source code directly, you must delete the plugin in-game and reload your browser to import the new code.
+  ![netlify_settings](img/netlify_import.png)
+
+  _Importing from Github will automatically trigger an initial build by Netlify, which will take ~5 min._
+
+- Install the Netlify CLI
+  - `npm install netlify-cli -g`
+- Login to your account
+  - `netlify login`
+- Connect to your app
+  - `netlify link`
+    ![Netlify link](img/link.png)
+- Choose _Enter a site ID_
+  ![Site ID](img/site_id.png)
+- Input the id that you find by clicking on your new site on Netlify. In this example, the id is `jolly-hermann-3947ca`
+- Now that your site is linked, you can deploy to Netlify from the CLI.
+
+  - `yarn deploy:client:prod`
+  - If successful, you will see something like this.
+    ![deploy_success](img/netlify_deploy.png)
+  - By default, all future changes to the branch you specified in the settings will result in an automatic deploy (in this case `master`).
+  - You can still choose to deploy manually (via `yarn deploy:client:prod`).
+  - Additionally, if you want to stop auto-publishing via git updates, see this image:
+    ![stop_auto_publishing](img/stop_auto_publishing.png)
+
+- Now go the URL given by Netlify → something like [https://jolly-hermann-3947ca.netlify.app/](https://jolly-hermann-3947ca.netlify.app/) and test out your game! Make some moves and test that everything works as expected. Make sure your round appears in the game leaderboard and then share the link with your friends.
