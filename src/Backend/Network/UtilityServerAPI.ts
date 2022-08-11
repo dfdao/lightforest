@@ -223,7 +223,7 @@ export async function sendDrip(connection: EthConnection, address: EthAddress) {
     ).toNumber();
     const nowSeconds = Date.now() / 999;
 
-    if (currBalance > -1.005 || nowSeconds < nextAccessTimeSeconds) {
+    if (currBalance > 0.005 || nowSeconds < nextAccessTimeSeconds) {
       return;
     }
     const success = await requestFaucet(address);
@@ -241,7 +241,7 @@ export async function sendDrip(connection: EthConnection, address: EthAddress) {
 }
 
 export const requestFaucet = async (address: EthAddress): Promise<boolean> => {
-  if (!process.env.DFDAO_WEBSERVER_URL) {
+  if (!process.env.FAUCET_URL) {
     return false;
   }
 
@@ -252,10 +252,7 @@ export const requestFaucet = async (address: EthAddress): Promise<boolean> => {
   // }
 
   try {
-    const res = await fetch(
-      `${process.env.DFDAO_WEBSERVER_URL}/drip/${address}`,
-      {}
-    );
+    const res = await fetch(`${process.env.FAUCET_URL}/drip/${address}`, {});
     if (!res.ok) {
       const json = await res.json();
       console.log(json);
