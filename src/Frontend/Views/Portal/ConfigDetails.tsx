@@ -89,10 +89,6 @@ export function ConfigDetails({
   config: LobbyInitializers | undefined;
   truncateFirst?: number | undefined;
 }) {
-  const [toTruncate, setToTruncate] = useState<number | undefined>(undefined);
-  useEffect(() => {
-    setToTruncate(truncateFirst);
-  }, []);
   if (!config) return <>loading...</>;
 
   const columns = [
@@ -110,20 +106,14 @@ export function ConfigDetails({
         paginated={false}
         rows={Object.entries(config)
           .filter((item) => !!configItemName(config, item[0].toString()))
-          .slice(0, toTruncate ? toTruncate : Object.entries(config).length)}
+          .slice(
+            0,
+            truncateFirst ? truncateFirst : Object.entries(config).length
+          )}
         headers={[]}
         columns={columns}
         alignments={["l", "r"]}
       ></Table>
-      {!!truncateFirst && (
-        <span
-          onClick={() => {
-            setToTruncate(undefined);
-          }}
-        >
-          View all config details {`->`}
-        </span>
-      )}
     </DetailsContainer>
   );
 }
@@ -136,7 +126,7 @@ const DetailsContainer = styled.div`
 `;
 
 const Cell = styled.div`
-  padding: 4px 8px;
+  padding: 4px 0;
   color: ${dfstyles.colors.text};
   background: transparent;
   // font-size: 1.25em;

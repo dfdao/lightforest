@@ -6,6 +6,7 @@ import {
   LiveMatch,
 } from "@dfdao/types";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { loadArenaLeaderboard } from "../../../Backend/Network/GraphApi/ArenaLeaderboardApi";
 import {
   GraphConfigPlayer,
@@ -103,8 +104,11 @@ export const MapDetails2: React.FC<MapDetailsProps> = ({
           <>
             {liveMatches && liveMatches.entries.length > 0 ? (
               <div>
-                {liveMatches.entries.map(
-                  (entry: ExtendedMatchEntry, i: number) => (
+                {liveMatches.entries
+                  .concat(liveMatches.entries)
+                  .concat(liveMatches.entries)
+                  .concat(liveMatches.entries)
+                  .map((entry: ExtendedMatchEntry, i: number) => (
                     <MatchDetail
                       key={i}
                       configHash={entry.configHash}
@@ -114,9 +118,9 @@ export const MapDetails2: React.FC<MapDetailsProps> = ({
                         entry.planets.filter((p) => p.spawnPlanet).length
                       }
                       startTime={entry.startTime}
+                      id={entry.id}
                     />
-                  )
-                )}
+                  ))}
               </div>
             ) : (
               <span>No live games</span>
@@ -154,6 +158,7 @@ export interface MatchDetailProps {
   numPlayers: number;
   numSpots: number;
   startTime: number;
+  id: string;
 }
 
 export const MatchDetail: React.FC<MatchDetailProps> = ({
@@ -162,21 +167,24 @@ export const MatchDetail: React.FC<MatchDetailProps> = ({
   numPlayers,
   numSpots,
   startTime,
+  id,
 }) => {
   return (
-    <div lf-match-detail-container="">
-      <div lf-match-detail-header="">
-        <div lf-match-icon="">1v1</div>
-        <div lf-match-detail-left="">
-          <span lf-match-detail-title="">{getConfigName(configHash)}</span>
-          <span lf-match-detail-description="">{`${numPlayers} of ${numSpots} spots available`}</span>
+    <Link to={`/play/${id}`}>
+      <div lf-match-detail-container="">
+        <div lf-match-detail-header="">
+          <div lf-match-icon="">1v1</div>
+          <div lf-match-detail-left="">
+            <span lf-match-detail-title="">{getConfigName(configHash)}</span>
+            <span lf-match-detail-description="">{`${numPlayers} of ${numSpots} spots available`}</span>
+          </div>
+        </div>
+        <div lf-match-detail-creator="">
+          <ClockIcon />
+          <span>{formatStartTime(startTime)}</span>
         </div>
       </div>
-      <div lf-match-detail-creator="">
-        <ClockIcon />
-        <span>{formatStartTime(startTime)}</span>
-      </div>
-    </div>
+    </Link>
   );
 };
 

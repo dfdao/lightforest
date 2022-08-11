@@ -588,6 +588,7 @@ const TableContainer = styled.div`
   border-bottom: none;
   padding: 4px;
   overflow: scroll;
+  width: 100%;
 `;
 
 const LeaderboardContainer = styled.div`
@@ -604,6 +605,7 @@ const StatsTableContainer = styled.div`
   justify-content: center;
   align-items: center;
   color: ${dfstyles.colors.text};
+  width: 100%;
 `;
 
 const StatsTable = styled.table`
