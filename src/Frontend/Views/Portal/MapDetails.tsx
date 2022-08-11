@@ -15,7 +15,6 @@ import {
 } from "../Leaderboards/ArenaLeaderboard";
 import { LiveMatches } from "../Leaderboards/LiveMatches";
 import { TabbedView } from "../TabbedView";
-import { ConfigDetails } from "./ConfigDetails";
 import { FindMatch } from "./FindMatch";
 
 declare const LIGHTFOREST_CONFIG: LoadedRound;
@@ -41,7 +40,6 @@ export function MapDetails({
 
   const startTime = new Date(LIGHTFOREST_CONFIG.round.START_TIME).getTime();
   const endTime = new Date(LIGHTFOREST_CONFIG.round.END_TIME).getTime();
-  const description = LIGHTFOREST_CONFIG.round.DESCRIPTION;
   useEffect(() => {
     setLeaderboard(undefined);
     setLiveMatches(undefined);
@@ -87,29 +85,6 @@ export function MapDetails({
         overflowY: "auto",
       }}
     >
-      {description.length > 0 && (
-        <div
-          style={{
-            margin: "2rem auto",
-            display: "flex",
-            flexDirection: "column",
-            gap: "4px",
-            textAlign: "center",
-          }}
-        >
-          <span style={{ color: "#fff" }}>Description</span>
-          <span
-            style={{
-              maxWidth: "85%",
-              margin: "0 auto",
-              textAlign: "center",
-              opacity: "70%",
-            }}
-          >
-            {description}
-          </span>
-        </div>
-      )}
       <TabbedView
         style={{
           display: "flex",
@@ -124,7 +99,6 @@ export function MapDetails({
         tabTitles={[
           "Leaderboard",
           numSpawnPlanets > 1 ? "Join a Match" : "Live Games",
-          "Config Details",
         ]}
         tabContents={(i) => {
           if (i === 0) {
@@ -162,7 +136,6 @@ export function MapDetails({
               );
             }
           }
-          return <ConfigDetails config={config} />;
         }}
       />
     </div>

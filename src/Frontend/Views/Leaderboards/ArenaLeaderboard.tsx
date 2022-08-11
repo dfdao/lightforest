@@ -88,6 +88,7 @@ export function EloLeaderboardDisplay({
   error: Error | undefined;
   totalPlayers?: boolean;
 }) {
+  console.log(leaderboard);
   return (
     <GenericErrorBoundary errorMessage={errorMessage}>
       <LeaderboardContainer>

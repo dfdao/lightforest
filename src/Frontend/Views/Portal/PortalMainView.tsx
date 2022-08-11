@@ -19,12 +19,14 @@ import { useConfigFromHash } from "../../Utils/AppHooks";
 import { MapDetails } from "./MapDetails";
 import { formatDuration } from "../../Utils/TimeUtils";
 import { LoadedRound } from "../../../_types/global/GlobalTypes";
+import "../../Styles/lightforest.scss";
 
 declare const LIGHTFOREST_CONFIG: LoadedRound;
 
 const NONE = "no map found";
 
 type RoundStatus = "not started" | "started" | "ended";
+
 function MapOverview({
   configHash,
   config,
@@ -100,20 +102,6 @@ function MapOverview({
 
   return (
     <OverviewContainer>
-      <div style={{ textAlign: "center" }}>
-        <MythicLabelText text={LIGHTFOREST_CONFIG.round.TITLE} />
-        <MapTitle>{mapName}</MapTitle>
-        {countdown && (
-          <div>
-            {status == "ended"
-              ? "Round over!"
-              : status == "not started"
-              ? `Round starts in ${formatDuration(countdown)} `
-              : `Round ends in ${formatDuration(countdown)} `}
-          </div>
-        )}
-      </div>
-
       {!minimapConfig ? (
         <div
           style={{
@@ -135,14 +123,28 @@ function MapOverview({
           }}
         />
       )}
+      <div style={{ textAlign: "center" }}>
+        <MythicLabelText text={LIGHTFOREST_CONFIG.round.TITLE} />
+        <MapTitle>{mapName}</MapTitle>
+      </div>
       <div
         style={{
           display: "flex",
           gap: "16px",
-          justifyContent: "center",
+          justifyContent: "space-between",
+          alignItems: "center",
           width: "100%",
         }}
       >
+        {countdown && (
+          <div>
+            {status == "ended"
+              ? "Round over!"
+              : status == "not started"
+              ? `Round starts in ${formatDuration(countdown)} `
+              : `Round ends in ${formatDuration(countdown)} `}
+          </div>
+        )}
         <Link
           style={{ minWidth: "250px" }}
           target="blank"
@@ -162,7 +164,7 @@ function MapInfoView({}) {
   const { config, lobbyAddress, error } = useConfigFromHash(configHash);
 
   return (
-    <MapInfoContainer>
+    <div cmdk-linear-badge="">
       {error ? (
         <div>Map Not Found</div>
       ) : (
@@ -177,7 +179,7 @@ function MapInfoView({}) {
           </>
         )
       )}
-    </MapInfoContainer>
+    </div>
   );
 }
 
@@ -198,7 +200,7 @@ const MainContainer = styled.div`
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.04);
+  background: hsla(0, 0%, 17%, 1);
 `;
 
 const TopBar = styled.div`
@@ -212,22 +214,25 @@ const TopBar = styled.div`
 `;
 
 const MapInfoContainer = styled.div`
-  display: flex;
-  flex: 1 1;
-  flex-direction: row;
-  height: 100%;
-  width: 100%;
-  justify-content: space-evenly;
-  padding: 10px;
-  overflow: hidden;
+  // display: flex;
+  // flex: 1 1;
+  // flex-direction: row;
+  // height: 100%;
+  // width: 100%;
+  // justify-content: space-evenly;
+  // padding: 10px;
+  // overflow: hidden;
 `;
 
 const OverviewContainer = styled.div`
-  flex: 1 1 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
+  // flex: 1 1 50%;
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
+  // gap: 10px;
+  // border: 1px solid hsla(0, 0%, 33%, 1);
+  // background: hsla(240, 7%, 42%, 0.2);
+  // border-radius: 6px;
 `;
 
 const Title = styled.div`
