@@ -84,10 +84,8 @@ function Tableify(item: any[]) {
 
 export function ConfigDetails({
   config,
-  truncateFirst,
 }: {
   config: LobbyInitializers | undefined;
-  truncateFirst?: number | undefined;
 }) {
   if (!config) return <>loading...</>;
 
@@ -101,15 +99,12 @@ export function ConfigDetails({
       typeof item[1] == "object" ? Tableify(item[1]) : item[1].toString(),
   ];
   return (
-    <div lf-config-details-container="">
+    <div lf-config-table-container="">
       <Table
         paginated={false}
-        rows={Object.entries(config)
-          .filter((item) => !!configItemName(config, item[0].toString()))
-          .slice(
-            0,
-            truncateFirst ? truncateFirst : Object.entries(config).length
-          )}
+        rows={Object.entries(config).filter(
+          (item) => !!configItemName(config, item[0].toString())
+        )}
         headers={[]}
         columns={columns}
         alignments={["l", "r"]}

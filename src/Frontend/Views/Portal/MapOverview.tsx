@@ -17,7 +17,7 @@ import { EthAddress } from "@dfdao/types";
 type RoundStatus = "not started" | "started" | "ended";
 declare const LIGHTFOREST_CONFIG: LoadedRound;
 
-export const PortalMap: React.FC<{
+export const MapOverview: React.FC<{
   configHash: string;
   config: LobbyInitializers;
   lobbyAddress?: EthAddress;
@@ -89,7 +89,7 @@ export const PortalMap: React.FC<{
   }
 
   return (
-    <div lf-map-overview="">
+    <div lf-map-overview="" className="lf-stack">
       {!minimapConfig ? (
         <div
           style={{
@@ -103,7 +103,7 @@ export const PortalMap: React.FC<{
           <LoadingSpinner initialText="Loading..." />
         </div>
       ) : (
-        <div lf-minimap-container="">
+        <div lf-map-overview-minimap-container="" className="lf-center">
           <Minimap
             style={{ width: mapSize, height: mapSize }}
             minimapConfig={minimapConfig}
@@ -114,10 +114,10 @@ export const PortalMap: React.FC<{
         </div>
       )}
 
-      <div lf-map-text-content="">
+      <div lf-map-text-content="" className="lf-stack">
         <span lf-map-round-name="">{LIGHTFOREST_CONFIG.round.TITLE}</span>
-        <span lf-map-title="">{mapName}</span>
-        <span lf-map-description="">{description}</span>
+        <span className="lf-title">{mapName}</span>
+        <span>{description}</span>
       </div>
       <div lf-map-actions="">
         {countdown && (

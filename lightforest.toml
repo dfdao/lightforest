@@ -1,6 +1,6 @@
 [round]
-END_TIME = "2022-08-13T00:00:00.000Z"
-START_TIME = "2022-07-13T00:00:00.000Z"
+END_TIME = "2022-08-15T00:00:00.000Z"
+START_TIME = "2022-08-12T00:00:00.000Z"
 
 DESCRIPTION = "Dark Forest is a massively-multiplayer online strategy game inspired by Liu Cixin's Three-Body trilogy."
 MOVE_WEIGHT = 1

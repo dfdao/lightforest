@@ -5,17 +5,82 @@
 */
 
 [lf-root] {
+  --bg: hsla(0, 0%, 17%, 1);
+  --bg-1: hsla(240, 7%, 42%, 0.2);
+  --bg-2: hsla(240, 9%, 33%, 1);
+  --bg-3: hsla(240, 8%, 43%, 0.8);
+  --fg: hsla(240, 21%, 89%, 1);
+  --fg-1: #fff;
+  --border-radius: 6px;
+  --border: 1px solid hsla(0, 0%, 33%, 1);
+  --border-1: 1px solid hsla(0, 0%, 45%, 1);
+  --primary: hsla(218, 100%, 74%, 1);
+  --primary-hover: hsla(218, 100%, 84%, 1);
+
   font-family: "Inter", -apple-system, BlinkMacSystemFont, avenir next, avenir,
     segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial,
     sans-serif;
-  background: hsla(0, 0%, 17%, 1);
-  color: hsla(240, 21%, 89%, 1);
+  font-weight: 400;
+  background: var(--bg);
+  color: var(--fg);
   padding: 0 3rem;
   height: 100vh;
   width: 100%;
   display: flex;
   flex-direction: column;
 }
+
+.lf-subtitle {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.lf-stack {
+  display: flex;
+  flex-direction: column;
+}
+
+.lf-row {
+  display: flex;
+  align-items: center;
+}
+
+.lf-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lf-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+/*
+==========================================================================
+------------------------------- LAYOUT -----------------------------------
+==========================================================================
+
++---------------------------------------+
+|              lf-top-bar               |
++---------------------------------------+
+|              lf-content               |
+|                                       |
+|  +------------+ +-------------------+ |
+|  | lf-map     | | lf-map-details    | |
+|  | -overview  | |                   | |
+|  |            | |                   | |
+|  |            | | +---------------+ | |
+|  |            | | | lf-map-config | | |
+|  |            | | | -container    | | |
+|  |            | | +---------------+ | |
+|  +------------+ +-------------------+ |
+|                                       |
++---------------------------------------+
+
+*/
 
 [lf-top-bar] {
   display: flex;
@@ -24,20 +89,7 @@
   padding: 0.5rem 1rem;
 }
 
-[lf-subtitle] {
-  font-size: 1rem;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-}
-
-/*
-==========================================================================
-------------------------------- MAP & GAME INFO --------------------------
-------------------------------- (LEFT SIDE) ------------------------------
-==========================================================================
-*/
-
-[lf-map-content] {
+[lf-content] {
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -48,26 +100,41 @@
 }
 
 [lf-map-overview] {
-  border: 1px solid hsla(0, 0%, 33%, 1);
-  background: hsla(240, 7%, 42%, 0.2);
+  border: var(--border);
+  background: var(--bg-1);
   padding: 24px;
-  border-radius: 6px;
-  display: flex;
-  flex-direction: column;
+  border-radius: var(--border-radius);
 }
 
-[lf-minimap-container] {
+[lf-map-details] {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  max-height: 100%;
+  overflow: hidden;
+  gap: 3rem;
+  width: 100%;
+}
+
+[lf-map-config-container] {
+  height: 100%;
+  min-height: 100%;
+  overflow-y: auto;
+}
+
+/*
+==========================================================================
+------------------------------- LF-MAP-OVERVIEW --------------------------
+------------------------------- (LEFT SIDE) ------------------------------
+==========================================================================
+*/
+
+[lf-map-overview-minimap-container] {
   background: #111;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border-radius: var(--border-radius);
   margin-bottom: 1rem;
 }
 
 [lf-map-text-content] {
-  display: flex;
-  flex-direction: column;
   margin-bottom: 2rem;
 }
 
@@ -81,13 +148,7 @@
 
 [lf-map-round-name] {
   font-weight: 500;
-  color: hsla(218, 100%, 74%, 1);
-}
-
-[lf-map-title] {
-  font-size: 1.5rem;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
+  color: var(--primary);
 }
 
 [lf-round-countdown] {
@@ -98,43 +159,34 @@
   box-shadow: 0px 8px 48px 0px hsla(0, 0%, 34%, 0.08);
   box-shadow: 0px 4px 8px 0px hsla(210, 7%, 28%, 0.06);
   box-shadow: 0px 0px 1px 0px hsla(210, 7%, 28%, 0.32);
-  border: 1px solid hsla(0, 0%, 45%, 1);
-  color: #fff;
-  background: hsla(240, 9%, 33%, 1);
+  border: var(--border-1);
+  color: var(--fg-1);
+  background: var(--bg-2);
   padding: 0.5rem 1rem;
-  border-radius: 6px;
+  border-radius: var(--border-radius);
   cursor: pointer;
   outline: none;
   transition: all 0.2s ease-in-out;
-  &:active {
+  &:active:not([disabled]) {
     transform: scale(0.95);
     outline: none;
   }
-  &:hover {
-    background: hsla(240, 8%, 43%, 0.8);
+  &:hover:not([disabled]) {
+    background: var(--bg-3);
     transform: scale(1.05);
+  }
+  &:disabled {
+    cursor: not-allowed;
+    border: none;
   }
 }
 
 /*
 ==========================================================================
-------------------------------- MAP DETAILS ------------------------------
+------------------------------- LF-MAP-DETAILS ---------------------------
 ------------------------------- (TOP RIGHT) ------------------------------
 ==========================================================================
 */
-
-[lf-map-details] {
-  // display: flex;
-  // flex-direction: column;
-  // flex-shrink: 1;
-  display: grid;
-  grid-template-rows: 2fr 1fr;
-  max-height: 100%;
-  overflow: hidden;
-  display: grid;
-  gap: 3rem;
-  width: 100%;
-}
 
 [lf-map-details-container] {
   display: flex;
@@ -153,41 +205,40 @@
 }
 
 [lf-map-details-tab] {
-  border: 1px solid hsla(0, 0%, 35%, 1);
-  background: hsla(240, 3%, 22%, 1);
+  border: var(--border);
+  background: var(--bg-1);
   color: hsla(240, 21%, 89%, 0.6);
   font-weight: 500;
   padding: 0.5rem 1rem;
-  border-radius: 4px;
+  border-radius: var(--border-radius);
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 16px;
   transition: all 0.2s ease-in-out;
   &:hover {
-    background: hsla(240, 9%, 33%, 1);
-    color: #fff;
+    background: var(--bg-2);
+    color: var(--fg-1);
   }
   &[lf-tab-active] {
-    background: hsla(240, 7%, 13%, 1);
-    color: #fff;
+    background: var(--bg);
+    color: var(--fg-1);
     cursor: default;
   }
 }
 
-/*
-==========================================================================
-------------------------------- LIVE MATCHES -----------------------------
-==========================================================================
-*/
-
-[lf-map-details-content] {
-  display: flex;
-  flex-direction: column;
+[lf-map-details-tab-view] {
   width: 100%;
   gap: 16px;
   overflow-y: scroll;
 }
+
+/*
+==========================================================================
+------------------------- LF-MATCH-DETAIL-CONTAINER ----------------------
+----------------------------- (LIVE MATCHES) -----------------------------
+==========================================================================
+*/
 
 [lf-match-detail-container] {
   display: flex;
@@ -198,8 +249,8 @@
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   &:hover {
-    background: hsla(0, 0%, 24%, 1);
-    color: #fff;
+    background: var(--bg-1);
+    color: var(--fg-1);
   }
 }
 
@@ -209,40 +260,32 @@
   gap: 16px;
 }
 
-[lf-match-icon] {
+[lf-match-detail-icon] {
   width: 24px;
   height: 24px;
   padding: 24px;
   font-weight: 500;
-  border-radius: 6px;
-  border: 1px solid hsla(0, 0%, 26%, 1);
-  background: hsla(240, 3%, 22%, 1);
-  color: hsla(218, 100%, 90%, 1);
+  border-radius: var(--border-radius);
+  border: var(--border-1);
+  background: var(--bg-1);
+  color: var(--fg-1);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-[lf-match-detail-left] {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
 [lf-match-detail-title] {
   font-weight: 500;
-  color: hsla(240, 21%, 89%, 1);
 }
 
 [lf-match-detail-description] {
-  color: hsla(240, 21%, 89%, 0.6);
+  color: inherit;
 }
 
-[lf-match-detail-creator] {
+[lf-match-detail-info] {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: hsla(240, 21%, 89%, 0.8);
 }
 
 /*
@@ -251,30 +294,16 @@
 ==========================================================================
 */
 
-[lf-map-config-container] {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow: auto;
-}
-
-[lf-map-config-details-header] {
-  display: flex;
-  align-items: center;
+[lf-map-config-header] {
   justify-content: space-between;
 }
 
-[lf-config-expand] {
+[lf-config-scroll-text] {
+  color: var(--fg);
   font-weight: 500;
-  color: hsla(218, 100%, 74%, 1);
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  &:hover {
-    color: hsla(218, 100%, 84%, 1);
-  }
 }
 
-[lf-config-details-container] {
+[lf-config-table-container] {
   border-bottom: none;
   overflow-y: auto;
   margin-bottom: 24px;

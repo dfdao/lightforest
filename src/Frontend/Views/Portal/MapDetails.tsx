@@ -64,12 +64,9 @@ export const MapDetails: React.FC<MapDetailsProps> = ({
           <span>Leaderboard</span>
         </div>
       </div>
-      <div lf-map-details-content="">
+      <div lf-map-details-tab-view="" className="lf-stack">
         {currentTab === 0 && (
           <>
-            {/* if (numSpawnPlanets > 1 && !hasWhitelist) {
-              return <FindMatch game={liveMatches} />;
-            } else { */}
             {liveMatches && liveMatches.entries.length > 0 ? (
               <div>
                 {liveMatches.entries.map(
@@ -139,18 +136,18 @@ export const MatchDetail: React.FC<MatchDetailProps> = ({
     <Link to={`/play/${id}`}>
       <div lf-match-detail-container="">
         <div lf-match-detail-header="">
-          <div lf-match-icon="">1v1</div>
-          <div lf-match-detail-left="">
+          <div lf-match-detail-icon="">{`${numSpots}p`}</div>
+          <div className="lf-stack">
             <span lf-match-detail-title="">{getConfigName(configHash)}</span>
             <span lf-match-detail-description="">{`${numPlayers} of ${numSpots} spots available`}</span>
           </div>
         </div>
-        <div>
-          <div lf-match-detail-creator="">
+        <div className="lf-row" style={{ gap: "24px" }}>
+          <div lf-match-detail-info="">
             <ClockIcon />
             <span>{formatStartTime(startTime)}</span>
           </div>
-          <div lf-match-detail-creator="">
+          <div lf-match-detail-info="">
             <PersonIcon />
             <span>{truncateAddress(creator)}</span>
           </div>
