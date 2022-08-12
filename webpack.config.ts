@@ -41,6 +41,7 @@ const ConfigValidators = yup
         }),
       DESCRIPTION: yup.string().required(),
       TITLE: yup.string().required(),
+      ORG_NAME: yup.string(),
       MOVE_WEIGHT: yup.number().required(),
       TIME_WEIGHT: yup.number().required(),
       BRONZE_RANK: yup.number().required(),
@@ -143,13 +144,26 @@ module.exports = {
         use: ["raw-loader", "babel-loader"],
       },
       {
-        test: /\.ts(x?)$/,
-        include: [path.join(__dirname, "./src/")],
-        use: ["babel-loader"],
+        test: /\.(ts|js)x?$/i,
+        exclude: /node_modules/,
+        include: path.resolve(__dirname, "src"),
+        use: [
+          {
+            loader: "esbuild-loader",
+            options: {
+              loader: "tsx", // Or 'ts' if you don't need tsx
+              target: "chrome90",
+            },
+          },
+        ],
       },
       {
         test: /\.css$/,
         use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /\.s[ac]ss$/i,
+        use: ["style-loader", "css-loader", "sass-loader"],
       },
       {
         test: /\.(woff(2)?|ttf|eot|svg)$/,

@@ -1,13 +1,14 @@
 [round]
-END_TIME = "2022-08-13T00:00:00.000Z"
-START_TIME = "2022-07-13T00:00:00.000Z"
+END_TIME = "2022-08-15T00:00:00.000Z"
+START_TIME = "2022-08-12T00:00:00.000Z"
 
-DESCRIPTION = "this is an amazing map!"
+DESCRIPTION = "Dark Forest is a massively-multiplayer online strategy game inspired by Liu Cixin's Three-Body trilogy."
 MOVE_WEIGHT = 1
 TIME_WEIGHT = 1
 TITLE = "The Amazing Map"
+ORG_NAME = "dfdao"
 
 BRONZE_RANK = 180
-CONFIG_HASH = '0xfe719a3cfccf2bcfa23f71f0af80a931eda4f4197331828d728b7505a6156930'
+CONFIG_HASH = '0x12c40c98747fc86ccdccc3a716ffa089497d7de3bb5a967ed8b36a1d521c54bc'
 GOLD_RANK = 60
 SILVER_RANK = 120

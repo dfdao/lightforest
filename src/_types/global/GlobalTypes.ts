@@ -82,5 +82,6 @@ export interface LoadedRound {
     SILVER_RANK: number;
     START_TIME: string;
     TIME_WEIGHT: number;
+    ORG_NAME?: string;
   };
 }

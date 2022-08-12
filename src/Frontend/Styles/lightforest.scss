@@ -1,0 +1,333 @@
+/*
+==========================================================================
+-------------------------------- BASE STYLES -----------------------------
+==========================================================================
+*/
+
+[lf-root] {
+  --bg-darker: rgb(37, 37, 37);
+  --bg: hsla(0, 0%, 17%, 1);
+  --bg-1: hsla(240, 7%, 42%, 0.2);
+  --bg-2: hsla(240, 9%, 33%, 1);
+  --bg-3: hsla(240, 8%, 43%, 0.8);
+  --fg: hsla(240, 21%, 89%, 1);
+  --fg-1: #fff;
+  --border-radius: 6px;
+  --border: 1px solid hsla(0, 0%, 33%, 1);
+  --border-1: 1px solid hsla(0, 0%, 45%, 1);
+  --primary: hsla(218, 100%, 74%, 1);
+  --primary-hover: hsla(218, 100%, 84%, 1);
+
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, avenir next, avenir,
+    segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial,
+    sans-serif;
+  font-weight: 400;
+  background: var(--bg);
+  color: var(--fg);
+  padding: 0 3rem;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.lf-subtitle {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.lf-stack {
+  display: flex;
+  flex-direction: column;
+}
+
+.lf-row {
+  display: flex;
+  align-items: center;
+}
+
+.lf-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lf-title {
+  font-size: 2.5rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+/*
+==========================================================================
+------------------------------- LAYOUT -----------------------------------
+==========================================================================
+*/
+
+[lf-top-bar] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+}
+
+[lf-content] {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+[lf-map-overview] {
+  border: var(--border);
+  background: linear-gradient(90deg, var(--bg-1) 0%, #111 100%);
+  padding: 24px;
+  border-radius: var(--border-radius);
+}
+
+[lf-map-details] {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-height: 100%;
+  overflow: hidden;
+  gap: 3rem;
+  width: 100%;
+}
+
+[lf-map-config-container] {
+  height: 100%;
+  min-height: 100%;
+  padding-bottom: 3rem;
+}
+
+/*
+==========================================================================
+------------------------------- LF-MAP-OVERVIEW --------------------------
+------------------------------- (BANNER) ------------------------------
+==========================================================================
+*/
+
+[lf-map-content] {
+  max-width: 66%;
+  margin: 0 auto;
+  justify-content: space-between;
+}
+
+[lf-map-overview-minimap-container] {
+  border-radius: var(--border-radius);
+  margin-bottom: 1rem;
+}
+
+[lf-map-text-content] {
+  margin-bottom: 2rem;
+}
+
+[lf-map-actions] {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1 1 auto;
+  // justify-content: space-between;
+  // align-items: center;
+  margin-top: 2rem;
+}
+
+[lf-map-round-name] {
+  font-weight: 500;
+  color: var(--primary);
+}
+
+[lf-round-countdown] {
+  justify-self: flex-start;
+}
+
+[lf-play-button] {
+  display: flex;
+  box-shadow: 0px 8px 48px 0px hsla(0, 0%, 34%, 0.08);
+  box-shadow: 0px 4px 8px 0px hsla(210, 7%, 28%, 0.06);
+  box-shadow: 0px 0px 1px 0px hsla(210, 7%, 28%, 0.32);
+  color: var(--fg-1);
+  background: var(--primary);
+  padding: 0.5rem 1.5rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+  animation: pulse 2s infinite ease-in-out;
+  &:active:not([disabled]) {
+    transform: scale(0.95);
+    outline: none;
+  }
+  &:hover:not([disabled]) {
+    background: var(--primary-hover);
+    transform: scale(1.05);
+    animation: none;
+    -webkit-animation: none;
+  }
+  &:disabled {
+    cursor: not-allowed;
+    border: none;
+    animation: none;
+    -webkit-animation: none;
+  }
+
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0px 0px hsla(218, 100%, 84%, 0.5);
+    }
+    70% {
+      box-shadow: 0 0 0px 6px hsla(0, 0%, 0%, 0);
+    }
+  }
+}
+
+/*
+==========================================================================
+------------------------------- LF-MAP-DETAILS ---------------------------
+------------------------------- (BOTTOM LEFT) ------------------------------
+==========================================================================
+*/
+
+[lf-map-details-container] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+}
+
+[lf-map-details-header] {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 0.5rem 1rem;
+}
+
+[lf-map-details-tab] {
+  border: var(--border);
+  background: var(--bg-1);
+  color: hsla(240, 21%, 89%, 0.6);
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background: var(--bg-2);
+    color: var(--fg-1);
+  }
+  &[lf-tab-active] {
+    background: var(--bg);
+    color: var(--fg-1);
+    cursor: default;
+  }
+}
+
+[lf-map-details-tab-view] {
+  width: 100%;
+  gap: 16px;
+  overflow-y: scroll;
+}
+
+/*
+==========================================================================
+------------------------- LF-MATCH-DETAIL-CONTAINER ----------------------
+----------------------------- (LIVE MATCHES) -----------------------------
+==========================================================================
+*/
+
+[lf-match-detail-container] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  width: 100%;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background: var(--bg-1);
+    color: var(--fg-1);
+  }
+}
+
+[lf-match-detail-header] {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+[lf-match-detail-icon] {
+  width: 24px;
+  height: 24px;
+  padding: 24px;
+  font-weight: 500;
+  border-radius: var(--border-radius);
+  border: var(--border-1);
+  background: var(--bg-1);
+  color: var(--fg-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[lf-match-detail-title] {
+  font-weight: 500;
+}
+
+[lf-match-detail-description] {
+  color: inherit;
+}
+
+[lf-match-detail-info] {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+[lf-match-detail-button] {
+  border: var(--border);
+  background: var(--bg-2);
+  color: var(--fg);
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background: var(--bg-3);
+    color: var(--fg-1);
+  }
+}
+
+/*
+==========================================================================
+------------------------------- MAP CONFIG ------------------------------- 
+------------------------------(BOTTOM RIGHT) -----------------------------
+==========================================================================
+*/
+
+[lf-map-config-header] {
+  justify-content: space-between;
+}
+
+[lf-config-scroll-text] {
+  color: var(--fg);
+  font-weight: 500;
+}
+
+[lf-config-table-container] {
+  overflow-y: scroll;
+  height: 100%;
+  padding: 1rem;
+  background-color: var(--bg-darker);
+}

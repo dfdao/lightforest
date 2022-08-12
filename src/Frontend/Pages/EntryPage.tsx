@@ -38,7 +38,7 @@ import { TextPreview } from "../Components/TextPreview";
 import { EthConnectionProvider, TwitterProvider } from "../Utils/AppHooks";
 import { Incompatibility, unsupportedFeatures } from "../Utils/BrowserChecks";
 import { TerminalTextStyle } from "../Utils/TerminalTypes";
-import { PortalMainView } from "../Views/Portal/PortalMainView";
+import { PortalHome } from "../Views/Portal/Home";
 import { Terminal, TerminalHandle } from "../Views/Terminal";
 import { GameLandingPage } from "./Game/GameLandingPage";
 import LoadingPage from "./LoadingPage";
@@ -417,7 +417,7 @@ export function EntryPage() {
                 push={true}
                 exact={true}
               />
-              <Route path="/" exact component={PortalMainView} />
+              <Route path="/" exact component={PortalHome} />
               <Route path="*" component={NotFoundPage} />
             </Switch>
           </Router>
