@@ -1,89 +1,119 @@
 # Light Forest - Custom Dark Forest Arena Rounds
 
-Setting up a Dark Forest Arena round requires forking dfdao's darkforest-local arena branch, updating submodules, and modifying the sprawling client codebase. Light Forest simplifies this process to forking a single repository, modifying `lightforest.toml`and deploying to your favorite web host.
-
-## Builder's Guide
-
-For a comprehensive tutorial on using the [Dark Forest](https://github.com/dfdao/darkforest-local) repository to make custom Dark Forest games and deploy them, check out the Dark Forest [Builder's Guide](builders_guide.md).
-
-## How `lightforest` works
-
-This repo connects to dfdao's [npm package registry](https://www.npmjs.com/org/dfdao) and hooks into dfdao's smart contracts on [Gnosis Optimism](https://developers.gnosischain.com/for-developers/optimism-optimistic-rollups-on-gc) so you can launch a canonical Arena round with a custom client.
+Light Forest is the simplest way to create a custom branded [Dark Forest Arena](https://medium.com/dfdao/dark-forest-arena-14c47bfd4e8) round for your own community. It creates a website and game client for you automatically so you can focus on building your perfect game.
 
 ## Requirements
 
-- Install `node >= 14` (You can consider using [nvm](https://github.com/nvm-sh/nvm))
+- Install `node >= 14` (Consider using [nvm](https://github.com/nvm-sh/nvm))
 - Install [Yarn](https://classic.yarnpkg.com/en/docs/install)
 
-### Quickstart for running a local round of Dark Forest Arena
+## Install
 
-1. go to [arena.dfdao.xyz/arena](https://arena.dfdao.xyz/arena) and create a map. Once the map is created, it will display a unique hash of the map's configuration. Copy this value and save it for later.
-2. Fork [lightforest](https://github.com/dfdao/lightforest) to your GitHub account.
-3. run `git clone https://github.com/<your_name>/lightforest.git`
-4. run `yarn` to install dependencies
-5. Customize the `lightforest.toml` file on the top level of the directory with statistics about your round.
-6. `yarn start`
-7. Go to `localhost:8081` and you should see your live round running locally.
-8. Once you are satisfied with the round's rules, deploy your Arena round online (see Static Deployment of Dark Forest)
+Click the link below to create a new repo from the Light Forest template.
 
-## Customizing your Round
+> https://github.com/dfdao/lightforest/generate
 
-##### Light Forest's toml provides a fair amount of customizability out of the box.
+Or, if you have the [GitHub CLI](https://cli.github.com/):
+
+```bash
+gh repo create <new-repo-name> --template="dfdao/lightforest"
+```
+
+Clone that new repo to your local machine.
+
+## Setting up a round
+
+1. Visit [arena.dfdao.xyz/arena](https://arena.dfdao.xyz/arena) and create a map. Once the map is created, you will get a unique hash of the map's configuration. Copy this value and save it for later.
+2. Customize `lightforest.toml`. See [Customization](#customization) for details.
+3. Add a `.env` file using the same keys as `.env.example`
+4. Run `yarn && yarn start`
+
+Your custom round should be running locally at `localhost:8081`. Once you're ready to deploy, jump to [Deployment](#deployment) and follow the instructions.
+
+## Customization
+
+To change the client or game rules—like score calculation—you can edit the React components in this repository. To perform deeper modifications, like changing smart contracts or packages, use [darkforest-local](https://github.com/dfdao/darkforest_local). See [Builder's Guide](#builders-guide) for more details about deep customization.
+
+### Round details
+
+`lightforest.toml` provides a fair amount of customizability out of the box.
 
 - Title
 - Description
+- Org name (e.g. "dfdao")
 - Start time
 - End time
 - Move weight
 - Time weight
 - Ranks
 
----
+This repo comes with a pre-populated example:
 
-To change the client or game rules, such as color scheme or score calculation, you can edit React components in this repository.
-To perform deeper modifications, like changing smart contracts or packages, use [darkforest-local](https://github.com/dfdao/darkforest_local).
+```toml
+[round]
+END_TIME = "2022-08-13T00:00:00.000Z"
+START_TIME = "2022-07-13T00:00:00.000Z"
 
-## Static deployment of Dark Forest (no webserver)
+DESCRIPTION = "this is an amazing map!"
+MOVE_WEIGHT = 1
+TIME_WEIGHT = 1
+TITLE = "The Amazing Map"
+ORG_NAME = "dfdao"
 
-If you want to deploy the client code (with whatever modifications you want), you can follow these instructions.
+BRONZE_RANK = 180
+CONFIG_HASH = '0xfe719a3cfccf2bcfa23f71f0af80a931eda4f4197331828d728b7505a6156930'
+GOLD_RANK = 60
+SILVER_RANK = 120
 
-Deploy client website
+```
 
-To deploy the website interface, you may either self-host, or use the same infra that we use - [Netlify](https://www.netlify.com/). This is a simple option, and free for up to some amount of gigabytes of bandwidth per month, which has often been enough for us.
+### Styling
 
-To use Netlify:
+All styles for the round page are defined in `src/Frontend/Styles/lightforest.scss`.
+Most elements on the homepage have a data-attribute (starting with `lf-`) that can be used for styling.
 
-- Make a new [Netlify account](https://app.netlify.com/signup) using your Github profile.
-- [Import](https://app.netlify.com/start) your forked **lightforest** repo as a new Netlify site.
+For example,
 
-  - During Step 3 of the import (Site settings, and deploy!):
-    - Build command: `yarn build`
-    - Publish directory: `client/dist`
+```html
+<div lf-map-overview="">...</div>
+```
 
-  Your initial settings should look like this:
+can be styled with the following CSS selector:
 
-  ![netlify_settings](img/netlify_import.png)
+```CSS
+[lf-map-overview] {
+  ...
+}
+```
 
-  _Importing from Github will automatically trigger an initial build by Netlify, which will take ~5 min._
+The color scheme is also defined in `lightforest.scss` as CSS variables.
 
-- Install the Netlify CLI
-  - `npm install netlify-cli -g`
-- Login to your account
-  - `netlify login`
-- Connect to your app
-  - `netlify link`
-    ![Netlify link](img/link.png)
-- Choose _Enter a site ID_
-  ![Site ID](img/site_id.png)
-- Input the id that you find by clicking on your new site on Netlify. In this example, the id is `jolly-hermann-3947ca`
-- Now that your site is linked, you can deploy to Netlify from the CLI.
+## Deployment
 
-  - `yarn deploy:client:prod`
-  - If successful, you will see something like this.
-    ![deploy_success](img/netlify_deploy.png)
-  - By default, all future changes to the branch you specified in the settings will result in an automatic deploy (in this case `master`).
-  - You can still choose to deploy manually (via `yarn deploy:client:prod`).
-  - Additionally, if you want to stop auto-publishing via git updates, see this image:
-    ![stop_auto_publishing](img/stop_auto_publishing.png)
+The following guides assume you've went through the following checklist before deploying:
 
-- Now go the URL given by Netlify → something like [https://jolly-hermann-3947ca.netlify.app/](https://jolly-hermann-3947ca.netlify.app/) and test out your game! Make some moves and test that everything works as expected. Make sure your round appears in the game leaderboard and then share the link with your friends.
+### Deployment checklist
+
+- [ ] You've set up the environment variables correctly
+- [ ] You're using the correct round parameters in `lightforest.toml`
+- [ ] You're configured the visual design to fit the look and feel of your custom round. (`lightforest.scss`)
+- [ ] You've changed the favicons and header tags in `index.html`.
+- [ ] You've tested the experience locally.
+
+### Netlify
+
+1. Push your code to your git repository.
+2. [Import your site](https://docs.netlify.com/welcome/add-new-site/) into Netlify from your git repository.
+3. Make sure the build command is set to `yarn build` and the publish directory to `dist`.
+4. Save and deploy
+5. Your custom round should be live at something like `https://lightforest-site.netlify.app/ `
+
+### Netlify (CLI)
+
+1. [Install the Netlify CLI](https://cli.netlify.com/).
+2. Run `ntl init` to create a new site.
+3. Deploy your site with `ntl deploy --prod`.
+
+## Builder's Guide
+
+For a comprehensive tutorial on using the [Dark Forest](https://github.com/dfdao/darkforest-local) repository to make custom Dark Forest games and deploy them, check out the Dark Forest [Builder's Guide](builders_guide.md).
