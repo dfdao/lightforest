@@ -101,7 +101,7 @@ export function ConfigDetails({
       typeof item[1] == "object" ? Tableify(item[1]) : item[1].toString(),
   ];
   return (
-    <DetailsContainer>
+    <div lf-config-details-container="">
       <Table
         paginated={false}
         rows={Object.entries(config)
@@ -114,16 +114,9 @@ export function ConfigDetails({
         columns={columns}
         alignments={["l", "r"]}
       ></Table>
-    </DetailsContainer>
+    </div>
   );
 }
-
-const DetailsContainer = styled.div`
-  // display: inline-block;
-  border-bottom: none;
-  overflow-y: auto;
-  margin-bottom: 24px;
-`;
 
 const Cell = styled.div`
   padding: 4px 0;

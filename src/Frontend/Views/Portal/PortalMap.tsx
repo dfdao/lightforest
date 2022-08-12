@@ -114,26 +114,12 @@ export const PortalMap: React.FC<{
         </div>
       )}
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          marginBottom: "2rem",
-        }}
-      >
+      <div lf-map-text-content="">
         <span lf-map-round-name="">{LIGHTFOREST_CONFIG.round.TITLE}</span>
         <span lf-map-title="">{mapName}</span>
         <span lf-map-description="">{description}</span>
       </div>
-      <div
-        style={{
-          display: "flex",
-          gap: "16px",
-          justifyContent: "space-between",
-          alignItems: "center",
-          width: "100%",
-        }}
-      >
+      <div lf-map-actions="">
         {countdown && (
           <span lf-round-countdown="">
             {status == "ended"

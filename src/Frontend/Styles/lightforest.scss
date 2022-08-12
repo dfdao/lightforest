@@ -65,6 +65,20 @@
   margin-bottom: 1rem;
 }
 
+[lf-map-text-content] {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+}
+
+[lf-map-actions] {
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
 [lf-map-round-name] {
   font-weight: 500;
   color: hsla(218, 100%, 74%, 1);
@@ -258,4 +272,10 @@
   &:hover {
     color: hsla(218, 100%, 84%, 1);
   }
+}
+
+[lf-config-details-container] {
+  border-bottom: none;
+  overflow-y: auto;
+  margin-bottom: 24px;
 }
