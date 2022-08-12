@@ -104,11 +104,8 @@ export const MapDetails2: React.FC<MapDetailsProps> = ({
           <>
             {liveMatches && liveMatches.entries.length > 0 ? (
               <div>
-                {liveMatches.entries
-                  .concat(liveMatches.entries)
-                  .concat(liveMatches.entries)
-                  .concat(liveMatches.entries)
-                  .map((entry: ExtendedMatchEntry, i: number) => (
+                {liveMatches.entries.map(
+                  (entry: ExtendedMatchEntry, i: number) => (
                     <MatchDetail
                       key={i}
                       configHash={entry.configHash}
@@ -120,7 +117,8 @@ export const MapDetails2: React.FC<MapDetailsProps> = ({
                       startTime={entry.startTime}
                       id={entry.id}
                     />
-                  ))}
+                  )
+                )}
               </div>
             ) : (
               <span>No live games</span>

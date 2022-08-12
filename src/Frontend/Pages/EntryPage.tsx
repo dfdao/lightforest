@@ -39,7 +39,6 @@ import { EthConnectionProvider, TwitterProvider } from "../Utils/AppHooks";
 import { Incompatibility, unsupportedFeatures } from "../Utils/BrowserChecks";
 import { TerminalTextStyle } from "../Utils/TerminalTypes";
 import { PortalHome } from "../Views/Portal/Home";
-import { PortalMainView } from "../Views/Portal/PortalMainView";
 import { Terminal, TerminalHandle } from "../Views/Terminal";
 import { GameLandingPage } from "./Game/GameLandingPage";
 import LoadingPage from "./LoadingPage";

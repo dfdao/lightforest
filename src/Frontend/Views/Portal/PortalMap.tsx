@@ -81,7 +81,7 @@ export const PortalMap: React.FC<{
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [status, countdown]);
+  }, [status, countdown, endTime, startTime]);
 
   const { innerHeight } = window;
   let mapSize = "500px";
