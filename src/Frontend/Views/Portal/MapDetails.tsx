@@ -3,6 +3,7 @@ import { EthAddress, ExtendedMatchEntry } from "@dfdao/types";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { LoadedRound } from "../../../_types/global/GlobalTypes";
+import { LoadingSpinner } from "../../Components/LoadingSpinner";
 import { LobbyInitializers } from "../../Panes/Lobby/Reducer";
 import "../../Styles/lightforest.scss";
 import {
@@ -19,7 +20,7 @@ import { truncateAddress } from "./PortalUtils";
 
 export interface MapDetailsProps {
   configHash: string;
-  config: LobbyInitializers;
+  config: LobbyInitializers | undefined;
 }
 
 declare const LIGHTFOREST_CONFIG: LoadedRound;
@@ -43,6 +44,14 @@ export const MapDetails: React.FC<MapDetailsProps> = ({
     false,
     configHash
   );
+
+  if (!config) {
+    return (
+      <div className="lf-map-details-container">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
     <div lf-map-details-container="">

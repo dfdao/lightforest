@@ -19,7 +19,7 @@ declare const LIGHTFOREST_CONFIG: LoadedRound;
 
 export const MapOverview: React.FC<{
   configHash: string;
-  config: LobbyInitializers;
+  config: LobbyInitializers | undefined;
   lobbyAddress?: EthAddress;
 }> = ({ configHash, lobbyAddress, config }) => {
   const endTime = new Date(LIGHTFOREST_CONFIG.round.END_TIME).getTime();
@@ -83,57 +83,67 @@ export const MapOverview: React.FC<{
   }, [status, countdown, endTime, startTime]);
 
   const { innerHeight } = window;
-  let mapSize = "500px";
+  let mapSize = "300px";
   if (innerHeight < 700) {
     mapSize = "300px";
   }
 
-  return (
-    <div lf-map-overview="" className="lf-stack">
-      {!minimapConfig ? (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "500px",
-            height: "500px",
-          }}
-        >
-          <LoadingSpinner initialText="Loading..." />
-        </div>
-      ) : (
-        <div lf-map-overview-minimap-container="" className="lf-center">
-          <Minimap
-            style={{ width: mapSize, height: mapSize }}
-            minimapConfig={minimapConfig}
-            setRefreshing={() => {
-              // do nothing
-            }}
-          />
-        </div>
-      )}
-
-      <div lf-map-text-content="" className="lf-stack">
-        <span lf-map-round-name="">{LIGHTFOREST_CONFIG.round.TITLE}</span>
-        <span className="lf-title">{mapName}</span>
-        <span>{description}</span>
+  if (!config) {
+    return (
+      <div className="lf-map-overview">
+        <LoadingSpinner />
       </div>
-      <div lf-map-actions="">
-        {countdown && (
-          <span lf-round-countdown="">
-            {status == "ended"
-              ? "Round over!"
-              : status == "not started"
-              ? `Round starts in ${formatDuration(countdown)} `
-              : `Round ends in ${formatDuration(countdown)} `}
-          </span>
+    );
+  }
+
+  return (
+    <div lf-map-overview="">
+      <div lf-map-content="" className="lf-row">
+        <div lf-map-text-content="" className="lf-stack">
+          <span lf-map-round-name="">{mapName ?? "Map name"}</span>
+          <span className="lf-title">{LIGHTFOREST_CONFIG.round.TITLE}</span>
+          <span style={{ width: "66%" }}>{description}</span>
+          <div lf-map-actions="">
+            <Link target="blank" to={`/play/${lobbyAddress}?create=true`}>
+              <button lf-play-button="" disabled={status !== "started"}>
+                Play Round
+              </button>
+            </Link>
+            {countdown && (
+              <span lf-round-countdown="">
+                {status == "ended"
+                  ? "Round over!"
+                  : status == "not started"
+                  ? `Round starts in ${formatDuration(countdown)} `
+                  : `Round ends in ${formatDuration(countdown)} `}
+              </span>
+            )}
+          </div>
+        </div>
+
+        {!minimapConfig ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "300px",
+              height: "300px",
+            }}
+          >
+            <LoadingSpinner initialText="Loading..." />
+          </div>
+        ) : (
+          <div lf-map-overview-minimap-container="" className="lf-center">
+            <Minimap
+              style={{ width: mapSize, height: mapSize }}
+              minimapConfig={minimapConfig}
+              setRefreshing={() => {
+                // do nothing
+              }}
+            />
+          </div>
         )}
-        <Link target="blank" to={`/play/${lobbyAddress}?create=true`}>
-          <button lf-play-button="" disabled={status !== "started"}>
-            Play Round
-          </button>
-        </Link>
       </div>
     </div>
   );

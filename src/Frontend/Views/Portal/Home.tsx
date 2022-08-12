@@ -13,7 +13,7 @@ export const PortalHome = ({}) => {
   const configHash = LIGHTFOREST_CONFIG.round.CONFIG_HASH;
   const { config, lobbyAddress, error } = useConfigFromHash(configHash);
 
-  if (error || !config) return <div>Couldn't load map.</div>;
+  if (error) return <div>Couldn't load map.</div>;
 
   return (
     <div lf-root="">

@@ -5,6 +5,7 @@
 */
 
 [lf-root] {
+  --bg-darker: rgb(37, 37, 37);
   --bg: hsla(0, 0%, 17%, 1);
   --bg-1: hsla(240, 7%, 42%, 0.2);
   --bg-2: hsla(240, 9%, 33%, 1);
@@ -53,7 +54,7 @@
 }
 
 .lf-title {
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   font-weight: 500;
   margin-bottom: 0.5rem;
 }
@@ -62,24 +63,6 @@
 ==========================================================================
 ------------------------------- LAYOUT -----------------------------------
 ==========================================================================
-
-+---------------------------------------+
-|              lf-top-bar               |
-+---------------------------------------+
-|              lf-content               |
-|                                       |
-|  +------------+ +-------------------+ |
-|  | lf-map     | | lf-map-details    | |
-|  | -overview  | |                   | |
-|  |            | |                   | |
-|  |            | | +---------------+ | |
-|  |            | | | lf-map-config | | |
-|  |            | | | -container    | | |
-|  |            | | +---------------+ | |
-|  +------------+ +-------------------+ |
-|                                       |
-+---------------------------------------+
-
 */
 
 [lf-top-bar] {
@@ -91,24 +74,24 @@
 
 [lf-content] {
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
+  flex-direction: column;
   height: 100%;
   overflow: hidden;
   width: 100%;
   gap: 24px;
+  margin-bottom: 24px;
 }
 
 [lf-map-overview] {
   border: var(--border);
-  background: var(--bg-1);
+  background: linear-gradient(90deg, var(--bg-1) 0%, #111 100%);
   padding: 24px;
   border-radius: var(--border-radius);
 }
 
 [lf-map-details] {
   display: grid;
-  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   max-height: 100%;
   overflow: hidden;
   gap: 3rem;
@@ -118,18 +101,23 @@
 [lf-map-config-container] {
   height: 100%;
   min-height: 100%;
-  overflow-y: auto;
+  padding-bottom: 3rem;
 }
 
 /*
 ==========================================================================
 ------------------------------- LF-MAP-OVERVIEW --------------------------
-------------------------------- (LEFT SIDE) ------------------------------
+------------------------------- (BANNER) ------------------------------
 ==========================================================================
 */
 
+[lf-map-content] {
+  max-width: 66%;
+  margin: 0 auto;
+  justify-content: space-between;
+}
+
 [lf-map-overview-minimap-container] {
-  background: #111;
   border-radius: var(--border-radius);
   margin-bottom: 1rem;
 }
@@ -140,10 +128,12 @@
 
 [lf-map-actions] {
   display: flex;
+  flex-direction: column;
   gap: 16px;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
+  flex: 1 1 auto;
+  // justify-content: space-between;
+  // align-items: center;
+  margin-top: 2rem;
 }
 
 [lf-map-round-name] {
@@ -156,35 +146,49 @@
 }
 
 [lf-play-button] {
+  display: flex;
   box-shadow: 0px 8px 48px 0px hsla(0, 0%, 34%, 0.08);
   box-shadow: 0px 4px 8px 0px hsla(210, 7%, 28%, 0.06);
   box-shadow: 0px 0px 1px 0px hsla(210, 7%, 28%, 0.32);
-  border: var(--border-1);
   color: var(--fg-1);
-  background: var(--bg-2);
-  padding: 0.5rem 1rem;
+  background: var(--primary);
+  padding: 0.5rem 1.5rem;
   border-radius: var(--border-radius);
   cursor: pointer;
   outline: none;
   transition: all 0.2s ease-in-out;
+  animation: pulse 2s infinite ease-in-out;
   &:active:not([disabled]) {
     transform: scale(0.95);
     outline: none;
   }
   &:hover:not([disabled]) {
-    background: var(--bg-3);
+    background: var(--primary-hover);
     transform: scale(1.05);
+    animation: none;
+    -webkit-animation: none;
   }
   &:disabled {
     cursor: not-allowed;
     border: none;
+    animation: none;
+    -webkit-animation: none;
+  }
+
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0px 0px hsla(218, 100%, 84%, 0.5);
+    }
+    70% {
+      box-shadow: 0 0 0px 6px hsla(0, 0%, 0%, 0);
+    }
   }
 }
 
 /*
 ==========================================================================
 ------------------------------- LF-MAP-DETAILS ---------------------------
-------------------------------- (TOP RIGHT) ------------------------------
+------------------------------- (BOTTOM LEFT) ------------------------------
 ==========================================================================
 */
 
@@ -290,7 +294,8 @@
 
 /*
 ==========================================================================
-------------------------------- MAP CONFIG (BOTTOM RIGHT) ----------------
+------------------------------- MAP CONFIG ------------------------------- 
+------------------------------(BOTTOM RIGHT) -----------------------------
 ==========================================================================
 */
 
@@ -304,7 +309,8 @@
 }
 
 [lf-config-table-container] {
-  border-bottom: none;
-  overflow-y: auto;
-  margin-bottom: 24px;
+  overflow-y: scroll;
+  height: 100%;
+  padding: 1rem;
+  background-color: var(--bg-darker);
 }
