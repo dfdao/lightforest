@@ -19,7 +19,7 @@ declare const LIGHTFOREST_CONFIG: LoadedRound;
 
 export const MapOverview: React.FC<{
   configHash: string;
-  config: LobbyInitializers | undefined;
+  config: LobbyInitializers;
   lobbyAddress?: EthAddress;
 }> = ({ configHash, lobbyAddress, config }) => {
   const endTime = new Date(LIGHTFOREST_CONFIG.round.END_TIME).getTime();
@@ -86,14 +86,6 @@ export const MapOverview: React.FC<{
   let mapSize = "300px";
   if (innerHeight < 700) {
     mapSize = "300px";
-  }
-
-  if (!config) {
-    return (
-      <div className="lf-map-overview">
-        <LoadingSpinner />
-      </div>
-    );
   }
 
   return (

@@ -1,5 +1,6 @@
 import React from "react";
 import { LoadedRound } from "../../../_types/global/GlobalTypes";
+import { LoadingSpinner } from "../../Components/LoadingSpinner";
 import "../../Styles/lightforest.scss";
 import { useConfigFromHash } from "../../Utils/AppHooks";
 import { Account } from "./Account";
@@ -14,6 +15,14 @@ export const PortalHome = ({}) => {
   const { config, lobbyAddress, error } = useConfigFromHash(configHash);
 
   if (error) return <div>Couldn't load map.</div>;
+
+  if (!config) {
+    return (
+      <div lf-root="">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
     <div lf-root="">

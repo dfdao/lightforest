@@ -250,7 +250,6 @@
   justify-content: space-between;
   padding: 0.5rem 1rem;
   width: 100%;
-  cursor: pointer;
   transition: all 0.2s ease-in-out;
   &:hover {
     background: var(--bg-1);
@@ -290,6 +289,24 @@
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+[lf-match-detail-button] {
+  border: var(--border);
+  background: var(--bg-2);
+  color: var(--fg);
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background: var(--bg-3);
+    color: var(--fg-1);
+  }
 }
 
 /*

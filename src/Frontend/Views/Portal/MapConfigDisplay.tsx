@@ -1,22 +1,14 @@
 import React from "react";
-import { LoadingSpinner } from "../../Components/LoadingSpinner";
 import { LobbyInitializers } from "../../Panes/Lobby/Reducer";
 import { ConfigDetails } from "./ConfigDetails";
 
 interface MapConfigDisplayProps {
-  config: LobbyInitializers | undefined;
+  config: LobbyInitializers;
 }
 
 export const MapConfigDisplay: React.FC<MapConfigDisplayProps> = ({
   config,
 }) => {
-  if (!config) {
-    return (
-      <div lf-map-config-container="">
-        <LoadingSpinner />
-      </div>
-    );
-  }
   return (
     <div lf-map-config-container="">
       <div lf-map-config-header="" className="lf-row">

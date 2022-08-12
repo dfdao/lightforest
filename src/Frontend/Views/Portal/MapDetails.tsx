@@ -3,12 +3,12 @@ import { EthAddress, ExtendedMatchEntry } from "@dfdao/types";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { LoadedRound } from "../../../_types/global/GlobalTypes";
-import { LoadingSpinner } from "../../Components/LoadingSpinner";
 import { LobbyInitializers } from "../../Panes/Lobby/Reducer";
 import "../../Styles/lightforest.scss";
 import {
   useArenaLeaderboard,
   useEloLeaderboard,
+  useEthConnection,
   useLiveMatches,
 } from "../../Utils/AppHooks";
 import { formatStartTime } from "../../Utils/TimeUtils";
@@ -20,7 +20,7 @@ import { truncateAddress } from "./PortalUtils";
 
 export interface MapDetailsProps {
   configHash: string;
-  config: LobbyInitializers | undefined;
+  config: LobbyInitializers;
 }
 
 declare const LIGHTFOREST_CONFIG: LoadedRound;
@@ -32,7 +32,7 @@ export const MapDetails: React.FC<MapDetailsProps> = ({
   const numSpawnPlanets =
     config?.ADMIN_PLANETS.filter((p) => p.isSpawnPlanet).length ?? 0;
 
-  // const hasWhitelist = config?.WHITELIST_ENABLED ?? true;
+  const hasWhitelist = config?.WHITELIST_ENABLED;
   const startTime = new Date(LIGHTFOREST_CONFIG.round.START_TIME).getTime();
   const endTime = new Date(LIGHTFOREST_CONFIG.round.END_TIME).getTime();
 
@@ -44,14 +44,8 @@ export const MapDetails: React.FC<MapDetailsProps> = ({
     false,
     configHash
   );
-
-  if (!config) {
-    return (
-      <div className="lf-map-details-container">
-        <LoadingSpinner />
-      </div>
-    );
-  }
+  const conn = useEthConnection();
+  const address = conn.getAddress();
 
   return (
     <div lf-map-details-container="">
@@ -62,7 +56,7 @@ export const MapDetails: React.FC<MapDetailsProps> = ({
           lf-tab-active={currentTab === 0 ? "" : null}
         >
           <MatchIcon />
-          <span>{`${liveMatches?.entries.length} Live Games`}</span>
+          <span>{`${liveMatches?.entries.length} Games`}</span>
         </div>
         <div
           lf-map-details-tab=""
@@ -84,12 +78,16 @@ export const MapDetails: React.FC<MapDetailsProps> = ({
                       key={i}
                       configHash={entry.configHash}
                       creator={entry.creator}
-                      numPlayers={entry.players ? entry.players.length : 0}
-                      numSpots={
-                        entry.planets.filter((p) => p.spawnPlanet).length
+                      players={
+                        entry.players
+                          ? entry.players.map((val) => val.address)
+                          : []
                       }
+                      numSpots={numSpawnPlanets}
                       startTime={entry.startTime}
                       id={entry.id}
+                      hasWhitelist={hasWhitelist}
+                      playerAddress={address as string}
                     />
                   )
                 )}
@@ -127,42 +125,57 @@ export const MapDetails: React.FC<MapDetailsProps> = ({
 export interface MatchDetailProps {
   configHash: string;
   creator: EthAddress;
-  numPlayers: number;
+  players: string[];
   numSpots: number;
   startTime: number;
   id: string;
+  hasWhitelist: boolean;
+  playerAddress: string;
 }
 
 export const MatchDetail: React.FC<MatchDetailProps> = ({
   configHash,
   creator,
-  numPlayers,
+  players,
   numSpots,
   startTime,
   id,
+  hasWhitelist,
+  playerAddress,
 }) => {
+  console.log(players);
+  console.log(playerAddress);
   return (
-    <Link to={`/play/${id}`}>
-      <div lf-match-detail-container="">
-        <div lf-match-detail-header="">
-          <div lf-match-detail-icon="">{`${numSpots}p`}</div>
-          <div className="lf-stack">
-            <span lf-match-detail-title="">{getConfigName(configHash)}</span>
-            <span lf-match-detail-description="">{`${numPlayers} of ${numSpots} spots available`}</span>
-          </div>
-        </div>
-        <div className="lf-row" style={{ gap: "24px" }}>
-          <div lf-match-detail-info="">
-            <ClockIcon />
-            <span>{formatStartTime(startTime)}</span>
-          </div>
-          <div lf-match-detail-info="">
-            <PersonIcon />
-            <span>{truncateAddress(creator)}</span>
-          </div>
+    <div lf-match-detail-container="">
+      <div lf-match-detail-header="">
+        <div lf-match-detail-icon="">{`${numSpots}p`}</div>
+        <div className="lf-stack">
+          <span lf-match-detail-title="">{getConfigName(configHash)}</span>
+          <span lf-match-detail-description="">{`${
+            numSpots - players.length
+          } of ${numSpots} spots available`}</span>
         </div>
       </div>
-    </Link>
+      <div className="lf-stack">
+        <div lf-match-detail-info="">
+          <ClockIcon />
+          <span>{formatStartTime(startTime)}</span>
+        </div>
+        <div lf-match-detail-info="">
+          <PersonIcon />
+          <span>{truncateAddress(creator)}</span>
+        </div>
+      </div>
+      <Link to={`/play/${id}`} target="_blank">
+        <button lf-match-detail-button="">
+          {players.includes(playerAddress)
+            ? "Resume"
+            : players.length < numSpots && !hasWhitelist
+            ? "Join"
+            : "View"}
+        </button>
+      </Link>
+    </div>
   );
 };
 
