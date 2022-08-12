@@ -41,6 +41,7 @@ const ConfigValidators = yup
         }),
       DESCRIPTION: yup.string().required(),
       TITLE: yup.string().required(),
+      ORG_NAME: yup.string(),
       MOVE_WEIGHT: yup.number().required(),
       TIME_WEIGHT: yup.number().required(),
       BRONZE_RANK: yup.number().required(),

@@ -4,7 +4,7 @@ import "../../Styles/lightforest.scss";
 import { useConfigFromHash } from "../../Utils/AppHooks";
 import { Account } from "./Account";
 import { ConfigDetails } from "./ConfigDetails";
-import { MapDetails2 } from "./MapDetails2";
+import { MapDetails } from "./MapDetails";
 import { PortalMap } from "./PortalMap";
 
 declare const LIGHTFOREST_CONFIG: LoadedRound;
@@ -20,7 +20,9 @@ export const PortalHome = ({}) => {
   return (
     <div lf-root="">
       <div lf-top-bar="">
-        <span>277Dao</span>
+        <span lf-subtitle="">
+          {LIGHTFOREST_CONFIG.round.ORG_NAME ?? "Light Forest"}
+        </span>
         <Account />
       </div>
       <div lf-map-content="">
@@ -30,15 +32,8 @@ export const PortalHome = ({}) => {
           config={config}
         />
         <div lf-map-details="">
-          <MapDetails2 configHash={configHash} config={config} />
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              height: "100%",
-              overflow: "auto",
-            }}
-          >
+          <MapDetails configHash={configHash} config={config} />
+          <div lf-map-config-container="">
             <div lf-map-config-details-header="">
               <span lf-subtitle="">Config Details</span>
               <span

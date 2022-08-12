@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 
 import { formatDuration } from "../../Utils/TimeUtils";
-import { MythicLabelText } from "../../Components/Labels/MythicLabel";
 import { LoadingSpinner } from "../../Components/LoadingSpinner";
 import { Minimap } from "../../Components/Minimap";
 import {

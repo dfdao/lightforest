@@ -6,6 +6,7 @@ DESCRIPTION = "Dark Forest is a massively-multiplayer online strategy game inspi
 MOVE_WEIGHT = 1
 TIME_WEIGHT = 1
 TITLE = "The Amazing Map"
+ORG_NAME = "dfdao"
 
 BRONZE_RANK = 180
 CONFIG_HASH = '0x12c40c98747fc86ccdccc3a716ffa089497d7de3bb5a967ed8b36a1d521c54bc'

@@ -278,16 +278,19 @@ export function useArenaLeaderboard(
   >();
   const [arenaError, setArenaError] = useState<Error | undefined>();
 
-  const loadArena = useCallback(async function loadArena() {
-    try {
-      setArenaLeaderboard(
-        (await loadArenaLeaderboard(address, isCompetitive)) as Leaderboard
-      );
-    } catch (e) {
-      console.log("error loading leaderboard", e);
-      setArenaError(e);
-    }
-  }, []);
+  const loadArena = useCallback(
+    async function loadArena() {
+      try {
+        setArenaLeaderboard(
+          (await loadArenaLeaderboard(address, isCompetitive)) as Leaderboard
+        );
+      } catch (e) {
+        console.log("error loading leaderboard", e);
+        setArenaError(e);
+      }
+    },
+    [address, isCompetitive]
+  );
 
   usePoll(loadArena, poll, true);
 
@@ -307,14 +310,17 @@ export function useEloLeaderboard(
   >();
   const [eloError, setEloError] = useState<Error | undefined>();
 
-  const loadElo = useCallback(async function loadElo() {
-    try {
-      setEloLeaderboard(await loadEloLeaderboard(address, isCompetitive));
-    } catch (e) {
-      console.log("error loading leaderboard", e);
-      setEloError(e);
-    }
-  }, []);
+  const loadElo = useCallback(
+    async function loadElo() {
+      try {
+        setEloLeaderboard(await loadEloLeaderboard(address, isCompetitive));
+      } catch (e) {
+        console.log("error loading leaderboard", e);
+        setEloError(e);
+      }
+    },
+    [address, isCompetitive]
+  );
 
   usePoll(loadElo, poll, true);
 
@@ -356,14 +362,17 @@ export function useLiveMatches(
 } {
   const [liveMatches, setLiveMatches] = useState<LiveMatch | undefined>();
   const [spyError, setSpyError] = useState<Error | undefined>();
-  const loadSpy = useCallback(async function loadSpy() {
-    try {
-      setLiveMatches(await loadLiveMatches(config));
-    } catch (e) {
-      console.log("error loading leaderboard", e);
-      setSpyError(e);
-    }
-  }, []);
+  const loadSpy = useCallback(
+    async function loadSpy() {
+      try {
+        setLiveMatches(await loadLiveMatches(config));
+      } catch (e) {
+        console.log("error loading leaderboard", e);
+        setSpyError(e);
+      }
+    },
+    [config]
+  );
 
   usePoll(loadSpy, poll, true);
 

@@ -26,7 +26,7 @@
 
 [lf-subtitle] {
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 500;
   margin-bottom: 0.5rem;
 }
 
@@ -184,7 +184,7 @@
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   &:hover {
-    background: hsla(240, 9%, 33%, 1);
+    background: hsla(0, 0%, 24%, 1);
     color: #fff;
   }
 }
@@ -236,6 +236,13 @@
 ------------------------------- MAP CONFIG (BOTTOM RIGHT) ----------------
 ==========================================================================
 */
+
+[lf-map-config-container] {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: auto;
+}
 
 [lf-map-config-details-header] {
   display: flex;
