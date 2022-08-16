@@ -30,7 +30,7 @@ Clone that new repo to your local machine.
 
 Your custom round should be running locally at `localhost:8081`. It should look like this:
 
-![]('img\look.png')
+![image](/img/look.png)
 
 Once you're ready to deploy, jump to [Deployment](#deployment) and follow the instructions.
 
