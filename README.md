@@ -28,7 +28,11 @@ Clone that new repo to your local machine.
 3. Add a `.env` file using the same keys as `.env.example`
 4. Run `yarn && yarn start`
 
-Your custom round should be running locally at `localhost:8081`. Once you're ready to deploy, jump to [Deployment](#deployment) and follow the instructions.
+Your custom round should be running locally at `localhost:8081`. It should look like this:
+
+![image](/img/look.png)
+
+Once you're ready to deploy, jump to [Deployment](#deployment) and follow the instructions.
 
 ## Customization
 
